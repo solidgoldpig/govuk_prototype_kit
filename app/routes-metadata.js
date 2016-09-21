@@ -43,6 +43,7 @@ function recurseElements(node) {
 }
 
 function init(router) {
+
   router.use(function (req, res, next) {  
       var nunjucksEnv = res.app.locals.settings.nunjucksEnv //res.app.get('engine');
       // console.log('res.app', res.app.engines)
@@ -88,9 +89,28 @@ function init(router) {
     }
   }
   var routes = require('./metadata/routes.json')
-  var routeUrls = {}
+  var routesFlattened = {}
   Object.keys(routes).forEach(routeName => {
     var route = routes[routeName]
+    var routeUrlStub = route.url
+    routesFlattened[routeName] = Object.assign({}, route)
+    if (route.steps) {
+      routesFlattened[routeName].redirect = route.steps[0].name
+      route.steps.forEach((step, i) => {
+        routesFlattened[step.name] = Object.assign({}, step)
+        if (step.url.indexOf('/') !== 0) {
+          routesFlattened[step.name].url = routeUrlStub + '/' + step.url
+        }
+        if (route.steps[i + 1]) {
+          routesFlattened[step.name].redirect = route.steps[i + 1].name
+        }
+      })
+    }
+  })
+  var routeUrls = {}
+  Object.keys(routesFlattened).sort().reverse().forEach(routeName => {
+    console.log('routeName', routeName)
+    var route = routesFlattened[routeName]
     route.name = routeName
     var method = route.method || 'use'
     var url = route.url || `${rootUrl}/${routeName}`.replace(/\/{2,}/g, '/')
