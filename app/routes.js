@@ -1,6 +1,8 @@
 var express = require('express')
 var router = express.Router()
 
+require('./routes-metadata')(router)
+
 router.get('/', function (req, res) {
   res.render('index')
 })

@@ -1,0 +1,511 @@
+{
+	"wham": {
+		"label": "Kershawnoo"
+	},
+	"ermintrude": {
+		"type": "body",
+		"body": "I am well and truly\nborked and \ntwazzled"
+	},
+	"foo": {
+		"type": "text",
+		"label": "National Insurance number",
+		"hint": "It's on your National Insurance card, benefit letter, payslip or P60.<br>For example, 'VO 12 34 56 D'."
+		},
+	"pass": {
+		"type": "password",
+		"label": "Passwordiness"
+	},
+	"housing-act": {
+		"type": "radioGroup",
+		"Xvisually_hidden": true,
+		"label": "Which part of the Housing Act was your licence isued under?",
+		"options": [
+			"housing-act-part-2",
+			"housing-act-part-3"
+		]
+	},
+	"housing-act-part-2": {
+		"value": "Part 2",
+		"label": "Part 2 of the Housing Act 2004",
+		"sublabel": "For properties that are 3 or more stories high and occupied by 5 or more people"
+	},
+	"housing-act-part-3": {
+		"value": "Part 3",
+		"label": "Part 3 of the Housing Act 2004",
+		"sublabel": "For properties that are within a geographical area defined by a local council"
+	},
+	"nationality": {
+		"type": "checkboxGroup",
+		"inline": false,
+		"Xvisually_hidden": true,
+		"label": "What is your nationality?",
+		"options": [
+			"nationality_british",
+			"nationality_irish",
+			"nationality_other"
+		]
+	},
+	"nationality_british": {
+		"value": "British",
+		"label": "British"
+	},
+	"nationality_irish": {
+		"value": "Irish",
+		"label": "Irish"
+	},
+	"nationality_other": {
+		"value": "Other",
+		"label": "Citizen of another country",
+		"reveals": "example_nationality_other"
+	},
+	"example_nationality_other": {
+		"type": "text",
+		"label": "Country name"
+	},
+	"twosh": {
+		"type": "radioGroup",
+		"Xvisually_hidden": true,
+		"label": "What gives?",
+		"sublabel": "Indeed, indeedy",
+		"options": [{
+			"value": "yes",
+			"label": "Yes"
+		},{
+			"value": "no",
+			"label": "No"
+		}]
+	},
+	"gash": {
+		"Xvisually_hidden": true,
+		"label": "Stack me",
+		"options": [{
+			"value": "1",
+			"label": "One"
+		},{
+			"value": "2",
+			"label": "Two"
+		},{
+			"value": "3",
+			"label": "Three"
+		}]
+	},
+	"flute": {
+		"type": "heading",
+		"heading": "wonk",
+		"size": "xlarge"
+	},
+	"route.bar": {
+		"title": "Bar page title",
+		"heading": "Bar page heading",
+		"lede": "Some old ledeish text to fill in the gap",
+		"heading_size": "xlarge"
+	},
+	"fieldset_test": {
+		"type": "fieldset",
+		"elements": [
+			"ermintrude",
+			"entrypoint-copy"
+		]
+	},
+
+	"yes": {
+		"value": "yes",
+		"label": "Yes"
+	},
+	"no": {
+		"value": "no",
+		"label": "No"
+	},
+	"unsure": {
+		"value": "unsure",
+		"label": "Not sure"
+	},
+
+	"entrypoint-copy": {
+		"type": "body",
+		"body": "You don’t have to answer every question but the more information you provide, the more helpful your plan will be. We won’t save any of your details unless you say we can."
+	},
+
+
+
+
+
+
+
+
+
+
+	"route.action_plan": {
+		"title": "Action Plan",
+		"heading": "Personalised Action Plan",
+		"lede": "Your personalised action plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
+	},
+	"route.staying_safe": {
+		"title": "",
+		"heading": "Staying safe",
+		"lede": "Thinking about your situation with your child’s other parent:"
+	},
+	"route.your_children": {
+		"title": "",
+		"heading": "Your children"
+	},
+	"route.you_and_other_parent": {
+		"title": "Action Plan",
+		"heading": "You and your child’s other parent"
+	},
+	"route.legal_help": {
+		"title": "",
+		"heading": "Legal help and advice"
+	},
+	"route.your_plan": {
+		"title": "",
+		"heading": "Your personalised action plan",
+		"heading_size": "large"
+	},
+
+	"child_safety": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Are you worried about your child’s safety?",
+		"options": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+	"your_safety": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Are you worried about your child’s safety?",
+		"options": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+	"child_flight": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Is your child at risk of being taken out of the country?",
+		"options": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+
+	"children_number": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "How many children are you trying to make arrangements for?",
+		"options": [
+			"children_number_1",
+			"children_number_2",
+			"children_number_3",
+			"children_number_4_or_more"
+		]
+	},
+	"children_number_1": {
+		"label": "1",
+		"value": "1"
+	},
+	"children_number_2": {
+		"label": "2",
+		"value": "2"
+	},
+	"children_number_3": {
+		"label": "3",
+		"value": "3"
+	},
+	"children_number_4_or_more": {
+		"label": "4 or more",
+		"value": "4_or_more"
+	},
+	"children_age": {
+		"type": "number",
+		"label": "What ages are your children?"
+	},
+	"child_live_with_applicant": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Do the children live with you most of the time?",
+		"options": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+	"child_not_seeing_parent": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Are you having disagreements about access that mean your children aren’t seeing both parents currently?",
+		"options": [
+			"yes",
+			"no"
+		]
+	},
+	"child_have_a_say": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Would you like your children to have a say in any agreements you make?",
+		"options": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+	"child_additional_support": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Would you like information about additional help and support to help your children to cope with your separation?",
+		"options": [
+			"yes",
+			"no"
+		]
+	},
+
+	"arrangements_how_long": {
+		"type": "radioGroup",
+		"inline": false,
+		"label": "How long have you been trying to make child arrangements?",
+		"options": [
+			"less_than_6_months",
+			"6_months_to_2_years",
+			"more_than_2_years"
+		]
+	},
+	"less_than_6_months": {
+		"value": "less_than_6_months",
+		"label": "Less than 6 months"
+	},
+	"6_months_to_2_years": {
+		"value": "6_months_to_2_years",
+		"label": "Between 6 months and 2 years"
+	},
+	"more_than_2_years": {
+		"value": "more_than_2_years",
+		"label": "Over 2 years"
+	},
+	"relationship_status": {
+		"type": "radioGroup",
+		"inline": false,
+		"label": "How is the relationship between you both now?",
+		"options": [
+			"comfortable",
+			"awkward",
+			"stressful",
+			"hostile",
+			"no_contact"
+		],
+		"reveals": "communications",
+		"reveals_exclude": [
+			"no_contact"
+		]
+	},
+	"comfortable": {
+		"value": "comfortable",
+		"label": "Comfortable"
+	},
+	"awkward": {
+		"value": "awkward",
+		"label": "Awkward"
+	},
+	"stressful": {
+		"value": "stressful",
+		"label": "Stressful"
+	},
+	"hostile": {
+		"value": "hostile",
+		"label": "Hostile"
+	},
+	"no_contact": {
+		"value": "no_contact",
+		"label": "No contact"
+	},
+	"communications": {
+		"type": "fieldset",
+		"elements": [
+			"communicating_about_arrangements_status",
+			"communicating_methods"
+		]
+	},
+	"communicating_about_arrangements_status": {
+		"type": "radioGroup",
+		"inline": false,
+		"label": "How do you usually find communicating about child arrangements with each other?",
+		"options": [
+			"very_easy",
+			"easy",
+			"so_so",
+			"difficult",
+			"very_difficult"
+		]
+	},
+	"very_easy": {
+		"value": "very_easy",
+		"label": "Very easy"
+	},
+	"easy": {
+		"value": "easy",
+		"label": "Easy"
+	},
+	"so_so": {
+		"value": "so_so",
+		"label": "So-so"
+	},
+	"difficult": {
+		"value": "difficult",
+		"label": "Difficult"
+	},
+	"very_difficult": {
+		"value": "very_difficult",
+		"label": "Very difficult"
+	},
+	"communicating_methods": {
+		"type": "checkboxGroup",
+		"inline": false,
+		"label": "How do you communicate with each other?",
+		"options": [
+			"communicating_methods_in_person",
+			"communicating_methods_phone",
+			"communicating_methods_online",
+			"communicating_methods_other",
+			"communicating_methods_none"
+		]
+	},
+	"communicating_methods_in_person": {
+		"value": "in_person",
+		"label": "Face to face"
+	},
+	"communicating_methods_phone": {
+		"value": "phone",
+		"label": "Talking over the phone"
+	},
+	"communicating_methods_online": {
+		"value": "online",
+		"label": "By text, email, online chat"
+	},
+	"communicating_methods_other": {
+		"value": "other",
+		"label": "Other (please specify)",
+		"reveals": "communicating_methods_other_value"
+	},
+	"communicating_methods_none": {
+		"value": "none",
+		"label": "No communication"
+	},
+	"communicating_methods_other_value": {
+		"type": "text",
+		"multiline": true,
+		"label": "How else do you communicate?"
+	},
+
+	"parent_official_org_engagement": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Would you like information about how an official organisation could help to get the other parent to engage with making child arrangements?",
+		"options": [
+			"yes",
+			"no"
+		]
+	},
+
+	"childcare_disagreements": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Do you disagree with your child’s other parent over medical treatment, religious activities and/or schooling?",
+		"options": [
+			"yes",
+			"no"
+		]
+	},
+	"parental_rights_info": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Would you like information about your legal rights and responsibilities as a parent?",
+		"options": [
+			"yes",
+			"no"
+		]
+	},
+	"options_tried": {
+		"type": "checkboxGroup",
+		"inline": false,
+		"label": "Options tried",
+		"sublabel": "Tick anything that you have already tried to help agree your arrangements",
+		"options": [
+			"options_tried_written_agreement",
+			"options_tried_counselling_individual",
+			"options_tried_counselling_couples",
+			"options_tried_mediation",
+			"options_tried_spip",
+			"options_tried_lawyer",
+			"options_tried_gp",
+			"options_tried_leader",
+			"options_tried_court",
+			"options_tried_child_contact_centre",
+			"options_tried_other"
+		]
+	},
+	"options_tried_written_agreement": {
+		"value": "written_agreement",
+		"label": "Made a written agreement with your ex-partner"
+	},
+	"options_tried_counselling_individual": {
+		"value": "counselling_individual",
+		"label": "Individual counselling"
+	},
+	"options_tried_counselling_couples": {
+		"value": "counselling_couples",
+		"label": "Couples counselling"
+	},
+	"options_tried_mediation": {
+		"value": "mediation",
+		"label": "Mediation"
+	},
+	"options_tried_spip": {
+		"value": "spip",
+		"label": "Separating parents information plan workshop (SPIP)"
+	},
+	"options_tried_lawyer": {
+		"value": "lawyer",
+		"label": "Consulted a lawyer"
+	},
+	"options_tried_gp": {
+		"value": "gp",
+		"label": "Talked to your GP"
+	},
+	"options_tried_leader": {
+		"value": "leader",
+		"label": "Talked to religious or community leader"
+	},
+	"options_tried_court": {
+		"value": "court",
+		"label": "Been to court"
+	},
+	"options_tried_child_contact_centre": {
+		"value": "child_contact_centre",
+		"label": "Child contact centre"
+	},
+	"options_tried_other": {
+		"value": "other",
+		"label": "Other, please specify",
+		"reveals": "options_tried_other_value"
+	},
+	"options_tried_other_value": {
+		"type": "text",
+		"multiline": true,
+		"label": "What other method did you try?"
+	},
+
+	"english_not_first_language": {
+		"type": "radioGroup",
+		"inline": true,
+		"label": "Do you struggle to understand English and need a translator to help you make child arrangements?",
+		"options": [
+			"yes",
+			"no"
+		]
+	}
+
+}

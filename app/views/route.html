@@ -1,0 +1,41 @@
+{% extends "layout_elements.html" %}
+
+{% block page_title %}
+  Action Plan - {{ i18n['route.'+route.name].heading }}
+{% endblock %}
+
+{% block content %}
+
+{% set routeName = 'route.'+route.name %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      {{ element.page_header(routeName, start_page=route.start_page) }}
+      {# req.originalUrl won't cut the mustard if multiple requests being served #}
+      <form action="{{ req.originalUrl }}" method="post" class="form">
+      {{ element.group(elements=elements, values=values) }}
+      {% if route.start_page %}
+      <p><input class="button button-start" type="submit" value="Start now">
+      <!-- <a class="button button-start" href="#" role="button">Start now</a> --></p>
+      {% elif route.redirect %}
+      <p><input class="button next validation-submit" type="submit" value="Save and continue"></p>
+      {% endif %}
+      </form>
+
+      {% if route.name === 'your_plan' %}
+      <pre style="white-space:pre-wrap">{{ savedfields }}</pre>
+      <ul>
+        <li><a href="/staying-safe">Staying Safe</a></li>
+        <li><a href="/your-children">Your children</a></li>
+        <li><a href="/you-and-other-parent">You and your child’s other parent</a></li>
+        <li><a href="/legal-help-and-advice">Legal help and advice</a></li>
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+

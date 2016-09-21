@@ -1,0 +1,91 @@
+{
+  "page": {
+    "url": "/page",
+    "controller": ""
+  },
+  "wonky": {
+    "method": "post",
+    "url": "/toot/wonkee",
+    "controller": ""
+  },
+  "shaggy": {
+    "url": "",
+    "controller": ""
+  },
+  "foo": {
+    "url": "/foo",
+    "controller": "",
+    "redirect": "bar"
+  },
+  "bar": {
+    "url": "/bar",
+    "controller": "",
+    "elements": [
+      "flute",
+      "housing-act",
+      "nationality",
+      "ermintrude"
+    ]
+  },
+  "action_plan": {
+    "url": "/action-plan",
+    "elements": [
+      "entrypoint-copy"
+    ],
+		"start_page": true,
+    "redirect": "staying_safe"
+  },
+  "staying_safe": {
+    "url": "/staying-safe",
+    "elements": [
+      "child_safety",
+      "your_safety",
+      "child_flight"
+    ],
+    "redirect": "your_children"
+  },
+  "your_children": {
+    "url": "/your-children",
+    "elements": [
+      "children_number",
+      "children_age",
+      "child_live_with_applicant",
+      "child_not_seeing_parent",
+      "child_have_a_say",
+      "child_additional_support"
+    ],
+    "redirect": "you_and_other_parent"
+  },
+  "you_and_other_parent": {
+    "url": "/you-and-other-parent",
+    "elements": [
+      "arrangements_how_long",
+      "relationship_status",
+      "parent_official_org_engagement"
+    ],
+    "Xstructure": [
+      "arrangements_how_long",
+      "relationship_status",
+      "communicating_about_arrangements_status",
+      "communicating_methods",
+      "parent_official_org_engagement"
+    ],
+    "redirect": "legal_help"
+  },
+  "legal_help": {
+    "url": "/legal-help-and-advice",
+    "elements": [
+      "childcare_disagreements",
+      "parental_rights_info",
+      "options_tried",
+      "english_not_first_language"
+    ],
+    "redirect": "your_plan"
+  },
+  "your_plan": {
+    "url": "/your-plan",
+    "xstructure": [
+      "entrypoint-copy"
+    ]
+  }
+}
