@@ -90,13 +90,18 @@ function initRoutes(router) {
   }
   var routesConfig = require('./metadata/routes.json')
   var routes = routesConfig.routes
-  var pages = routesConfig.pages
+  var pages = routesConfig.route
   var routesFlattened = {}
   function flattenRoutes(routes, urlPrefix) {
     urlPrefix = urlPrefix.replace(/\/+$/, '')
     routes.forEach(routeName => {
       if (!routesFlattened[routeName]) {
         routesFlattened[routeName] = Object.assign({}, pages[routeName])
+        var routeExtends = routesFlattened[routeName].extends
+        if (routeExtends) {
+          routesFlattened[routeName] = Object.assign({}, pages[routeExtends], routesFlattened[routeName])
+          i18n['route.'+routeName] = Object.assign({}, i18n['route.'+routeExtends], i18n['route.'+routeName])
+        }
       }
       var route = routesFlattened[routeName]
       route.url = route.url || routeName

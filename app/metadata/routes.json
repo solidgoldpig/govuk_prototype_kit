@@ -1,11 +1,12 @@
 {
   "routes": [
-    "action_plan"
+    "action_plan",
+    "staying_safe2"
   ],
-  "pages": {
+  "route": {
     "action_plan": {
       "start_page": true,
-      "url": "/action-plan",
+      "url": "action-plan",
       "elements": [
         "entrypoint-copy"
       ],
@@ -26,7 +27,7 @@
       ]
     },
     "staying_safe2": {
-      "url": "extrapolating",
+      "url": "another-staying-safe",
       "extends": "staying_safe"
     },
     "your_children": {
