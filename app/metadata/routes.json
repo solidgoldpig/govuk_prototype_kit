@@ -1,87 +1,64 @@
 {
-  "page": {
-    "url": "/page",
-    "controller": ""
-  },
-  "wonky": {
-    "method": "post",
-    "url": "/toot/wonkee",
-    "controller": ""
-  },
-  "shaggy": {
-    "url": "",
-    "controller": ""
-  },
-  "foo": {
-    "url": "/foo",
-    "controller": "",
-    "redirect": "bar"
-  },
-  "bar": {
-    "url": "/bar",
-    "controller": "",
-    "elements": [
-      "flute",
-      "housing-act",
-      "nationality",
-      "ermintrude"
-    ]
-  },
-  "action_plan": {
-    "start_page": true,
-    "url": "/action-plan",
-    "elements": [
-      "entrypoint-copy"
-    ],
-    "steps": [
-      {
-        "name": "staying_safe",
-        "url": "staying-safe",
-        "elements": [
-          "child_safety",
-          "your_safety",
-          "child_flight"
-        ],
-        "xredirect": "your_children"
-      },
-      {
-        "name": "your_children",
-        "url": "your-children",
-        "elements": [
-          "children_number",
-          "children_age",
-          "child_live_with_applicant",
-          "child_not_seeing_parent",
-          "child_have_a_say",
-          "child_additional_support"
-        ]
-      },
-      {
-        "name": "you_and_other_parent",
-        "url": "you-and-other-parent",
-        "elements": [
-          "arrangements_how_long",
-          "relationship_status",
-          "parent_official_org_engagement"
-        ]
-      },
-      {
-        "name": "legal_help",
-        "url": "legal-help-and-advice",
-        "elements": [
-          "childcare_disagreements",
-          "parental_rights_info",
-          "options_tried",
-          "english_not_first_language"
-        ]
-      },
-      {
-        "name": "your_plan",
-        "url": "your-plan",
-        "xstructure": [
-          "entrypoint-copy"
-        ]
-      }
-    ]
+  "routes": [
+    "action_plan"
+  ],
+  "pages": {
+    "action_plan": {
+      "start_page": true,
+      "url": "/action-plan",
+      "elements": [
+        "entrypoint-copy"
+      ],
+      "steps": [
+        "staying_safe",
+        "your_children",
+        "you_and_other_parent",
+        "legal_help",
+        "your_plan"
+      ]
+    },
+    "staying_safe": {
+      "url": "staying-safe",
+      "elements": [
+        "child_safety",
+        "your_safety",
+        "child_flight"
+      ]
+    },
+    "staying_safe2": {
+      "url": "extrapolating",
+      "extends": "staying_safe"
+    },
+    "your_children": {
+      "url": "your-children",
+      "elements": [
+        "children_number",
+        "children_age",
+        "child_live_with_applicant",
+        "child_not_seeing_parent",
+        "child_have_a_say",
+        "child_additional_support"
+      ]
+    },
+    "you_and_other_parent": {
+      "url": "you-and-other-parent",
+      "elements": [
+        "arrangements_how_long",
+        "relationship_status",
+        "parent_official_org_engagement"
+      ]
+    },
+    "legal_help": {
+      "url": "legal-help-and-advice",
+      "elements": [
+        "childcare_disagreements",
+        "parental_rights_info",
+        "options_tried",
+        "english_not_first_language"
+      ]
+    },
+    "your_plan": {
+      "url": "your-plan"
+    }
   }
 }

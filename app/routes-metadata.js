@@ -42,7 +42,7 @@ function recurseElements(node) {
   return nested_elements
 }
 
-function init(router) {
+function initRoutes(router) {
 
   router.use(function (req, res, next) {  
       var nunjucksEnv = res.app.locals.settings.nunjucksEnv //res.app.get('engine');
@@ -88,32 +88,46 @@ function init(router) {
       return controller
     }
   }
-  var routes = require('./metadata/routes.json')
+  var routesConfig = require('./metadata/routes.json')
+  var routes = routesConfig.routes
+  var pages = routesConfig.pages
   var routesFlattened = {}
-  Object.keys(routes).forEach(routeName => {
-    var route = routes[routeName]
-    var routeUrlStub = route.url
-    routesFlattened[routeName] = Object.assign({}, route)
-    if (route.steps) {
-      routesFlattened[routeName].redirect = route.steps[0].name
-      route.steps.forEach((step, i) => {
-        routesFlattened[step.name] = Object.assign({}, step)
-        if (step.url.indexOf('/') !== 0) {
-          routesFlattened[step.name].url = routeUrlStub + '/' + step.url
+  function flattenRoutes(routes, urlPrefix) {
+    urlPrefix = urlPrefix.replace(/\/+$/, '')
+    routes.forEach(routeName => {
+      if (!routesFlattened[routeName]) {
+        routesFlattened[routeName] = Object.assign({}, pages[routeName])
+      }
+      var route = routesFlattened[routeName]
+      route.url = route.url || routeName
+      if (route.url.indexOf('/') !== 0) {
+        route.url = urlPrefix + '/' + route.url
+      }
+      if (route.steps) {
+        routesFlattened[routeName].redirect = route.steps[0]
+        route.steps.forEach((step, i) => {
+          routesFlattened[step] = Object.assign({}, pages[step])
+          if (route.steps[i + 1]) {
+            routesFlattened[step].redirect = route.steps[i + 1]
+          }
+        })
+        var routeUrlPrefix = route.url
+        if (routeUrlPrefix.indexOf('/') !== 0) {
+          routeUrlPrefix = urlPrefix + '/' + routeUrlPrefix
         }
-        if (route.steps[i + 1]) {
-          routesFlattened[step.name].redirect = route.steps[i + 1].name
-        }
-      })
-    }
-  })
+        flattenRoutes(route.steps, routeUrlPrefix)
+      }
+    })
+  }
+  flattenRoutes(routes, rootUrl)
+
   var routeUrls = {}
   Object.keys(routesFlattened).sort().reverse().forEach(routeName => {
-    console.log('routeName', routeName)
     var route = routesFlattened[routeName]
+    console.log('Serving', routeName, '=>', route.url)
     route.name = routeName
     var method = route.method || 'use'
-    var url = route.url || `${rootUrl}/${routeName}`.replace(/\/{2,}/g, '/')
+    var url = route.url
     routeUrls[routeName] = url
     router[method](url, (req, res) => {
       var routeHandler = getDefaultController(req, res);
@@ -158,4 +172,4 @@ function init(router) {
   })
 }
 
-module.exports = init
+module.exports = initRoutes
