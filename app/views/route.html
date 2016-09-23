@@ -1,20 +1,18 @@
 {% extends "layout_elements.html" %}
 
 {% block page_title %}
-  Action Plan - {{ i18n['route.'+route.name].heading }}
+  {% set title = getFormattedProp(route.key, ['title', 'heading']) %}
+  Action Plan{% if title %} - {{ title }}{% endif %}
 {% endblock %}
 
 {% block content %}
 
-{% set routeName = 'route.'+route.name %}
-
 <main id="content" role="main">
   <div class="grid-row">
     <div class="column-two-thirds">
-      {{ element.page_header(routeName, start_page=route.start_page) }}
-      {# req.originalUrl won't cut the mustard if multiple requests being served #}
+      {{ element.page_header(route.key, start_page=route.start_page) }}
       <form action="{{ req.originalUrl }}" method="post" class="form">
-      {{ element.group(elements=elements, values=values) }}
+      {{ element.group(elements=route.elements) }}
       {% if route.start_page %}
       <p><input class="button button-start" type="submit" value="Start now">
       <!-- <a class="button button-start" href="#" role="button">Start now</a> --></p>

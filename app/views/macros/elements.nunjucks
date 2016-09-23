@@ -1,4 +1,3 @@
-{% set xformcontrols = {} %}
 {% macro blockHeading(name, heading='', size='medium') -%}
 {% set sizes = {
 	'xlarge': 'h1',
@@ -6,79 +5,54 @@
 	'medium': 'h3',
 	'small': 'h4'
 } %}
-{% if heading == '' and i18n[name].heading %}
-	{% set heading = i18n[name].heading %}
-{% endif %}
-{% if size == '' and i18n[name].size %}
-	{% set size = i18n[name].size %}
-{% endif %}
-{% if size == '' %}
-	{% set size = 'medium' %}
-{% endif %}
-<{{ sizes[size] }} class="heading-{{ size }}">{{ heading }}</{{ sizes[size] }}>
+{% set heading = getFormattedProp(name, 'heading', { value: heading }) %}
+{% set size = getElementProp(name, 'size', { value: size, defaultValue: 'medium' } ) %}
+	<{{ sizes[size] }} class="heading-{{ size }}">{{ heading }}</{{ sizes[size] }}>
 {%- endmacro %}
 
 {% macro blockLede(name, lede='') %}
-{% if lede == '' and i18n[name].lede %}
-	{% set lede = i18n[name].lede %}
-{% endif %}
+{% set lede = getFormattedProp(name, 'lede', { value: lede }) %}
 {% if lede %}
-<p class="lede">{{ lede }}</p>
-{%endif %}
+	<p class="lede">{{ lede }}</p>
+{% endif %}
 {% endmacro %}
 
 {% macro page_header(name, heading='', heading_size='', lede='', start_page='') %}
-{% if not heading_size and i18n[name].heading_size %}
-	{% set heading_size = i18n[name].heading_size %}
-{% endif %}
-{% if not heading_size and start_page %}
-	{% set heading_size = 'xlarge' %}
-{% endif %}
-{% if not heading_size %}
-	{% set heading_size = 'large' %}
-{% endif %}
-{{ blockHeading(name, size=heading_size) }}
-{{ blockLede(name) }}
+{% set defaultHeadingSize = 'xlarge' if start_page else 'large' %}
+{% set heading_size = getElementProp(name, 'heading_size', defaultHeadingSize, { value: heading_size }) %}
+	{{ blockHeading(name, size=heading_size) }}
+	{{ blockLede(name) }}
 {% endmacro %}
 
 {% macro body(name) %}
-	<p>{{ i18n[name].body | trim | replace("\n", "</p><p>") | safe }}</p>
+	<p>{{ getFormattedProp(name, 'body') | trim | replace("\n", "</p><p>") | safe }}</p>
 {% endmacro %}
 
 {% macro raw(name) %}
-	{{ i18n[name].body | safe }}
+	{{ getFormattedProp(name, 'body') | safe }}
 {% endmacro %}
 
 {% macro formGroup(name, error='') -%}
-<div class="form-group{% if error %} error{% endif %}">
-{% if caller %}
-{{ caller() }}
-{% endif %}
-</div>
+	<div class="form-group{% if error %} error{% endif %}">
+	{% if caller %}
+	{{ caller() }}
+	{% endif %}
+	</div>
 {%- endmacro %}
 
 {% macro controlLabel(name, label='', sublabel='', hint='', optional='') -%}
-{% if label == '' %}
-	{% set label = i18n[name].label %}
-{% endif %}
-{% if label == undefined or label == ''%}
-	{% set label = name %}
-{% endif %}
-{% if optional == '' %}
-	{% set optional = i18n[name].optional %}
-{% endif %}
-{% if hint == '' %}
-	{% set hint = i18n[name].hint %}
-{% endif %}
-<label xclass="form-label-bold" for="{{ name }}">
-	<span class="form-label-bold">{{ label }}{% if optional %} (optional){% endif %}</span>
-	{% if hint %}
-		<span class="form-hint">
-			{{ hint | safe }}
-		</span>
-	{% endif %}
-	{{ controlError(name, error) }}
-</label>
+{% set label = getElementProp(name, 'label', name, { value: label }) %}
+{% set optional = getElementProp(name, 'optional', { value: optional }) %}
+{% set hint = getElementProp(name, 'hint', { value: hint }) %}
+	<label xclass="form-label-bold" for="{{ name }}">
+		<span class="form-label-bold">{{ label }}{% if optional %} (optional){% endif %}</span>
+		{% if hint %}
+			<span class="form-hint">
+				{{ hint | safe }}
+			</span>
+		{% endif %}
+		{{ controlError(name, error) }}
+	</label>
 {%- endmacro %}
 
 {% macro controlError(name, error) -%}
@@ -90,33 +64,28 @@
 {% macro input(name, type='text') -%}
 	{% call formGroup(name, error=error) -%}
 		{{ controlLabel(name, label=label, sublabel=sublabel, hint=hint) }}
-		{#{ controlError(name, error) }#}
-		{% set value = values[name] %}
-		{% if type === 'text' and i18n[name].multiline %}
-		<textarea class="form-control" name="{{ name }}" id="{{ name }}">{{ value | safe }}</textarea>
+		{% set value = getValue(name) %}
+		{% if type === 'text' and getElementProp(name, 'multiline') %}
+			<textarea class="form-control" name="{{ name }}" id="{{ name }}">{{ value | safe }}</textarea>
 		{% else %}
-		<input type="{{ type }}" class="form-control" name="{{ name }}" id="{{ name }}" value="{{ value | escape }}">
+			<input type="{{ type }}" class="form-control" name="{{ name }}" id="{{ name }}" value="{{ value | escape }}">
 		{% endif %}
 	{%- endcall %}
 {%- endmacro %}
 
-{# value=value, error=error #}
-{% macro text(name, values={}, value='', error='', label='', sublabel='', hint='') -%}
-	{#% set bonk = nibble('bonkers') %}
-	{{ nibble('all well and good')}}
-	{{ bonk }#}
+{% macro text(name, value='', error='', label='', sublabel='', hint='') -%}
 	{{ input(name) }}
 {%- endmacro %}
 
-{% macro number(name, values={}, value='', error='') -%}
+{% macro number(name, value='', error='') -%}
 	{{ input(name, type='number') }}
 {%- endmacro %}
 
-{% macro file(name, values={}, value='', error='') -%}
+{% macro file(name, value='', error='') -%}
 	{{ input(name, type='file') }}
 {%- endmacro %}
 
-{% macro password(name, values={}, value='', error='') -%}
+{% macro password(name, value='', error='') -%}
 	{{ input(name, type='password') }}
 {%- endmacro %}
 
@@ -130,22 +99,16 @@
 {% endmacro %}
 
 {% macro fieldset(name, label='', sublabel='', inline='', elements='', group='', visually_hidden=true) %}
-{% if inline === ''  %}
-{% set inline = i18n[name].inline %}
+{% set label = getFormattedProp(name, 'label', { value: label }) %}
+{% set sublabel = getFormattedProp(name, 'sublabel', { value: sublabel }) %}
+{% set inline = getElementProp(name, 'inline', { value: inline }) %}
+{% if not elements and getElementProp(name, 'elements') %}
+{% set elements = getElementProp(name, 'elements') %}
 {% endif %}
-{% if label === '' and i18n[name].label %}
-{% set label = i18n[name].label %}
-{% endif %}
-{% if sublabel === '' and i18n[name].sublabel %}
-{% set sublabel = i18n[name].sublabel %}
-{% endif %}
-{% if not elements and i18n[name].elements %}
-{% set elements = i18n[name].elements %}
-{% endif %}
-<h2 class="heading-small">{{ label | safe }}</h2>
-{% if sublabel %}
-<p>{{ sublabel | safe }}</p>
-{% endif %}
+	<h2 class="heading-small">{{ label | safe }}</h2>
+	{% if sublabel %}
+	<p>{{ sublabel | safe }}</p>
+	{% endif %}
 	<fieldset{% if inline %} class="inline"{% endif %}>
 		<legend{% if visually_hidden %} class="visuallyhidden"{% endif %}>
 			{{ label | safe }}
@@ -154,24 +117,24 @@
 		{{ caller() }}
 	{% endif %}
 	{% if elements %}
-		{{ formcontrols.group(elements=elements, values=values) }}
+		{{ elementMacros.group(elements=elements) }}
 	{% endif %}
 	</fieldset>
 {% endmacro %}
 
 {% macro radioGroup(name, inline='', reveals='', visually_hidden=true, or=false) %}
 {% call fieldset(name, inline=inline) %}
-		{% set reveals = i18n[name].reveals %}
-		{% set excludes = i18n[name].reveals_exclude %}
+		{% set reveals = getElementProp(name, 'reveals') %}
+		{% set excludes = getElementProp(name, 'reveals_exclude') %}
 		{% set open = false %}
-		{% for option_name in i18n[name].options %}
+		{% for option_name in getElementProp(name, 'options') %}
 			{% if option_name.value %}
 				{% set option = option_name %}
 			{% else %}
-				{% set option = i18n[option_name] %}
+				{% set option = getElement(option_name) %}
 			{% endif %}
 			{% set checked = false %}
-			{% if option.value === values[name] %}
+			{% if option.value === getValue(name) %}
 				{% set checked = true %}
 			{% endif %}
 			{% set optionReveals = reveals %}
@@ -196,29 +159,30 @@
 			</label>
 		{% endfor %}
 		{% if reveals %}
-			{{ reveal(reveals=reveals, open=open, values=values) }}
+			{{ reveal(reveals=reveals, open=open) }}
 		{% endif %}
 {% endcall %}
 {% endmacro %}
 
-{% macro reveal(reveals='', open=false, values={}) %}
+{% macro reveal(reveals='', open=false) %}
+{# needs to be able to pass value through explicitly #}
 {% if reveals %}
 	<div class="panel panel-border-narrow{% if not open %} js-hidden{% endif %}" id="{{ reveals }}" aria-hidden="{% if open %}true{% else %}false{% endif %}">
-		{% call control(reveals, values=values) %}{% endcall %}
+		{% call control(reveals) %}{% endcall %}
 	</div>
 {% endif %}
 {% endmacro %}
 
 {% macro checkboxGroup(name, inline='', or=false) %}
 {% call fieldset(name, inline=inline) %}
-	{% for option_name in i18n[name].options %}
+	{% for option_name in getElementProp(name, 'options') %}
 		{% if option_name.value %}
 			{% set option = option_name %}
 		{% else %}
-			{% set option = i18n[option_name] %}
+			{% set option = getElementProp(option_name) %}
 		{% endif %}
 		{% set checked = false %}
-		{% if option.value === values[option_name] %}
+		{% if option.value === getValue(option_name) %}
 			{% set checked = true %}
 		{% endif %}
 		{% if loop.last %}
@@ -231,36 +195,27 @@
 			{{ optionLabel(label) }}
 		</label>
 		{% if option.reveals %}
-			{{ reveal(reveals=option.reveals, open=checked, values=values) }}
+			{{ reveal(reveals=option.reveals, open=checked) }}
 		{% endif %}
 	{% endfor %}
 {% endcall %}
 {% endmacro %}
 
-{# LINE IN THE SAND #}
-{% macro control(name, values={}, type='', value='', error='', label='', sublabel='', hint='', heading='', inline='') -%}
-{% if type == '' %}
-	{% set type = i18n[name].type %}
-{% endif %}
-{% if type == undefined %}
-	{% set type = 'text' %}
-{% endif %}
-<!-- <p style="clear:both">type:{{type}}, value:{{value}}, error:{{error}}</p> -->
-{{ formcontrols[type](name, values=values, value=value, error=error, label=label, sublabel=sublabel, hint=hint, heading=heading, inline=inline) }}
-
+{% macro control(name, type='', value='', error='', label='', sublabel='', hint='', heading='', inline='') -%}
+{% set type = getElementProp(name, 'type', 'text', { value: type }) %}
+	{{ elementMacros[type](name, value=value, error=error, label=label, sublabel=sublabel, hint=hint, heading=heading, inline=inline) }}
 {%- endmacro %}
 
-{% macro group(name='', elements=[], values={}) %}
+{% macro group(name='', elements=[]) %}
 {% if name %}
-{% set elements = i18n[name].elements %}
+{% set elements = getElementProp(name, 'elements') %}
 {% endif %}
 {% for element in elements %}
-	{% call control(element, values=values) %}{% endcall %}
+	{% call control(element) %}{% endcall %}
 {% endfor %}
 {% endmacro %}
 
-
-{% set formcontrols = {
+{% set elementMacros = {
 	heading: blockHeading,
 	lede: blockLede,
 	body: body,
@@ -293,81 +248,10 @@
 
 {#
 {% if inline === '' %}
-{% if i18n[name].inline === false %}
+{% if getElementProp(name, 'inline') === false %}
 {% set inline = false %}
 {% else %}
 {% set inline = true %}
 {% endif %}
 {% endif %}
 #}
-
-
-{% macro XXXcheckboxGroup(name, inline='', or=false) %}
-<div class="form-group">
-	<fieldset>
-		
-		<legend{% if i18n[name].visually_hidden %} class="visuallyhidden"{% endif %}>
-			{{ i18n[name].label }}
-		</legend>
-
-		{% for option_name in i18n[name].options %}
-			{% if option_name.value %}
-				{% set option = option_name %}
-			{% else %}
-				{% set option = i18n[option_name] %}
-			{% endif %}
-			{% if loop.last %}
-				{% if or %}
-					<p class="form-block">or</p>
-				{% endif %}	
-			{% endif %}	
-			<label for="{{ option_name }}" class="block-label"{% if option.reveals %} data-target="{{ option.reveals }}"{% endif %}>
-				<input id="{{ option_name }}" type="checkbox" name="{{ option_name }}" value="{{ option.value }}"{% if option.reveals %} aria-controls="{{ option.reveals }}"{% endif %}>
-				{{ optionLabel(label) }}
-			</label>
-			{% if option.reveals %}
-				<div class="panel panel-border-narrow js-hidden" id="{{ option.reveals }}" aria-hidden="true">
-					{% call control(option.reveals) %}{% endcall %}
-				</div>
-			{% endif %}
-		{% endfor %}
-	</fieldset>
-</div>
-{% endmacro %}
-
-{% macro XXradioGroup(name, inline='', visually_hidden=true, or=false) %}
-{% if inline === '' %}
-{% if i18n[name].inline === false %}
-{% set inline = false %}
-{% else %}
-{% set inline = true %}
-{% endif %}
-{% endif %}
-<h2 class="heading-small">{{ i18n[name].label }}</h2>
-{% if i18n[name].sublabel %}
-<p>{{ i18n[name].sublabel }}</p>
-{% endif %}
-	<fieldset{% if inline %} class="inline"{% endif %}>
-		<legend{% if visually_hidden %} class="visuallyhidden"{% endif %}>
-			{{ i18n[name].label }}
-		</legend>
-<div class="form-group">
-		{% for option_name in i18n[name].options %}
-			{% if option_name.value %}
-				{% set option = option_name %}
-			{% else %}
-				{% set option = i18n[option_name] %}
-			{% endif %}
-			{% if loop.last %}
-				{% if or %}
-					<p class="form-block">or</p>
-				{% endif %}	
-			{% endif %}	
-			<label for="{{ name }}-option-{{ loop.index }}" class="block-label">
-				<input id="{{ name }}-option-{{ loop.index }}" type="radio" name="{{ name }}" value="{{ option.value }}">
-				{{ optionLabel(label) }}
-			</label>
-		{% endfor %}
-</div>
-	</fieldset>
-{% endmacro %}

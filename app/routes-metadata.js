@@ -2,7 +2,12 @@
 // var router = express.Router()
 var get = require('lodash/get')
 var set = require('lodash/get')
+var MessageFormat = require('messageformat')
 var flattenDeep = require('lodash/flattenDeep')
+
+var msgFormats = {}
+msgFormats['en-GB'] = new MessageFormat('en-GB')
+var defaultLocale = 'en-GB'
 
 var i18n = require('./metadata/elements.json')
 
@@ -131,6 +136,7 @@ function initRoutes(router) {
     var route = routesFlattened[routeName]
     console.log('Serving', routeName, '=>', route.url)
     route.name = routeName
+    route.key = 'route:' + routeName
     var method = route.method || 'use'
     var url = route.url
     routeUrls[routeName] = url
@@ -152,21 +158,95 @@ function initRoutes(router) {
             })
             console.log(JSON.stringify(req.session, null, 2))
           }
-          var updatedRoute = Object.assign({}, route, outcome)
-          if (req.method === 'POST' && updatedRoute.redirect && req.originalUrl !== updatedRoute.redirect) {
-            res.redirect(routeUrls[updatedRoute.redirect] || updatedRoute.redirect)
+          var routeInstance = Object.assign({}, route, outcome)
+          if (req.method === 'POST' && routeInstance.redirect && req.originalUrl !== routeInstance.redirect) {
+            res.redirect(routeUrls[routeInstance.redirect] || routeInstance.redirect)
           } else {
             var values = {}
             elements_found.forEach(el => {
               values[el] = req.session.autofields[el]
             })
-            res.render('route', {
-              route: updatedRoute,
-              elements: updatedRoute.elements || [],
-              values: values,
-              savedfields: JSON.stringify(req.session.autofields, null, 2),
-              autofields: req.session.autofields
+            routeInstance.values = values
+            var nunjucksEnv = res.app.locals.settings.nunjucksEnv
+            nunjucksEnv.addGlobal('getValue', function(name, vals) {
+              if (!vals) {
+                vals = values
+              }
+              return values[name]
             })
+            function marshallDefaultValue(defaultValue, options) {
+              if (typeof defaultValue === 'object') {
+                options = defaultValue
+                defaultValue = options['defaultValue']
+              }
+              options = options || {}
+              options['defaultValue'] = defaultValue
+              return options
+            }
+            function getElement(element, defaultValue, options) {
+              options = marshallDefaultValue(defaultValue, options)
+              if ((!options.valueStrict && options.value) || (options.valueStrict && options.value !== undefined)) {
+                return options.value
+              }
+              var defaultValue = options['defaultValue']
+              delete options['defaultValue']
+              var path = element
+              if (options.prop) {
+                if (Array.isArray(options.prop)) {
+                  for (var i = 0, pLength = options.prop.length; i < pLength; i++) {
+                    var value = get(i18n, path + '.' + options.prop[i])
+                    if ((!options.propStrict && value) || (options.propStrict && value !== undefined)) {
+                      return value
+                    }
+                  }
+                  return defaultValue
+                } else {
+                  path = path + '.' + options.prop
+                }
+              }
+              var value =  get(i18n, path, defaultValue)
+              return value
+            }
+            function getElementProp(element, prop, defaultValue, options) {
+              options = marshallDefaultValue(defaultValue, options)
+              options.prop = prop
+              return getElement(element, options)
+            }
+            function format(value, args) {
+              if (!value) {
+                return ''
+              }
+              if (typeof value !== 'string') {
+                return value.toString()
+              }
+              if (value.indexOf('{') === -1) {
+                return value
+              }
+              args = args || Object.assign({}, req.session.autofields, values)
+              var formatted = msgFormats[defaultLocale].compile(value)(args)
+              return formatted
+            }
+            function getFormatted(element, defaultValue, options) {
+              options = marshallDefaultValue(defaultValue, options)
+              var value = getElement(element, options)
+              return format(value, options.args)
+            }
+            function getFormattedProp(element, prop, defaultValue, options) {
+              options = marshallDefaultValue(defaultValue, options)
+              var value = getElementProp(element, prop, options)
+              return format(value, options.args)
+            }
+            nunjucksEnv.addGlobal('getElement', getElement)
+            nunjucksEnv.addGlobal('getElementProp', getElementProp)
+            nunjucksEnv.addGlobal('getFormatted', getFormatted)
+            nunjucksEnv.addGlobal('getFormattedProp', getFormattedProp)
+            setTimeout(() => {
+              res.render('route', {
+                route: routeInstance,
+                savedfields: JSON.stringify(req.session.autofields, null, 2),
+                autofields: req.session.autofields
+              })
+            }, 0)
           }
         })
         .catch(e => {

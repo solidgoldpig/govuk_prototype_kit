@@ -135,29 +135,29 @@
 
 
 
-	"route.action_plan": {
-		"title": "Action Plan",
+	"route:action_plan": {
+		"title": "Get started",
 		"heading": "Personalised Action Plan",
 		"lede": "Your personalised action plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
 	},
-	"route.staying_safe": {
+	"route:staying_safe": {
 		"title": "",
 		"heading": "Staying safe",
 		"lede": "Thinking about your situation with your child’s other parent:"
 	},
-	"route.your_children": {
+	"route:your_children": {
 		"title": "",
 		"heading": "Your children"
 	},
-	"route.you_and_other_parent": {
-		"title": "Action Plan",
-		"heading": "You and your child’s other parent"
+	"route:you_and_other_parent": {
+		"title": "",
+		"heading": "You and your {children_number, plural, =1 {child} other {children}}’s other parent"
 	},
-	"route.legal_help": {
+	"route:legal_help": {
 		"title": "",
 		"heading": "Legal help and advice"
 	},
-	"route.your_plan": {
+	"route:your_plan": {
 		"title": "",
 		"heading": "Your personalised action plan",
 		"heading_size": "large"
