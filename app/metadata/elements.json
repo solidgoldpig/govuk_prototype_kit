@@ -151,7 +151,7 @@
 	},
 	"route:you_and_other_parent": {
 		"title": "",
-		"heading": "You and your {children_number, plural, =1 {child} other {children}}’s other parent"
+		"heading": "You and your ##default:children##’s other parent"
 	},
 	"route:legal_help": {
 		"title": "",
@@ -163,6 +163,8 @@
 		"heading_size": "large"
 	},
 
+	"default:children": "{children_number, plural, =1 {child} other {children}}",
+
 	"child_safety": {
 		"type": "radioGroup",
 		"inline": true,
@@ -173,7 +175,7 @@
 			"unsure"
 		]
 	},
-	"your_safety": {
+	"parent_safety": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Are you worried about your child’s safety?",
@@ -506,6 +508,31 @@
 			"yes",
 			"no"
 		]
-	}
+	},
+
+	"answer:child_safety": {
+		"type": "pap_answer",
+		"title": "Contact social services",
+		"body": "As you’re concerned about your child’s safety, you should contact social services run by your local authority.",
+		"link": [
+			"link:local_authority_child_safety"
+		]
+	},
+
+	"answer:parent_safety": {
+		"type": "pap_answer",
+		"title": "Contact Refuge",
+		"body": "As you’re concerned about your child’s safety, you should contact social services run by your local authority.",
+		"organisation": {
+			"name": "Refuge",
+			"url": "#Refuge",
+			"phone": "0808 2000 247"
+		}
+	},
+
+	"link:local_authority_child_safety": {
+			"title": "Contact your local authority",
+			"url": "#localauthority"
+		}
 
 }

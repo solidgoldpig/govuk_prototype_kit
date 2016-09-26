@@ -22,7 +22,7 @@
       "url": "staying-safe",
       "elements": [
         "child_safety",
-        "your_safety",
+        "parent_safety",
         "child_flight"
       ]
     },
@@ -59,7 +59,8 @@
       ]
     },
     "your_plan": {
-      "url": "your-plan"
+      "url": "your-plan",
+      "controller": "your_plan"
     }
   }
 }

@@ -140,8 +140,9 @@ function initRoutes(router) {
     var method = route.method || 'use'
     var url = route.url
     routeUrls[routeName] = url
+    var routeController = route.controller ? require('./controllers/'+route.controller) : getDefaultController
     router[method](url, (req, res) => {
-      var routeHandler = getDefaultController(req, res);
+      var routeHandler = routeController(req, res);
       // Copy req.params, req.query and req.body to globals - NO - for obvious reasons
       // Call controller if exists
       console.log('use routeName', routeName);
@@ -212,6 +213,18 @@ function initRoutes(router) {
               options.prop = prop
               return getElement(element, options)
             }
+            var recurseMatch = /##([\s\S]+?)##/
+            function reformat(value, args) {
+              if (value.match(recurseMatch)) {
+                value = value.replace(recurseMatch, function(m, m1) {
+                  var keyParams = m1.trim()
+                  var nestedValue = getFormattedProp(keyParams)
+                  return nestedValue
+                })
+                value = reformat(value, args)
+              }
+              return value
+            }
             function format(value, args) {
               if (!value) {
                 return ''
@@ -219,12 +232,12 @@ function initRoutes(router) {
               if (typeof value !== 'string') {
                 return value.toString()
               }
-              if (value.indexOf('{') === -1) {
+              if ((value.indexOf('{') === -1) && !value.match(recurseMatch)) {
                 return value
               }
               args = args || Object.assign({}, req.session.autofields, values)
               var formatted = msgFormats[defaultLocale].compile(value)(args)
-              return formatted
+              return reformat(formatted, args)
             }
             function getFormatted(element, defaultValue, options) {
               options = marshallDefaultValue(defaultValue, options)
@@ -250,7 +263,8 @@ function initRoutes(router) {
           }
         })
         .catch(e => {
-          res.send('TOTES ERRORZ!')
+          console.log('routes-metadata error', e)
+          res.send('Something went wrong - sorry about that')
         })
 
     })
