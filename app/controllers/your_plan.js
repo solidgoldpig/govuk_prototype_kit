@@ -21,7 +21,9 @@ var yourPlanController = function (req, res) {
       setAnswer('child_safety', ['yes', 'unsure'])
       setAnswer('parent_safety', ['yes', 'unsure'])
       setAnswer('child_flight', ['yes', 'unsure'])
-      setAnswer('child_not_seeing_parent', ['yes'])
+      if (!autofields.options_tried_child_contact_centre) {
+        setAnswer('child_not_seeing_parent', ['yes'])
+      }
       setAnswer('child_have_a_say', ['yes', 'unsure'])
       setAnswer('child_additional_support', ['yes', 'unsure'])
 
