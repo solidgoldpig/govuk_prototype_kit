@@ -153,7 +153,7 @@
 					<p class="form-block">or</p>
 				{% endif %}	
 			{% endif %}	
-			<label for="{{ name }}-option-{{ loop.index }}" class="block-label"{% if optionReveals %} data-target="{{ reveals }}"{% endif %}>
+			<label for="{{ name }}-option-{{ loop.index }}" class="block-label selection-button-radio"{% if optionReveals %} data-target="{{ reveals }}"{% endif %}>
 				<input id="{{ name }}-option-{{ loop.index }}" type="radio" name="{{ name }}" value="{{ option.value }}"{% if checked %} checked{% endif %}{% if optionReveals %} aria-controls="{{ reveals }}"{% endif %}>
 				{{ optionLabel(label) }}
 			</label>
@@ -190,7 +190,7 @@
 				<p class="form-block">or</p>
 			{% endif %}	
 		{% endif %}	
-		<label for="{{ option_name }}" class="block-label"{% if option.reveals %} data-target="{{ option.reveals }}"{% endif %}>
+		<label for="{{ option_name }}" class="block-label selection-button-checkbox"{% if option.reveals %} data-target="{{ option.reveals }}"{% endif %}>
 			<input id="{{ option_name }}" type="checkbox" name="{{ option_name }}" value="{{ option.value }}"{% if checked %} checked{% endif %}{% if option.reveals %} aria-controls="{{ option.reveals }}"{% endif %}>
 			{{ optionLabel(label) }}
 		</label>
@@ -215,6 +215,8 @@
 {% endfor %}
 {% endmacro %}
 
+
+
 {% set elementMacros = {
 	heading: blockHeading,
 	lede: blockLede,
@@ -231,6 +233,11 @@
 	fieldset: fieldset,
 	group: group
 } %}
+
+{% import "macros/custom_elements.nunjucks" as custom_element %}
+{% set elementMacros = mergeObjects(elementMacros, custom_element) %}
+
+
 
 {#
 

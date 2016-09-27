@@ -1,0 +1,26 @@
+{% macro pap_answer(name) %}
+<div class="answer">
+<h2 class="heading-medium">{{ getFormattedProp(name, 'title') }}</h2>
+<div class="answer_body">
+{{ getFormattedBody(name) | safe }}
+<!-- div class="answer_more">
+<p>Answer more</p>
+</div -->
+{% if getFormattedProp(name, 'organisation') %}
+<p class="contact-organisation">
+  <a href="{{ getFormattedProp(name, 'organisation.url') }}">Contact {{ getFormattedProp(name, 'organisation.name') }}</a>
+  {% if getFormattedProp(name, 'organisation.phone') %}
+    or call {{ getFormattedProp(name, 'organisation.phone') }}
+  {% endif %}
+</p>
+{% endif %}
+{% if getElementProp(name, 'links') %}
+<ul class="answer-links">
+{% for linkRef in getElementProp(name, 'links') %}
+{% set link = getElement(linkRef) %}
+<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endmacro %}

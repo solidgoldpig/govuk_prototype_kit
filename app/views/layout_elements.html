@@ -1,5 +1,7 @@
 {% set layout = "layout_branded.html" %}
 {% set layout = "layout_unbranded.html" %}
 {% import "macros/elements.nunjucks" as element %}
+{#% import "macros/custom_elements.nunjucks" as custom_element %}
+{% set element = mergeObjects(element, { elementMacros: custom_element}) %#}
 {% extends layout %}
 

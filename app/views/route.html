@@ -1,5 +1,10 @@
 {% extends "layout_elements.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="http://govuk-elements-wip.herokuapp.com/public/stylesheets/elements-page.css">
+<link rel="stylesheet" href="http://govuk-elements-wip.herokuapp.com/public/stylesheets/govuk-template.css?0.18.1">
+{% endblock %}
+
 {% block page_title %}
   {% set title = getFormattedProp(route.key, ['title', 'heading']) %}
   Action Plan{% if title %} - {{ title }}{% endif %}
@@ -33,7 +38,6 @@
     </div>
   </div>
 </main>
-
 {% endblock %}
 
 

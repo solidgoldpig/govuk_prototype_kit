@@ -10,7 +10,7 @@
 		"type": "text",
 		"label": "National Insurance number",
 		"hint": "It's on your National Insurance card, benefit letter, payslip or P60.<br>For example, 'VO 12 34 56 D'."
-		},
+	},
 	"pass": {
 		"type": "password",
 		"label": "Passwordiness"
@@ -67,27 +67,34 @@
 		"Xvisually_hidden": true,
 		"label": "What gives?",
 		"sublabel": "Indeed, indeedy",
-		"options": [{
-			"value": "yes",
-			"label": "Yes"
-		},{
-			"value": "no",
-			"label": "No"
-		}]
+		"options": [
+			{
+				"value": "yes",
+				"label": "Yes"
+			},
+			{
+				"value": "no",
+				"label": "No"
+			}
+		]
 	},
 	"gash": {
 		"Xvisually_hidden": true,
 		"label": "Stack me",
-		"options": [{
-			"value": "1",
-			"label": "One"
-		},{
-			"value": "2",
-			"label": "Two"
-		},{
-			"value": "3",
-			"label": "Three"
-		}]
+		"options": [
+			{
+				"value": "1",
+				"label": "One"
+			},
+			{
+				"value": "2",
+				"label": "Two"
+			},
+			{
+				"value": "3",
+				"label": "Three"
+			}
+		]
 	},
 	"flute": {
 		"type": "heading",
@@ -107,7 +114,6 @@
 			"entrypoint-copy"
 		]
 	},
-
 	"yes": {
 		"value": "yes",
 		"label": "Yes"
@@ -120,21 +126,10 @@
 		"value": "unsure",
 		"label": "Not sure"
 	},
-
 	"entrypoint-copy": {
 		"type": "body",
 		"body": "You don’t have to answer every question but the more information you provide, the more helpful your plan will be. We won’t save any of your details unless you say we can."
 	},
-
-
-
-
-
-
-
-
-
-
 	"route:action_plan": {
 		"title": "Get started",
 		"heading": "Personalised Action Plan",
@@ -162,9 +157,7 @@
 		"heading": "Your personalised action plan",
 		"heading_size": "large"
 	},
-
 	"default:children": "{children_number, plural, =1 {child} other {children}}",
-
 	"child_safety": {
 		"type": "radioGroup",
 		"inline": true,
@@ -178,7 +171,7 @@
 	"parent_safety": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Are you worried about your child’s safety?",
+		"label": "Are you worried about your own safety?",
 		"options": [
 			"yes",
 			"no",
@@ -195,7 +188,6 @@
 			"unsure"
 		]
 	},
-
 	"children_number": {
 		"type": "radioGroup",
 		"inline": true,
@@ -262,10 +254,10 @@
 		"label": "Would you like information about additional help and support to help your children to cope with your separation?",
 		"options": [
 			"yes",
-			"no"
+			"no",
+			"unsure"
 		]
 	},
-
 	"arrangements_how_long": {
 		"type": "radioGroup",
 		"inline": false,
@@ -376,24 +368,24 @@
 		]
 	},
 	"communicating_methods_in_person": {
-		"value": "in_person",
+		"value": "yes",
 		"label": "Face to face"
 	},
 	"communicating_methods_phone": {
-		"value": "phone",
+		"value": "yes",
 		"label": "Talking over the phone"
 	},
 	"communicating_methods_online": {
-		"value": "online",
+		"value": "yes",
 		"label": "By text, email, online chat"
 	},
 	"communicating_methods_other": {
-		"value": "other",
+		"value": "yes",
 		"label": "Other (please specify)",
 		"reveals": "communicating_methods_other_value"
 	},
 	"communicating_methods_none": {
-		"value": "none",
+		"value": "yes",
 		"label": "No communication"
 	},
 	"communicating_methods_other_value": {
@@ -401,7 +393,6 @@
 		"multiline": true,
 		"label": "How else do you communicate?"
 	},
-
 	"parent_official_org_engagement": {
 		"type": "radioGroup",
 		"inline": true,
@@ -411,7 +402,6 @@
 			"no"
 		]
 	},
-
 	"childcare_disagreements": {
 		"type": "radioGroup",
 		"inline": true,
@@ -499,8 +489,7 @@
 		"multiline": true,
 		"label": "What other method did you try?"
 	},
-
-	"english_not_first_language": {
+	"language_support": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Do you struggle to understand English and need a translator to help you make child arrangements?",
@@ -509,16 +498,14 @@
 			"no"
 		]
 	},
-
 	"answer:child_safety": {
 		"type": "pap_answer",
 		"title": "Contact social services",
-		"body": "As you’re concerned about your child’s safety, you should contact social services run by your local authority.",
-		"link": [
+		"body": "As you’re concerned about your ##default:children##’s safety, you should contact social services run by your local authority.",
+		"links": [
 			"link:local_authority_child_safety"
 		]
 	},
-
 	"answer:parent_safety": {
 		"type": "pap_answer",
 		"title": "Contact Refuge",
@@ -529,10 +516,202 @@
 			"phone": "0808 2000 247"
 		}
 	},
-
-	"link:local_authority_child_safety": {
-			"title": "Contact your local authority",
-			"url": "#localauthority"
+	"answer:child_flight": {
+		"type": "pap_answer",
+		"title": "Keep your ##default:children##’s passport safe and ask a court for help",
+		"body": "If you think your ##default:children## may be abducted at any minute you can do things like keeping their passport and making sure you know where they are at all times.\nIf the other parent has ‘parental responsibility’, you will have to go to court to ask for a ‘prohibited steps order’ which would prevent them doing things like taking your ##default:children## abroad.",
+		"links": [
+			"link:legal_aid",
+			"link:family_lawyer",
+			"link:representing_oneself"
+		]
+	},
+	"answer:child_not_seeing_parent": {
+		"type": "pap_answer",
+		"title": "Arrange a visit to a contact centre",
+		"body": "Visiting a child contact centre means you can see your ##default:children## while you continue trying to agree longer-lasting arrangements with the other parent. You may have to pay a small fee to do this.",
+		"organisation": {
+			"name": "NACCC",
+			"url": "#NACCC",
+			"phone": "0845 4500 2807"
 		}
-
+	},
+	"answer:child_have_a_say": {
+		"type": "pap_answer",
+		"title": "Discuss any arrangements with your ##default:children##",
+		"body": "Contributing to any arrangements or plans you make with their other parent can help older children settle into and deal with the situation. Sit down with them, listen to concerns around eg friendships, homework, and take their suggestions on board.",
+		"links": [
+			"link:talking_with_children"
+		]
+	},
+	"answer:child_additional_support": {
+		"type": "pap_answer",
+		"title": "Additional support for your ##default:children##",
+		"body": "Listening to other children in a similar position can be a great starting point if your ##default:children## {children_number, plural, =1 {is} other {are}} struggling with your separation and disagreements over their arrangements.",
+		"organisation": {
+			"name": "Voices in the Middle",
+			"url": "http://voicesinthemiddle.org.uk/",
+			"phone": ""
+		}
+	},
+	"answer:spip": {
+		"type": "pap_answer",
+		"title": "Go to a Separated Parents Information Programme (SPIP)",
+		"body": "As you’ve been unable to agree arrangements for a long time, a SPIP may help. It lasts about 4 hours and gives you ways to avoid conflict and focus on your ##default:children##, rather than their other parent.\nBoth of you need to go to SPIP but you go to different ones so you never meet. SPIPs are free in some areas.",
+		"links": [
+			"link:local_spip"
+		]
+	},
+	"answer:mediation": {
+		"type": "pap_answer",
+		"title": "Go to mediation",
+		"body": "As you’re struggling to come to an agreement, mediation may be able to help you work out a solution you can both accept. You usually have to pay for mediation although legal aid may be available in a small number of cases.",
+		"links": [
+			"link:about_mediation",
+			"link:mediation_video",
+			"link:local_mediator"
+		]
+	},
+	"answer:lawyer_mediation": {
+		"type": "pap_answer",
+		"title": "Go to a lawyer mediator who will make a decision for you",
+		"body": "As you’ve having trouble coming to an agreement, a new kind of mediation might help. You both go to sessions and the lawyer mediator will try to help you. If you still can’t decide by the end, the mediator will make a decision about child arrangements for you.",
+		"links": [
+			"link:mediation_with_decision",
+			"link:find_lawyer_mediator"
+		]
+	},
+	"answer:odr": {
+		"type": "pap_answer",
+		"title": "Sort out your dispute online and not face-to-face",
+		"body": "As you’re not comfortable seeing eye-to-eye with the other parent, you may be able to work things out online. There are some new options for you to do this although neither are free.",
+		"links": [
+			"link:relate_rechtwejzer",
+			"link:amicable_app"
+		]
+	},
+	"answer:counselling": {
+		"type": "pap_answer",
+		"title": "Get into the right mindset to deal with your child’s other parent",
+		"body": "Making agreements can be even more difficult if you’re still angry, upset or emotional about the other parent. To help you get into the right mindset to discuss and agree on child arrangements, you mightconsider talking to a counsellor.",
+		"links": [
+			"link:local_counsellor"
+		]
+	},
+	"answer:parental_involvement": {
+		"type": "pap_answer",
+		"title": "Get help to make sure the other parent gets involved in child arrangements",
+		"body": "We’re introducing a service to help the other parent get more involved. Here’s how it works:\n\n1. You give permission to contact the other parent\n1. An adviser contacts the other parent\n1. The adviser explains benefits of working together to agree out of court\n1. The adviser explains what might happen if they don’t engage and then have to go to court",
+		"links": [
+			"link:parental_involvement_service"
+		]
+	},
+	"answer:legal_disagreements": {
+		"type": "pap_answer",
+		"title": "Get professional help to understand your legal position",
+		"body": "It’s important to understand your legal position if your arguments are around these topics. There are a number of different options you can try.",
+		"links": [
+			"link:find_legal_aid_centre",
+			"link:legal_aid",
+			"link:family_lawyer"
+		]
+	},
+	"answer:legal_info": {
+		"type": "pap_answer",
+		"title": "Find out what your legal rights and responsibilities are",
+		"body": "All parents have legal rights and responsibilities that include providing a home, protecting and looking after the child. These rights mean you should also be able to see your ##default:children## in most circumstances.",
+		"links": [
+			"link:find_legal_aid_centre",
+			"link:legal_aid",
+			"link:family_lawyer"
+		]
+	},
+	"answer:written_agreement": {
+		"type": "pap_answer",
+		"title": "Make a written plan of your child arrangements",
+		"body": "A parenting plan offers a good way to work out your arrangements with the other parent, address concerns and record what you’ve agreed. You can write your plan down on paper or do it online. You can make it very detailed or start small and add to it as you go and as your ##default:children## {children_number, plural, =1 {grows} other {grow}}.",
+		"links": [
+			"link:parenting_plans"
+		]
+	},
+	"answer:language_support": {
+		"type": "pap_answer",
+		"title": "Language support",
+		"body": "As you’ve said that you struggle to understand English, you may need a translator to help you. These services may not be free.",
+		"links": [
+			"link:find_translator"
+		]
+	},
+	"link:local_authority_child_safety": {
+		"title": "Contact your local authority",
+		"url": "#localauthority"
+	},
+	"link:legal_aid": {
+		"title": "Find out about legal aid",
+		"url": "#legal_aid"
+	},
+	"link:family_lawyer": {
+		"title": "Find a local family lawyer (not free)",
+		"url": "#family_lawyer"
+	},
+	"link:representing_oneself": {
+		"title": "Find out about going to court yourself",
+		"url": "#representing_oneself"
+	},
+	"link:talking_with_children": {
+		"title": "How to talk with your children",
+		"url": "#talking_with_children"
+	},
+	"link:local_spip": {
+		"title": "Find your local SPIP",
+		"url": "#local_spip"
+	},
+	"link:about_mediation": {
+		"title": "Find out more about mediation",
+		"url": "#about_mediation"
+	},
+	"link:mediation_video": {
+		"title": "Watch this video",
+		"url": "#mediation_video"
+	}, 
+	"link:local_mediator": {
+		"title": "Find a local mediator",
+		"url": "#local_mediator"
+	},
+	"link:mediation_with_decision": {
+		"title": "Find out more about mediation with a decision",
+		"url": "#mediation_with_decision"
+	},
+	"link:find_lawyer_mediator": {
+		"title": "Find a mediator",
+		"url": "#find_lawyer_mediator"
+	},
+	"link:relate_rechtwejzer": {
+		"title": "Visit and register with Relate",
+		"url": "#relate_rechtwejzer"
+	},
+	"link:amicable_app": {
+		"title": "Download and register with Amicable App",
+		"url": "#amicable_app"
+	},
+	"link:local_counsellor": {
+		"title": "Find a local counsellor",
+		"url": "#local_counsellor"
+	},
+	"link:parental_involvement_service": {
+		"title": "Find out about this service",
+		"url": "#parental_involvement_service"
+	}, 
+	"link:find_legal_aid_centre": {
+		"title": "Find a free legal advice centre",
+		"url": "#find_legal_aid_centre"
+	},
+	"link:parenting_plans": {
+		"title": "Find out about parenting plans",
+		"url": "#parenting_plans"
+	},
+	"link:find_translator": {
+		"title": "Find a translator",
+		"url": "#find_translator"
+	}
 }
