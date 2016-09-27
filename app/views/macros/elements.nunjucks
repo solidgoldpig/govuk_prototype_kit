@@ -182,7 +182,11 @@
 			{% set option = getElementProp(option_name) %}
 		{% endif %}
 		{% set checked = false %}
-		{% if option.value === getValue(option_name) %}
+		{% set option_value = 'yes' %}
+		{% if option.value %}
+			{% set option_value = option.value %}
+		{% endif %}
+		{% if option_value === getValue(option_name) %}
 			{% set checked = true %}
 		{% endif %}
 		{% if loop.last %}
@@ -191,7 +195,7 @@
 			{% endif %}	
 		{% endif %}	
 		<label for="{{ option_name }}" class="block-label selection-button-checkbox"{% if option.reveals %} data-target="{{ option.reveals }}"{% endif %}>
-			<input id="{{ option_name }}" type="checkbox" name="{{ option_name }}" value="{{ option.value }}"{% if checked %} checked{% endif %}{% if option.reveals %} aria-controls="{{ option.reveals }}"{% endif %}>
+			<input id="{{ option_name }}" type="checkbox" name="{{ option_name }}" value="{{ option_value }}"{% if checked %} checked{% endif %}{% if option.reveals %} aria-controls="{{ option.reveals }}"{% endif %}>
 			{{ optionLabel(label) }}
 		</label>
 		{% if option.reveals %}

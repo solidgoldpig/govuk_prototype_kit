@@ -21,16 +21,18 @@ var yourPlanController = function (req, res) {
       setAnswer('child_safety', ['yes', 'unsure'])
       setAnswer('parent_safety', ['yes', 'unsure'])
       setAnswer('child_flight', ['yes', 'unsure'])
-      if (!autofields.options_tried_child_contact_centre) {
-        setAnswer('child_not_seeing_parent', ['yes'])
+      if (!autofields.tried_child_contact_centre) {
+        if (autofields.children_resident === 'applicant' || autofields.children_resident === 'respondent') {
+          setAnswer('children_access_disagreements', ['yes'])
+          console.log('NACC SET')
+        }
       }
-      setAnswer('child_have_a_say', ['yes', 'unsure'])
-      setAnswer('child_additional_support', ['yes', 'unsure'])
+      setAnswer('children_have_a_say', ['yes', 'unsure'])
+      setAnswer('children_additional_support', ['yes', 'unsure'])
 
       var relationship_status = 0
       function setRelationshipStatus (newValue, value) {
-        console.log('newValue', newValue, 'value', value)
-        return newValue > value ? newValue : value
+        return !value || (newValue > value) ? newValue : value
       }
 
       var relationship_statuses = {
@@ -76,24 +78,24 @@ var yourPlanController = function (req, res) {
         elements.push('answer:odr')
       }
       if (relationship_status > 1) {
-        if (!autofields.options_tried_spip) {
+        if (!autofields.tried_spip) {
           elements.push('answer:spip')
         }
         elements.push('answer:counselling')
       }
       if (relationship_status === 2) {
         elements.push('answer:odr')
-        if (autofields.options_tried_mediation) {
+        if (autofields.tried_mediation) {
           elements.push('answer:lawyer_mediation')
         }
       }
       if (relationship_status === 3) {
       }
 
-      if (autofields.parent_official_org_engagement === 'yes' || autofields.options_tried_written_agreement) {
+      if (autofields.parent_official_org_engagement === 'yes' || autofields.tried_written_agreement) {
         elements.push('answer:parental_involvement')
       }
-      if (!autofields.options_tried_written_agreement) {
+      if (!autofields.tried_written_agreement) {
         elements.push('answer:written_agreement')
       }
       if (autofields.childcare_disagreements === 'yes') {

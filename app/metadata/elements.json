@@ -219,26 +219,42 @@
 		"type": "number",
 		"label": "What {children_number, plural, =1 {age is} other {ages are}} your ##default:children##?"
 	},
-	"child_live_with_applicant": {
+	"children_resident": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "{children_number, plural, =1 {Does your} other {Do your}} ##default:children## live with you most of the time?",
 		"options": [
-			"yes",
-			"no",
-			"unsure"
+			"children_resident_applicant",
+			"children_resident_respondent",
+			"children_resident_both"
+		],
+		"reveals": "children_access_disagreements",
+		"reveals_exclude": [
+			"both"
 		]
 	},
-	"child_not_seeing_parent": {
+	"children_resident_applicant": {
+		"label": "Yes",
+		"value": "applicant"
+	},
+	"children_resident_respondent": {
+		"label": "No",
+		"value": "respondent"
+	},
+	"children_resident_both": {
+		"label": "About half the time",
+		"value": "both"
+	},
+	"children_access_disagreements": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Are you having disagreements about access that mean your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing both parents currently?",
+		"label": "Are you having disagreements about access that mean your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing { children_resident, select, respondent {you} applicant {their other parent} other {either parent}} currently?",
 		"options": [
 			"yes",
 			"no"
 		]
 	},
-	"child_have_a_say": {
+	"children_have_a_say": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Would you like your ##default:children## to have a say in any agreements you make?",
@@ -248,7 +264,7 @@
 			"unsure"
 		]
 	},
-	"child_additional_support": {
+	"children_additional_support": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Would you like information about additional help and support to help your ##default:children## to cope with your separation?",
@@ -368,24 +384,19 @@
 		]
 	},
 	"communicating_methods_in_person": {
-		"value": "yes",
 		"label": "Face to face"
 	},
 	"communicating_methods_phone": {
-		"value": "yes",
 		"label": "Talking over the phone"
 	},
 	"communicating_methods_online": {
-		"value": "yes",
 		"label": "By text, email, online chat"
 	},
 	"communicating_methods_other": {
-		"value": "yes",
 		"label": "Other (please specify)",
 		"reveals": "communicating_methods_other_value"
 	},
 	"communicating_methods_none": {
-		"value": "yes",
 		"label": "No communication"
 	},
 	"communicating_methods_other_value": {
@@ -420,71 +431,61 @@
 			"no"
 		]
 	},
-	"options_tried": {
+	"tried": {
 		"type": "checkboxGroup",
 		"inline": false,
 		"label": "Options tried",
 		"sublabel": "Tick anything that you have already tried to help agree your arrangements",
 		"options": [
-			"options_tried_written_agreement",
-			"options_tried_counselling_individual",
-			"options_tried_counselling_couples",
-			"options_tried_mediation",
-			"options_tried_spip",
-			"options_tried_lawyer",
-			"options_tried_gp",
-			"options_tried_leader",
-			"options_tried_court",
-			"options_tried_child_contact_centre",
-			"options_tried_other"
+			"tried_written_agreement",
+			"tried_counselling_individual",
+			"tried_counselling_couples",
+			"tried_mediation",
+			"tried_spip",
+			"tried_lawyer",
+			"tried_gp",
+			"tried_leader",
+			"tried_court",
+			"tried_child_contact_centre",
+			"tried_other"
 		]
 	},
-	"options_tried_written_agreement": {
-		"value": "written_agreement",
+	"tried_written_agreement": {
 		"label": "Made a written agreement with your ex-partner"
 	},
-	"options_tried_counselling_individual": {
-		"value": "counselling_individual",
+	"tried_counselling_individual": {
 		"label": "Individual counselling"
 	},
-	"options_tried_counselling_couples": {
-		"value": "counselling_couples",
+	"tried_counselling_couples": {
 		"label": "Couples counselling"
 	},
-	"options_tried_mediation": {
-		"value": "mediation",
+	"tried_mediation": {
 		"label": "Mediation"
 	},
-	"options_tried_spip": {
-		"value": "spip",
+	"tried_spip": {
 		"label": "Separating parents information plan workshop (SPIP)"
 	},
-	"options_tried_lawyer": {
-		"value": "lawyer",
+	"tried_lawyer": {
 		"label": "Consulted a lawyer"
 	},
-	"options_tried_gp": {
-		"value": "gp",
+	"tried_gp": {
 		"label": "Talked to your GP"
 	},
-	"options_tried_leader": {
-		"value": "leader",
+	"tried_leader": {
 		"label": "Talked to religious or community leader"
 	},
-	"options_tried_court": {
-		"value": "court",
+	"tried_court": {
 		"label": "Been to court"
 	},
-	"options_tried_child_contact_centre": {
-		"value": "child_contact_centre",
+	"tried_child_contact_centre": {
 		"label": "Child contact centre"
 	},
-	"options_tried_other": {
+	"tried_other": {
 		"value": "other",
 		"label": "Other, please specify",
-		"reveals": "options_tried_other_value"
+		"reveals": "tried_other_value"
 	},
-	"options_tried_other_value": {
+	"tried_other_value": {
 		"type": "text",
 		"multiline": true,
 		"label": "What other method did you try?"
@@ -526,17 +527,17 @@
 			"link:representing_oneself"
 		]
 	},
-	"answer:child_not_seeing_parent": {
+	"answer:children_access_disagreements": {
 		"type": "pap_answer",
 		"title": "Arrange a visit to a contact centre",
-		"body": "Visiting a child contact centre means you can see your ##default:children## while you continue trying to agree longer-lasting arrangements with the other parent. You may have to pay a small fee to do this.",
+		"body": "Visiting a child contact centre means {children_resident, select, applicant {the other parent can still see your ##default:children## while you continue trying to agree longer-lasting arrangements} other {you can see your ##default:children## while you continue trying to agree longer-lasting arrangements with the other parent}}. You may have to pay a small fee to do this.",
 		"organisation": {
 			"name": "NACCC",
 			"url": "#NACCC",
 			"phone": "0845 4500 2807"
 		}
 	},
-	"answer:child_have_a_say": {
+	"answer:children_have_a_say": {
 		"type": "pap_answer",
 		"title": "Discuss any arrangements with your ##default:children##",
 		"body": "Contributing to any arrangements or plans you make with their other parent can help older children settle into and deal with the situation. Sit down with them, listen to concerns around eg friendships, homework, and take their suggestions on board.",
@@ -544,7 +545,7 @@
 			"link:talking_with_children"
 		]
 	},
-	"answer:child_additional_support": {
+	"answer:children_additional_support": {
 		"type": "pap_answer",
 		"title": "Additional support for your ##default:children##",
 		"body": "Listening to other children in a similar position can be a great starting point if your ##default:children## {children_number, plural, =1 {is} other {are}} struggling with your separation and disagreements over their arrangements.",

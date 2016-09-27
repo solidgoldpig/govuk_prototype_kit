@@ -35,10 +35,9 @@
       "elements": [
         "children_number",
         "children_age",
-        "child_live_with_applicant",
-        "child_not_seeing_parent",
-        "child_have_a_say",
-        "child_additional_support"
+        "children_resident",
+        "children_have_a_say",
+        "children_additional_support"
       ]
     },
     "you_and_other_parent": {
@@ -54,7 +53,7 @@
       "elements": [
         "childcare_disagreements",
         "parental_rights_info",
-        "options_tried",
+        "tried",
         "language_support"
       ]
     },

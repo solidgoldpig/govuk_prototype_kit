@@ -32,15 +32,16 @@ fieldset + .form-group {
       {% endif %}
       </form>
 
-      {% if route.name === 'your_plan' %}
+      {#{% if route.name === 'your_plan' %}#}
       {% if false %}<pre style="white-space:pre-wrap">{{ savedfields }}</pre>{% endif %}
-      <ul>
+      <ul style="margin-top: 40px">
         <li><a href="/action-plan/staying-safe">Staying Safe</a></li>
         <li><a href="/action-plan/your-children">Your children</a></li>
         <li><a href="/action-plan/you-and-other-parent">You and your child’s other parent</a></li>
         <li><a href="/action-plan/legal-help-and-advice">Legal help and advice</a></li>
+        <li><a href="/action-plan/your-plan">Your plan</a></li>
       </ul>
-      {% endif %}
+      {#{% endif %}#}
     </div>
   </div>
 </main>
@@ -49,7 +50,7 @@ fieldset + .form-group {
 {% block body_end %}
   {% include "includes/scripts.html" %}
 <script type="text/javascript">
-jQuery('[name=children_number]').on('change', function(e){
+jQuery('[name=children_number], [name=children_resident]').on('change', function(e){
   jQuery('[name=updateForm]').val('yes')
   jQuery('form').submit()
 })
