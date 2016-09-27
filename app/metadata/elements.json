@@ -138,11 +138,11 @@
 	"route:staying_safe": {
 		"title": "",
 		"heading": "Staying safe",
-		"lede": "Thinking about your situation with your child’s other parent:"
+		"lede": "Thinking about your situation with your ##default:children##’s other parent:"
 	},
 	"route:your_children": {
 		"title": "",
-		"heading": "Your children"
+		"heading": "Your ##default:children##"
 	},
 	"route:you_and_other_parent": {
 		"title": "",
@@ -161,7 +161,7 @@
 	"child_safety": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Are you worried about your child’s safety?",
+		"label": "Are you worried about your ##default:children##’s safety?",
 		"options": [
 			"yes",
 			"no",
@@ -181,7 +181,7 @@
 	"child_flight": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Is your child at risk of being taken out of the country?",
+		"label": "{children_number, plural, =1 {Is} other {Are}} your ##default:children## at risk of being taken out of the country?",
 		"options": [
 			"yes",
 			"no",
@@ -217,12 +217,12 @@
 	},
 	"children_age": {
 		"type": "number",
-		"label": "What ages are your children?"
+		"label": "What {children_number, plural, =1 {age is} other {ages are}} your ##default:children##?"
 	},
 	"child_live_with_applicant": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Do the children live with you most of the time?",
+		"label": "{children_number, plural, =1 {Does your} other {Do your}} ##default:children## live with you most of the time?",
 		"options": [
 			"yes",
 			"no",
@@ -232,7 +232,7 @@
 	"child_not_seeing_parent": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Are you having disagreements about access that mean your children aren’t seeing both parents currently?",
+		"label": "Are you having disagreements about access that mean your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing both parents currently?",
 		"options": [
 			"yes",
 			"no"
@@ -241,7 +241,7 @@
 	"child_have_a_say": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Would you like your children to have a say in any agreements you make?",
+		"label": "Would you like your ##default:children## to have a say in any agreements you make?",
 		"options": [
 			"yes",
 			"no",
@@ -251,7 +251,7 @@
 	"child_additional_support": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Would you like information about additional help and support to help your children to cope with your separation?",
+		"label": "Would you like information about additional help and support to help your ##default:children## to cope with your separation?",
 		"options": [
 			"yes",
 			"no",
@@ -405,7 +405,7 @@
 	"childcare_disagreements": {
 		"type": "radioGroup",
 		"inline": true,
-		"label": "Do you disagree with your child’s other parent over medical treatment, religious activities and/or schooling?",
+		"label": "Do you disagree with your ##default:children##’s other parent over medical treatment, religious activities and/or schooling?",
 		"options": [
 			"yes",
 			"no"

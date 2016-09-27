@@ -150,6 +150,12 @@ function initRoutes (router) {
       var elements = (route.elements || []).slice()
       var elements_to_validate = elements.slice()
       var elements_found = flattenDeep(elements.concat(recurseElements(elements)))
+      if (req.method === 'POST') {
+        elements_found.forEach(el => {
+          req.session.autofields[el] = req.body[el]
+        })
+        console.log(JSON.stringify(req.session, null, 2))
+      }
       console.log('elements_found', elements_found)
       var values = {}
       elements_found.forEach(el => {
@@ -162,14 +168,14 @@ function initRoutes (router) {
       })
       routeHandler(routeInstance)
         .then(outcome => {
-          if (req.method === 'POST') {
-            elements_found.forEach(el => {
-              req.session.autofields[el] = req.body[el]
-            })
-            console.log(JSON.stringify(req.session, null, 2))
-          }
+          // if (req.method === 'POST') {
+          //   elements_found.forEach(el => {
+          //     req.session.autofields[el] = req.body[el]
+          //   })
+          //   console.log(JSON.stringify(req.session, null, 2))
+          // }
           var routeInstanceFinal = Object.assign({}, route, outcome)
-          if (req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect) {
+          if (req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect && req.body.updateForm !== 'yes') {
             res.redirect(routeUrls[routeInstanceFinal.redirect] || routeInstanceFinal.redirect)
           } else {
             routeInstanceFinal.values = values

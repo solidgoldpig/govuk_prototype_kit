@@ -3,6 +3,11 @@
 {% block head %}
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/govuk-template.css?0.18.1">
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/elements-page.css">
+<style type="text/css">
+fieldset + .form-group {
+  margin-top: 30px;
+}
+</style>
 {% endblock %}
 
 {% block page_title %}
@@ -17,6 +22,7 @@
     <div class="column-two-thirds">
       {{ element.page_header(route.key, start_page=route.start_page) }}
       <form action="{{ req.originalUrl }}" method="post" class="form">
+        <input type="hidden" name="updateForm">
       {{ element.group(elements=route.elements) }}
       {% if route.start_page %}
       <p><input class="button button-start" type="submit" value="Start now">
@@ -27,7 +33,7 @@
       </form>
 
       {% if route.name === 'your_plan' %}
-      <pre style="white-space:pre-wrap">{{ savedfields }}</pre>
+      {% if false %}<pre style="white-space:pre-wrap">{{ savedfields }}</pre>{% endif %}
       <ul>
         <li><a href="/action-plan/staying-safe">Staying Safe</a></li>
         <li><a href="/action-plan/your-children">Your children</a></li>
@@ -40,4 +46,12 @@
 </main>
 {% endblock %}
 
-
+{% block body_end %}
+  {% include "includes/scripts.html" %}
+<script type="text/javascript">
+jQuery('[name=children_number]').on('change', function(e){
+  jQuery('[name=updateForm]').val('yes')
+  jQuery('form').submit()
+})
+</script>
+{% endblock %}
