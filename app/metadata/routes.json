@@ -59,7 +59,25 @@
     },
     "your_plan": {
       "url": "your-plan",
-      "controller": "your_plan"
+      "controller": "your_plan",
+      "elements": [
+        "answer:child_safety",
+        "answer:parent_safety",
+        "answer:child_flight",
+        "answer:children_access_disagreements",
+        "answer:children_have_a_say",
+        "answer:children_additional_support",
+        "answer:spip",
+        "answer:counselling",
+        "answer:mediation",
+        "answer:odr",
+        "answer:lawyer_mediation",
+        "answer:parental_involvement",
+        "answer:written_agreement",
+        "answer:legal_disagreements",
+        "answer:legal_info",
+        "answer:language_support"
+      ]
     }
   }
 }

@@ -481,7 +481,6 @@
 		"label": "Child contact centre"
 	},
 	"tried_other": {
-		"value": "other",
 		"label": "Other, please specify",
 		"reveals": "tried_other_value"
 	},
@@ -501,6 +500,11 @@
 	},
 	"answer:child_safety": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"child_safety": "yes|unsure"
+			}
+		],
 		"title": "Contact social services",
 		"body": "As you’re concerned about your ##default:children##’s safety, you should contact social services run by your local authority.",
 		"links": [
@@ -509,6 +513,11 @@
 	},
 	"answer:parent_safety": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"parent_safety": "yes|unsure"
+			}
+		],
 		"title": "Contact Refuge",
 		"body": "As you’re concerned about your child’s safety, you should contact social services run by your local authority.",
 		"organisation": {
@@ -519,6 +528,11 @@
 	},
 	"answer:child_flight": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"child_flight": "yes|unsure"
+			}
+		],
 		"title": "Keep your ##default:children##’s passport safe and ask a court for help",
 		"body": "If you think your ##default:children## may be abducted at any minute you can do things like keeping their passport and making sure you know where they are at all times.\nIf the other parent has ‘parental responsibility’, you will have to go to court to ask for a ‘prohibited steps order’ which would prevent them doing things like taking your ##default:children## abroad.",
 		"links": [
@@ -529,6 +543,12 @@
 	},
 	"answer:children_access_disagreements": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"!tried_child_contact_centre": ".*",
+				"children_resident": "applicant|respondent"
+			}
+		],
 		"title": "Arrange a visit to a contact centre",
 		"body": "Visiting a child contact centre means {children_resident, select, applicant {the other parent can still see your ##default:children## while you continue trying to agree longer-lasting arrangements} other {you can see your ##default:children## while you continue trying to agree longer-lasting arrangements with the other parent}}. You may have to pay a small fee to do this.",
 		"organisation": {
@@ -539,6 +559,11 @@
 	},
 	"answer:children_have_a_say": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"children_have_a_say": "yes|unsure"
+			}
+		],
 		"title": "Discuss any arrangements with your ##default:children##",
 		"body": "Contributing to any arrangements or plans you make with their other parent can help older children settle into and deal with the situation. Sit down with them, listen to concerns around eg friendships, homework, and take their suggestions on board.",
 		"links": [
@@ -547,6 +572,11 @@
 	},
 	"answer:children_additional_support": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"children_additional_support": "yes|unsure"
+			}
+		],
 		"title": "Additional support for your ##default:children##",
 		"body": "Listening to other children in a similar position can be a great starting point if your ##default:children## {children_number, plural, =1 {is} other {are}} struggling with your separation and disagreements over their arrangements.",
 		"organisation": {
@@ -557,6 +587,12 @@
 	},
 	"answer:spip": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"!tried_spip": "yes",
+				"status_level": "amber|red"
+			}
+		],
 		"title": "Go to a Separated Parents Information Programme (SPIP)",
 		"body": "As you’ve been unable to agree arrangements for a long time, a SPIP may help. It lasts about 4 hours and gives you ways to avoid conflict and focus on your ##default:children##, rather than their other parent.\nBoth of you need to go to SPIP but you go to different ones so you never meet. SPIPs are free in some areas.",
 		"links": [
@@ -565,6 +601,12 @@
 	},
 	"answer:mediation": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"!tried_mediation": "yes",
+				"status_level": "green"
+			}
+		],
 		"title": "Go to mediation",
 		"body": "As you’re struggling to come to an agreement, mediation may be able to help you work out a solution you can both accept. You usually have to pay for mediation although legal aid may be available in a small number of cases.",
 		"links": [
@@ -575,6 +617,12 @@
 	},
 	"answer:lawyer_mediation": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"tried_mediation": "yes",
+				"status_level": "amber"
+			}
+		],
 		"title": "Go to a lawyer mediator who will make a decision for you",
 		"body": "As you’ve having trouble coming to an agreement, a new kind of mediation might help. You both go to sessions and the lawyer mediator will try to help you. If you still can’t decide by the end, the mediator will make a decision about child arrangements for you.",
 		"links": [
@@ -584,6 +632,11 @@
 	},
 	"answer:odr": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"status_level": "green|amber"
+			}
+		],
 		"title": "Sort out your dispute online and not face-to-face",
 		"body": "As you’re not comfortable seeing eye-to-eye with the other parent, you may be able to work things out online. There are some new options for you to do this although neither are free.",
 		"links": [
@@ -593,14 +646,29 @@
 	},
 	"answer:counselling": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"!tried_counselling_individual": "yes",
+				"!tried_counselling_couples": "yes",
+				"status_level": "amber|red"
+			}
+		],
 		"title": "Get into the right mindset to deal with your child’s other parent",
-		"body": "Making agreements can be even more difficult if you’re still angry, upset or emotional about the other parent. To help you get into the right mindset to discuss and agree on child arrangements, you mightconsider talking to a counsellor.",
+		"body": "Making agreements can be even more difficult if you’re still angry, upset or emotional about the other parent. To help you get into the right mindset to discuss and agree on child arrangements, you might consider talking to a counsellor.",
 		"links": [
 			"link:local_counsellor"
 		]
 	},
 	"answer:parental_involvement": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"parent_official_org_engagement": "yes"
+			},
+			{
+				"tried_written_agreement": ".*"
+			}
+		],
 		"title": "Get help to make sure the other parent gets involved in child arrangements",
 		"body": "We’re introducing a service to help the other parent get more involved. Here’s how it works:\n\n1. You give permission to contact the other parent\n1. An adviser contacts the other parent\n1. The adviser explains benefits of working together to agree out of court\n1. The adviser explains what might happen if they don’t engage and then have to go to court",
 		"links": [
@@ -609,6 +677,11 @@
 	},
 	"answer:legal_disagreements": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"childcare_disagreements": "yes"
+			}
+		],
 		"title": "Get professional help to understand your legal position",
 		"body": "It’s important to understand your legal position if your arguments are around these topics. There are a number of different options you can try.",
 		"links": [
@@ -619,6 +692,11 @@
 	},
 	"answer:legal_info": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"parental_rights_info": "yes"
+			}
+		],
 		"title": "Find out what your legal rights and responsibilities are",
 		"body": "All parents have legal rights and responsibilities that include providing a home, protecting and looking after the child. These rights mean you should also be able to see your ##default:children## in most circumstances.",
 		"links": [
@@ -629,6 +707,11 @@
 	},
 	"answer:written_agreement": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"!tried_written_agreement": ".*"
+			}
+		],
 		"title": "Make a written plan of your child arrangements",
 		"body": "A parenting plan offers a good way to work out your arrangements with the other parent, address concerns and record what you’ve agreed. You can write your plan down on paper or do it online. You can make it very detailed or start small and add to it as you go and as your ##default:children## {children_number, plural, =1 {grows} other {grow}}.",
 		"links": [
@@ -637,6 +720,11 @@
 	},
 	"answer:language_support": {
 		"type": "pap_answer",
+		"depends": [
+			{
+				"language_support": "yes"
+			}
+		],
 		"title": "Language support",
 		"body": "As you’ve said that you struggle to understand English, you may need a translator to help you. These services may not be free.",
 		"links": [
@@ -674,7 +762,7 @@
 	"link:mediation_video": {
 		"title": "Watch this video",
 		"url": "#mediation_video"
-	}, 
+	},
 	"link:local_mediator": {
 		"title": "Find a local mediator",
 		"url": "#local_mediator"
@@ -702,7 +790,7 @@
 	"link:parental_involvement_service": {
 		"title": "Find out about this service",
 		"url": "#parental_involvement_service"
-	}, 
+	},
 	"link:find_legal_aid_centre": {
 		"title": "Find a free legal advice centre",
 		"url": "#find_legal_aid_centre"

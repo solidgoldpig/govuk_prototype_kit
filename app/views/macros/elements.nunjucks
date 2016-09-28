@@ -206,8 +206,10 @@
 {% endmacro %}
 
 {% macro control(name, type='', value='', error='', label='', sublabel='', hint='', heading='', inline='') -%}
+{% if checkNoDependency(name) %}
 {% set type = getElementProp(name, 'type', 'text', { value: type }) %}
 	{{ elementMacros[type](name, value=value, error=error, label=label, sublabel=sublabel, hint=hint, heading=heading, inline=inline) }}
+{% endif %}
 {%- endmacro %}
 
 {% macro group(name='', elements=[]) %}

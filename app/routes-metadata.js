@@ -6,6 +6,8 @@ var flattenDeep = require('lodash/flattenDeep')
 var MessageFormat = require('messageformat')
 var Markdown = require('markdown').markdown.toHTML
 
+var matchProp = require('./applib/match-prop')
+
 var msgFormats = {}
 msgFormats['en-GB'] = new MessageFormat('en-GB')
 var defaultLocale = 'en-GB'
@@ -49,15 +51,17 @@ function recurseElements (node) {
 }
 
 function initRoutes (router) {
-  router.use(function (req, res, next) {
-    var nunjucksEnv = res.app.locals.settings.nunjucksEnv // res.app.get('engine')
-    // console.log('res.app', res.app.engines)
-    // conssole.log('res.app.locals', res.app.locals)
-    // console.log('req.app', req.app.engine)
-    // var config = req.app.get('config')
+  router.use(function(req, res, next){
+    res.locals['global_header_text'] = 'Child Arrangement Action Plan'
+    res.locals['logo_link_title'] = 'Child Arrangement Action Plan'
+    res.locals['homepage_url'] = '/'
+    next()
+  })
 
-    // engine.addGlobal('config', config)
-    nunjucksEnv.addGlobal('req', req) // useless?
+  router.use(function (req, res, next) {
+    // move to final render section?
+    var nunjucksEnv = res.app.locals.settings.nunjucksEnv 
+    nunjucksEnv.addGlobal('req', req)
     nunjucksEnv.addGlobal('res', res)
     nunjucksEnv.addGlobal('i18n', i18n)
     next()
@@ -65,31 +69,14 @@ function initRoutes (router) {
 
   var rootUrl = '/'
 
-  var storeValues = function () {
-    return function (req, res) {
-      var controller = new Promise(function (resolve) {})
-    }
-  }
+  // var storeValues = function () {
+  //   return function (req, res) {
+  //     var controller = new Promise(function (resolve) {})
+  //   }
+  // }
   var getDefaultController = function (req, res) {
     return function () {
-      // var controller = new Promise(function(resolve) {
-      //   // var session = req.session
-      //   // if (session.foo) {
-      //   //   console.log('We got foo', session.foo)
-      //   // } else {
-      //   //   console.log('we have no foo')
-      //   //   session.foo = 'bar'
-      //   // }
-      //   // function dumpIt(wat) {
-      //   //   console.log(`req.${wat}`, JSON.stringify(req[wat], null, 2))
-      //   // }
-      //   // dumpIt('query')
-      //   // dumpIt('params')
-      //   // dumpIt('body')
-      //   resolve()
-      // })
       return Promise.resolve()
-    // return controller
     }
   }
   var routesConfig = require('./metadata/routes.json')
@@ -143,7 +130,6 @@ function initRoutes (router) {
     var routeController = route.controller ? require('./controllers/' + route.controller) : getDefaultController
     router[method](url, (req, res) => {
       var routeHandler = routeController(req, res)
-      // Copy req.params, req.query and req.body to globals - NO - for obvious reasons
       // Call controller if exists
       console.log('use routeName', routeName)
       req.session.autofields = req.session.autofields || {}
@@ -154,9 +140,9 @@ function initRoutes (router) {
         elements_found.forEach(el => {
           req.session.autofields[el] = req.body[el]
         })
-        console.log(JSON.stringify(req.session, null, 2))
+        console.log('SESSION', JSON.stringify(req.session, null, 2))
       }
-      console.log('elements_found', elements_found)
+      // console.log('elements_found', elements_found)
       var values = {}
       elements_found.forEach(el => {
         values[el] = req.session.autofields[el]
@@ -175,6 +161,7 @@ function initRoutes (router) {
           //   console.log(JSON.stringify(req.session, null, 2))
           // }
           var routeInstanceFinal = Object.assign({}, route, outcome)
+          var autofields = routeInstanceFinal.autofields
           if (req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect && req.body.updateForm !== 'yes') {
             res.redirect(routeUrls[routeInstanceFinal.redirect] || routeInstanceFinal.redirect)
           } else {
@@ -271,12 +258,21 @@ function initRoutes (router) {
               }
               return formattedBody
             }
+            function checkNoDependency(name) {
+              var dependencyMet = true
+              var depends = getElementProp(name, 'depends')
+              if (depends) {
+                dependencyMet = matchProp(autofields, depends)
+              }
+              return dependencyMet
+            }
 
             nunjucksEnv.addGlobal('getElement', getElement)
             nunjucksEnv.addGlobal('getElementProp', getElementProp)
             nunjucksEnv.addGlobal('getFormatted', getFormatted)
             nunjucksEnv.addGlobal('getFormattedProp', getFormattedProp)
             nunjucksEnv.addGlobal('getFormattedBody', getFormattedBody)
+            nunjucksEnv.addGlobal('checkNoDependency', checkNoDependency)
             nunjucksEnv.addGlobal('mergeObjects', function () {
               var merged = {}
               var args = Array.prototype.slice.call(arguments)
