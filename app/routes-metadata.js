@@ -6,7 +6,12 @@ var flattenDeep = require('lodash/flattenDeep')
 var MessageFormat = require('messageformat')
 var Markdown = require('markdown').markdown.toHTML
 
+var jsonschema = require('jsonschema');
+var validator = new jsonschema.Validator();
+
 var matchProp = require('./applib/match-prop')
+var getRouteHierarchy = require('./applib/route-hierarchy')
+
 
 var msgFormats = {}
 msgFormats['en-GB'] = new MessageFormat('en-GB')
@@ -14,165 +19,6 @@ var defaultLocale = 'en-GB'
 
 var i18n = require('./metadata/elements.json')
 
-function recurseElements (node) {
-  var nested_elements = []
-  if (!node) {
-    return nested_elements
-  }
-  if (typeof node === 'string') {
-    node = [node]
-  }
-  node.forEach(el => {
-    var subelements = get(i18n, el + '.elements')
-    var reveals = get(i18n, el + '.reveals')
-    if (subelements) {
-      nested_elements.push(subelements)
-      nested_elements.push(recurseElements(subelements))
-    } else if (reveals) {
-      nested_elements.push(reveals)
-      nested_elements.push(recurseElements([reveals]))
-    }
-    var checkbox = get(i18n, el + '.type') === 'checkboxGroup'
-    if (checkbox) {
-      var options = get(i18n, el + '.options')
-      if (options) {
-        nested_elements.push(options)
-        options.forEach(opt => {
-          var optReveals = get(i18n, opt + '.reveals')
-          if (optReveals) {
-            nested_elements.push(optReveals)
-            nested_elements.push(recurseElements(optReveals))
-          }
-        })
-      }
-    }
-  })
-  return nested_elements
-}
-
-function initRoutes (router) {
-  router.use(function(req, res, next){
-    res.locals['global_header_text'] = 'Child Arrangement Action Plan'
-    res.locals['logo_link_title'] = 'Child Arrangement Action Plan'
-    res.locals['homepage_url'] = '/'
-    next()
-  })
-
-  router.use(function (req, res, next) {
-    // move to final render section?
-    var nunjucksEnv = res.app.locals.settings.nunjucksEnv 
-    nunjucksEnv.addGlobal('req', req)
-    nunjucksEnv.addGlobal('res', res)
-    nunjucksEnv.addGlobal('i18n', i18n)
-    next()
-  })
-
-  var rootUrl = '/'
-
-  // var storeValues = function () {
-  //   return function (req, res) {
-  //     var controller = new Promise(function (resolve) {})
-  //   }
-  // }
-  var getDefaultController = function (req, res) {
-    return function () {
-      return Promise.resolve()
-    }
-  }
-  var routesConfig = require('./metadata/routes.json')
-  var routes = routesConfig.routes
-  var pages = routesConfig.route
-  var routesFlattened = {}
-  var elementRouteMapping = {}
-  function flattenRoutes (routes, urlPrefix) {
-    urlPrefix = urlPrefix.replace(/\/+$/, '')
-    routes.forEach(routeName => {
-      if (!routesFlattened[routeName]) {
-        routesFlattened[routeName] = Object.assign({}, pages[routeName])
-        var routeExtends = routesFlattened[routeName].extends
-        if (routeExtends) {
-          routesFlattened[routeName] = Object.assign({}, pages[routeExtends], routesFlattened[routeName])
-          i18n['route.' + routeName] = Object.assign({}, i18n['route.' + routeExtends], i18n['route.' + routeName])
-        }
-      }
-      var route = routesFlattened[routeName]
-      route.url = route.url || routeName
-      if (route.url.indexOf('/') !== 0) {
-        route.url = urlPrefix + '/' + route.url
-      }
-      if (route.steps) {
-        routesFlattened[routeName].redirect = route.steps[0]
-        route.steps.forEach((step, i) => {
-          routesFlattened[step] = Object.assign({}, pages[step])
-          if (route.steps[i + 1]) {
-            routesFlattened[step].redirect = route.steps[i + 1]
-          }
-        })
-        var routeUrlPrefix = route.url
-        if (routeUrlPrefix.indexOf('/') !== 0) {
-          routeUrlPrefix = urlPrefix + '/' + routeUrlPrefix
-        }
-        flattenRoutes(route.steps, routeUrlPrefix)
-      }
-    })
-  }
-  flattenRoutes(routes, rootUrl)
-
-  var routeUrls = {}
-  Object.keys(routesFlattened).sort().reverse().forEach(routeName => {
-    var route = routesFlattened[routeName]
-    console.log('Serving', routeName, '=>', route.url)
-    route.name = routeName
-    route.key = 'route:' + routeName
-    var method = route.method || 'use'
-    var url = route.url
-    routeUrls[routeName] = url
-    var routeController = route.controller ? require('./controllers/' + route.controller) : getDefaultController
-    router[method](url, (req, res) => {
-      var routeHandler = routeController(req, res)
-      // Call controller if exists
-      console.log('use routeName', routeName)
-      req.session.autofields = req.session.autofields || {}
-      var elements = (route.elements || []).slice()
-      var elements_to_validate = elements.slice()
-      var elements_found = flattenDeep(elements.concat(recurseElements(elements)))
-      if (req.method === 'POST') {
-        elements_found.forEach(el => {
-          req.session.autofields[el] = req.body[el]
-        })
-        console.log('SESSION', JSON.stringify(req.session, null, 2))
-      }
-      // console.log('elements_found', elements_found)
-      var values = {}
-      elements_found.forEach(el => {
-        values[el] = req.session.autofields[el]
-      })
-      var autofields = req.session.autofields
-      var routeInstance = Object.assign({}, route, {
-        values: values,
-        autofields: autofields
-      })
-      routeHandler(routeInstance)
-        .then(outcome => {
-          // if (req.method === 'POST') {
-          //   elements_found.forEach(el => {
-          //     req.session.autofields[el] = req.body[el]
-          //   })
-          //   console.log(JSON.stringify(req.session, null, 2))
-          // }
-          var routeInstanceFinal = Object.assign({}, route, outcome)
-          var autofields = routeInstanceFinal.autofields
-          if (req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect && req.body.updateForm !== 'yes') {
-            res.redirect(routeUrls[routeInstanceFinal.redirect] || routeInstanceFinal.redirect)
-          } else {
-            routeInstanceFinal.values = values
-            var nunjucksEnv = res.app.locals.settings.nunjucksEnv
-            nunjucksEnv.addGlobal('getValue', function (name, vals) {
-              if (!vals) {
-                vals = values
-              }
-              return values[name]
-            })
             function marshallDefaultValue (defaultValue, options) {
               if (typeof defaultValue === 'object') {
                 options = defaultValue
@@ -211,6 +57,231 @@ function initRoutes (router) {
               options.prop = prop
               return getElement(element, options)
             }
+
+function recurseElements (node) {
+  var nested_elements = []
+  if (!node) {
+    return nested_elements
+  }
+  if (typeof node === 'string') {
+    node = [node]
+  }
+  node.forEach(el => {
+    var subelements = get(i18n, el + '.elements')
+    var reveals = get(i18n, el + '.reveals')
+    if (subelements) {
+      nested_elements.push(subelements)
+      nested_elements.push(recurseElements(subelements))
+    } else if (reveals) {
+      nested_elements.push(reveals)
+      nested_elements.push(recurseElements([reveals]))
+    }
+    var checkbox = get(i18n, el + '.type') === 'checkboxGroup'
+    if (checkbox) {
+      var options = get(i18n, el + '.options')
+      if (options) {
+        nested_elements.push(options)
+        options.forEach(opt => {
+          var optReveals = get(i18n, opt + '.reveals')
+          if (optReveals) {
+            nested_elements.push(optReveals)
+            nested_elements.push(recurseElements(optReveals))
+          }
+        })
+      }
+    }
+  })
+  return nested_elements
+}
+
+function initRoutes (router) {
+  // router.use(function(req, res, next){
+  //   res.locals['global_header_text'] = 'Child Arrangement Action Plan'
+  //   res.locals['logo_link_title'] = 'Child Arrangement Action Plan'
+  //   res.locals['homepage_url'] = '/'
+  //   next()
+  // })
+
+  router.use(function (req, res, next) {
+    // move to final render section?
+    var nunjucksEnv = res.app.locals.settings.nunjucksEnv 
+    nunjucksEnv.addGlobal('req', req)
+    nunjucksEnv.addGlobal('res', res)
+    nunjucksEnv.addGlobal('i18n', i18n)
+    next()
+  })
+
+  var rootUrl = '/'
+
+  // var storeValues = function () {
+  //   return function (req, res) {
+  //     var controller = new Promise(function (resolve) {})
+  //   }
+  // }
+  var getDefaultController = function (req, res) {
+    return function () {
+      return Promise.resolve()
+    }
+  }
+  var routesConfig = require('./metadata/routes.json')
+  var routes = routesConfig.routes
+  var pages = routesConfig.route
+  var routesFlattened = {}
+  var elementRouteMapping = {}
+  function flattenRoutes (routes, urlPrefix, hierarchy) {
+    hierarchy = hierarchy || []
+    urlPrefix = urlPrefix.replace(/\/+$/, '')
+    routes.forEach((routeName, index) => {
+      var routeHierarchy = hierarchy.slice()
+      if (!routesFlattened[routeName]) {
+        routesFlattened[routeName] = Object.assign({}, pages[routeName])
+        var routeExtends = routesFlattened[routeName].extends
+        if (routeExtends) {
+          routesFlattened[routeName] = Object.assign({}, pages[routeExtends], routesFlattened[routeName])
+          i18n['route.' + routeName] = Object.assign({}, i18n['route.' + routeExtends], i18n['route.' + routeName])
+        }
+      }
+      var route = routesFlattened[routeName]
+      route.hierarchy = routeHierarchy.slice()
+      route.hierarchy.push(routeName)
+      route.wizard = route.hierarchy[0]
+      // route.selected_hierarchy = route.hierarchy.slice(1)
+      routeHierarchy.push(routeName)
+      route.url = route.url || routeName
+      if (route.url.indexOf('/') !== 0) {
+        route.url = urlPrefix + '/' + route.url
+      }
+      if (route.steps) {
+        // console.log('REDIRECT TOP', routeName, route.steps[0])
+        routesFlattened[routeName].redirect = route.steps[0]
+        route.steps.forEach((step, i) => {
+          routesFlattened[step] = Object.assign({}, pages[step])
+          if (route.steps[i + 1]) {
+            // console.log('REDIRECT STEP', step, route.steps[i + 1])
+            routesFlattened[step].redirect = route.steps[i + 1]
+          } else if (routes[index + 1]) {
+            // console.log('MISSED STEP', step, routes[index + 1])
+            routesFlattened[step].redirect = routes[index + 1]
+          }
+        })
+        var routeUrlPrefix = route.url
+        if (routeUrlPrefix.indexOf('/') !== 0) {
+          routeUrlPrefix = urlPrefix + '/' + routeUrlPrefix
+        }
+        flattenRoutes(route.steps, routeUrlPrefix, routeHierarchy)
+      }
+    })
+  }
+  flattenRoutes(routes, rootUrl)
+
+  function getRouteUrl(name, params, options) {
+    options = options || {}
+    var url = '/dev/null'
+    if (routesFlattened[name]) {
+      url = routesFlattened[name].url
+    }
+    if (options.edit) {
+      url += '/edit'
+    }
+    return url
+  }
+
+  var wizardHierarchy = getRouteHierarchy(routes, pages)
+  // console.log('wizardHierarchy', JSON.stringify(wizardHierarchy, null, 2))
+
+  var routeUrls = {}
+  // console.log(Object.keys(routesFlattened).sort(function(a, b){
+  //   return a.url > b.url
+  // }).reverse())
+  Object.keys(routesFlattened).sort(function(a, b){
+    return a.url > b.url
+  }).reverse().forEach(routeName => {
+    var route = routesFlattened[routeName]
+    console.log('Serving', routeName, '=>', route.url)
+    route.name = routeName
+    route.key = 'route:' + routeName
+    var method = route.method || 'use'
+    var url = route.url
+    routeUrls[routeName] = url
+    var routeController = route.controller ? require('./controllers/' + route.controller) : getDefaultController
+    router[method](url, (req, res) => {
+      var routeHandler = routeController(req, res)
+      // Call controller if exists
+      console.log('use routeName', routeName)
+      req.session.autofields = req.session.autofields || {}
+      var elements = (route.elements || []).slice()
+      var elements_to_validate = elements.slice()
+      var elements_found = flattenDeep(elements.concat(recurseElements(elements)))
+      if (req.method === 'POST') {
+        var errors = {}
+        elements_found.forEach(el => {
+          var inboundValue = req.body[el]
+          var schema = Object.assign({}, getElement(el))
+          schema.type = schema.type || 'string'
+          if (schema.type.match(/number|integer/)) {
+            inboundValue = Number(inboundValue)
+          } else if (schema.type === 'radioGroup') {
+            schema.type = 'string'
+            var optionsEnum = schema.options.map(function(option) {
+              return getElementProp(option, 'value')
+            })
+            schema.enum = optionsEnum
+          }
+          var validationError = validator.validate(inboundValue, schema).errors
+          if (validationError.length) {
+            errors[el] = validationError[0]
+          }
+        })
+        if (!Object.keys(errors).length) {
+          errors = undefined
+        }
+        elements_found.forEach(el => {
+          req.session.autofields[el] = req.body[el]
+        })
+        // console.log('SESSION', JSON.stringify(req.session, null, 2))
+      }
+      // console.log('elements_found', elements_found)
+      var values = {}
+      elements_found.forEach(el => {
+        values[el] = req.session.autofields[el]
+      })
+      var autofields = req.session.autofields
+      var routeInstance = Object.assign({}, route, {
+        values: values,
+        autofields: autofields
+      })
+      routeHandler(routeInstance)
+        .then(outcome => {
+          // if (req.method === 'POST') {
+          //   elements_found.forEach(el => {
+          //     req.session.autofields[el] = req.body[el]
+          //   })
+          //   console.log(JSON.stringify(req.session, null, 2))
+          // }
+          var routeInstanceFinal = Object.assign({}, routeInstance, outcome)
+          var autofields = routeInstanceFinal.autofields
+          function checkNoDependency(name) {
+            var dependencyMet = true
+            var depends = getElementProp(name, 'depends')
+            if (depends) {
+              dependencyMet = matchProp(autofields, depends)
+            }
+            return dependencyMet
+          }
+          var redirectUrl = routeUrls[routeInstanceFinal.redirect] || routeInstanceFinal.redirect
+          if (!errors && req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect && req.body.updateForm !== 'yes') {
+            if (req.originalUrl.match(/\/edit$/)) {
+              var wizard = routeInstanceFinal.wizard
+              if (wizard) {
+                var wizardlastRoute = wizardHierarchy[wizard].lastRoute
+                if (wizardlastRoute) {
+                  redirectUrl = getRouteUrl(wizardlastRoute)
+                }
+              }
+            }
+            res.redirect(redirectUrl)
+          } else {
+
             var recurseMatch = /##([\s\S]+?)##/
             function reformat (value, args) {
               if (value.match(recurseMatch)) {
@@ -258,20 +329,54 @@ function initRoutes (router) {
               }
               return formattedBody
             }
-            function checkNoDependency(name) {
-              var dependencyMet = true
-              var depends = getElementProp(name, 'depends')
-              if (depends) {
-                dependencyMet = matchProp(autofields, depends)
+            function getError (element, options) {
+              options = options || {}
+              var error = options.error
+              if (errors) {
+                error = errors[element] ? errors[element] : ''
               }
-              return dependencyMet
+              return error
             }
+            function getFormattedError (element, options) {
+              options = options || {}
+              var error = getError(element, options)
+              var errorPrefix = options.header ? 'error-header:' : 'error:'
+              var formattedError = getElementProp(errorPrefix + error.name)
+              return format(formattedError, {
+                control: getElementProp(element, 'label'),
+                argument: error.argument
+              })
+            }
+            var businessElements = routeInstanceFinal.elements
+            if (businessElements) {
+              businessElements = businessElements.filter(function(el){
+                return !getElementProp(el, 'auxilliary') && checkNoDependency(el)
+              })
+            }
+            if (!businessElements || !businessElements.length) {
+              console.log(req.originalUrl, 'REDIRECT TO', redirectUrl)
+              res.redirect(redirectUrl)
+              return
+            }
+            routeInstanceFinal.values = values
+            var nunjucksEnv = res.app.locals.settings.nunjucksEnv
+            nunjucksEnv.addGlobal('getValue', function (name, vals) {
+              if (!vals) {
+                vals = values
+              }
+              return values[name]
+            })
 
+            nunjucksEnv.addGlobal('errors', errors)
+            nunjucksEnv.addGlobal('getRouteUrl', getRouteUrl)
             nunjucksEnv.addGlobal('getElement', getElement)
             nunjucksEnv.addGlobal('getElementProp', getElementProp)
             nunjucksEnv.addGlobal('getFormatted', getFormatted)
             nunjucksEnv.addGlobal('getFormattedProp', getFormattedProp)
             nunjucksEnv.addGlobal('getFormattedBody', getFormattedBody)
+            nunjucksEnv.addGlobal('getRawError', getError)
+            nunjucksEnv.addGlobal('getError', getError)
+            nunjucksEnv.addGlobal('getFormattedError', getFormattedError)
             nunjucksEnv.addGlobal('checkNoDependency', checkNoDependency)
             nunjucksEnv.addGlobal('mergeObjects', function () {
               var merged = {}
@@ -285,7 +390,8 @@ function initRoutes (router) {
               res.render('route', {
                 route: routeInstanceFinal,
                 savedfields: JSON.stringify(req.session.autofields, null, 2),
-                autofields: req.session.autofields
+                autofields: req.session.autofields,
+                wizard: wizardHierarchy[routeInstanceFinal.wizard]
               })
             }, 0)
           }

@@ -24,11 +24,26 @@
         "child_safety",
         "parent_safety",
         "child_flight"
+      ],
+      "steps": [
+        "monster",
+        "crazee"
+      ]
+    },
+    "monster": {
+      "url": "monstah"
+    },
+    "crazee": {
+      "url": "crazee",
+      "elements": [
+        "gosh",
+        "wosh"
       ]
     },
     "staying_safe2": {
       "url": "another-staying-safe",
-      "extends": "staying_safe"
+      "extends": "staying_safe",
+      "steps": null
     },
     "your_children": {
       "url": "your-children",

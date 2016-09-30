@@ -1,58 +1,116 @@
 {% extends "layout_elements.html" %}
 
-{% block Zhead %}
+{% block head %}
+{% if false %}
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/govuk-template.css?0.18.1">
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/elements-page.css">
+{% else %}
+{{ super() }}
+{% endif %}
 <style type="text/css">
-fieldset + .form-group {
-  margin-top: 30px;
-}
+	fieldset + .form-group {
+		margin-top: 30px;
+	}
+	
+	.action-buttons {
+		margin-top: 40px;
+	}
+	
+	@media (min-width: 641px) {
+		.inline-stacked .block-label {
+			width: 48%;
+			box-sizing: border-box;
+		}
+		.inline-stacked .block-label:nth-child(2n) {
+			clear: both;
+		}
+	}
 </style>
 {% endblock %}
 
 {% block page_title %}
-  {% set title = getFormattedProp(route.key, ['title', 'heading']) %}
-  Action Plan{% if title %} - {{ title }}{% endif %}
+{% set title = getFormattedProp(route.key, ['title', 'heading']) %}
+Action Plan{% if title %} - {{ title }}{% endif %}
 {% endblock %}
-
 {% block content %}
 
 <main id="content" role="main">
-  <div class="grid-row">
-    <div class="column-two-thirds">
-      {{ element.page_header(route.key, start_page=route.start_page) }}
-      <form action="{{ req.originalUrl }}" method="post" class="form">
-        <input type="hidden" name="updateForm">
-      {{ element.group(elements=route.elements) }}
-      {% if route.start_page %}
-      <p><input class="button button-start" type="submit" value="Start now">
-      <!-- <a class="button button-start" href="#" role="button">Start now</a> --></p>
-      {% elif route.redirect %}
-      <p style="margin-top: 40px"><input class="button next validation-submit" type="submit" value="Save and continue"></p>
-      {% endif %}
-      </form>
-
-      {#{% if route.name === 'your_plan' %}#}
-      {% if false %}<pre style="white-space:pre-wrap">{{ savedfields }}</pre>{% endif %}
-      <ul style="margin-top: 40px">
-        <li><a href="/action-plan/staying-safe">Staying Safe</a></li>
-        <li><a href="/action-plan/your-children">Your children</a></li>
-        <li><a href="/action-plan/you-and-other-parent">You and your child’s other parent</a></li>
-        <li><a href="/action-plan/legal-help-and-advice">Legal help and advice</a></li>
-        <li><a href="/action-plan/your-plan">Your plan</a></li>
+  <p>Make a plan for child arrangements</p>
+	<div class="grid-row">
+		<div class="column-two-thirds">
+      {% if route.wizard %}
+      <ul>
+      {% for step in wizard %}
+        <li><a href="{{ getRouteUrl(step.route) }}">{{ getFormattedProp('route:'+step.route, 'heading') }}</a></li>
+      {% endfor %}
       </ul>
-      {#{% endif %}#}
-    </div>
-  </div>
+      {% endif %}
+      {% if errors %}
+<div class="error-summary" role="group" aria-labelledby="error-summary-heading" tabindex="-1">
+
+<h1 class="heading-medium error-summary-heading" id="error-summary-heading">
+{{ getFormatted('error-header:heading') }}
+</h1>
+
+<ul class="error-summary-list">
+  {% for errorKey, errorValue in errors %}
+<li><a href="#form-control_{{ errorKey }}">{{ getFormattedError(errorKey, {header:true}) }} <!--{{errorKey}} - {{errorValue}}--></a></li>
+{% endfor %}
+</ul>
+
+</div>
+      {% endif %}
+			{{ element.page_header(route.key, start_page=route.start_page) }}
+      <!-- {{ route.hierarchy | dump }}<br>
+      {{ wizard | dump }} -->
+      <!--{{errors | dump}}-->
+			<form action="{{ req.originalUrl }}" method="post" class="form">
+				<input type="hidden" name="updateForm"> {{ element.group(elements=route.elements) }}
+				<div class="action-buttons">
+					{% if route.start_page %}
+					<p><input class="button button-start" type="submit" value="Start now">
+						<!-- <a class="button button-start" href="#" role="button">Start now</a> --></p>
+					{% elif route.redirect %}
+					<p><input class="button next validation-submit" type="submit" value="Save and continue"></p>
+					{% endif %}
+				</div>
+			</form>
+
+			{#{% if route.name === 'your_plan' %}#} {% if false %}
+			<pre style="white-space:pre-wrap">{{ savedfields | dump }}</pre>{% endif %}
+      <h3 class="heading-medium" style="margin-top: 100px">Quick dev links</h3>
+			<ul>
+        {{ easyLink(route.wizard) }}
+        {% for step in wizard %}
+          {{ easyLink(step.route) }}
+        {% endfor %}
+			</ul>
+			{#{% endif %}#}
+		</div>
+	</div>
 </main>
 {% endblock %}
+{% macro easyLink(name) %}
+<li><a href="{{ getRouteUrl(name) }}">{{ getFormattedProp('route:'+name, 'heading') }}</a> | <a href="{{ getRouteUrl(name, null, {edit:true}) }}">(edit)</a></li>
+{% endmacro %}
 
 {% block body_end %}
-  {% include "includes/scripts.html" %}
+{% include "includes/scripts.html" %}
 <script type="text/javascript">
-jQuery('[name=children_number], [name=children_resident]').on('change', function(e){
+jQuery('[name=children_number], [name=children_resident], [name=parent_safety], [name=children_age]').on('change', function(e){
   jQuery('[name=updateForm]').val('yes')
   jQuery('form').submit()
 })
 </script>
 {% endblock %}
+
+{#
+
+!# auto advance page if all element's on a page are dependently false or auxilliary
+# add reveals behaviour to dependent sibling's dependency (rather than current jerry-rigged jQuery resubmit)
+!# edit - go back to relevant page, save and return to outcome # breadcrumbs - ie. work out wizard structure
+# add additional nunjucks directory - see
+https://github.com/expressjs/express/pull/2320
+# remove checkDependency on nunjuck rendering now handled by, er, handler
+
+#}

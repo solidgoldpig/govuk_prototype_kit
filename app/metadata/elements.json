@@ -132,7 +132,7 @@
 	},
 	"route:action_plan": {
 		"title": "Get started",
-		"heading": "Personalised Action Plan",
+		"heading": "Make a plan for child arrangements",
 		"lede": "Your personalised action plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
 	},
 	"route:staying_safe": {
@@ -157,7 +157,32 @@
 		"heading": "Your personalised action plan",
 		"heading_size": "large"
 	},
+	"route:monster": {
+		"title": "",
+		"heading": "MONSTAH!"
+	},
+	"route:crazee": {
+		"title": "",
+		"heading": "We all get a little bit"
+	},
+	"gosh": {
+		"type": "text",
+		"label": "Gosh gosh gosh",
+		"depends": [
+			{"child_safety": "yes"}
+		]
+	},
+	"wosh": {
+		"type": "body",
+		"body": "woshy woshy woshy",
+		"auxilliary": true
+	},
 	"default:children": "{children_number, plural, =1 {child} other {children}}",
+	"error-header:heading": "There were problems on the page",
+	"error-header:required": "Please answer the question “{control}”",
+	"error:required": "Please answer this question",
+
+
 	"child_safety": {
 		"type": "radioGroup",
 		"inline": true,
@@ -166,7 +191,8 @@
 			"yes",
 			"no",
 			"unsure"
-		]
+		],
+		"required": true
 	},
 	"parent_safety": {
 		"type": "radioGroup",
@@ -180,6 +206,11 @@
 	},
 	"child_flight": {
 		"type": "radioGroup",
+		"depends": [
+			{
+				"parent_safety": "yes"
+			}
+		],
 		"inline": true,
 		"label": "{children_number, plural, =1 {Is} other {Are}} your ##default:children## at risk of being taken out of the country?",
 		"options": [
@@ -217,7 +248,8 @@
 	},
 	"children_age": {
 		"type": "number",
-		"label": "What {children_number, plural, =1 {age is} other {ages are}} your ##default:children##?"
+		"label": "What {children_number, plural, =1 {age is} other {ages are}} your ##default:children##?",
+		"minimum": 0
 	},
 	"children_resident": {
 		"type": "radioGroup",
@@ -266,6 +298,11 @@
 	},
 	"children_additional_support": {
 		"type": "radioGroup",
+		"depends": [
+			{
+			"children_age": ">=8"
+			}
+		],
 		"inline": true,
 		"label": "Would you like information about additional help and support to help your ##default:children## to cope with your separation?",
 		"options": [

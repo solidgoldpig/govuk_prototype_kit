@@ -42,10 +42,14 @@
 
 {% macro controlLabel(name, label='', sublabel='', hint='', optional='') -%}
 {% set label = getFormattedProp(name, 'label', name, { value: label }) %}
+{% set sublabel = getFormattedProp(name, 'sublabel', { value: sublabel }) %}
 {% set optional = getElementProp(name, 'optional', { value: optional }) %}
 {% set hint = getFormattedProp(name, 'hint', { value: hint }) %}
 	<label xclass="form-label-bold" for="{{ name }}">
 		<span class="form-label-bold">{{ label }}{% if optional %} (optional){% endif %}</span>
+			{% if sublabel %}
+			<span class="form-sublabel">{{ sublabel | safe }}</span>
+			{% endif %}
 		{% if hint %}
 			<span class="form-hint">
 				{{ hint | safe }}
@@ -56,6 +60,7 @@
 {%- endmacro %}
 
 {% macro controlError(name, error) -%}
+{% set error = getFormattedError(name, { error: error }) %}
 {% if error %}
 <span class="error-message" id="error-message-{{ name }}">{{ error }}</span>
 {% endif %}
@@ -98,20 +103,29 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro fieldset(name, label='', sublabel='', inline='', elements='', group='', visually_hidden=true) %}
+{% macro fieldset(name, label='', sublabel='', inline='', elements='', group='', visually_hidden=true, error='') %}
 {% set label = getFormattedProp(name, 'label', { value: label }) %}
 {% set sublabel = getFormattedProp(name, 'sublabel', { value: sublabel }) %}
 {% set inline = getElementProp(name, 'inline', { value: inline }) %}
 {% if not elements and getElementProp(name, 'elements') %}
 {% set elements = getElementProp(name, 'elements') %}
 {% endif %}
-	<h2 class="heading-small">{{ label | safe }}</h2>
-	{% if sublabel %}
+	{#<h2 class="heading-small">{{ label | safe }}</h2>#}
+	{#{% if sublabel %}
 	<p>{{ sublabel | safe }}</p>
-	{% endif %}
+	{% endif %}#}
 	<fieldset{% if inline %} class="inline"{% endif %}>
-		<legend{% if visually_hidden %} class="visuallyhidden"{% endif %}>
-			{{ label | safe }}
+		<legend{% if visually_hidden %} class="xvisuallyhidden"{% endif %}>
+		<span class="form-label-bold">{{ label | safe }}</span>
+			{% if sublabel %}
+			<span class="form-sublabel">{{ sublabel | safe }}</span>
+			{% endif %}
+		{% if hint %}
+			<span class="form-hint">
+				{{ hint | safe }}
+			</span>
+		{% endif %}
+		{{ controlError(name, error) }}
 		</legend>
 	{% if caller %}
 		{{ caller() }}
@@ -123,6 +137,8 @@
 {% endmacro %}
 
 {% macro radioGroup(name, inline='', reveals='', visually_hidden=true, or=false) %}
+{% set error = getError(name) %}
+<div class="form-group{% if error %} error{% endif %}">
 {% call fieldset(name, inline=inline) %}
 		{% set reveals = getElementProp(name, 'reveals') %}
 		{% set excludes = getElementProp(name, 'reveals_exclude') %}
@@ -162,6 +178,7 @@
 			{{ reveal(reveals=reveals, open=open) }}
 		{% endif %}
 {% endcall %}
+</div>
 {% endmacro %}
 
 {% macro reveal(reveals='', open=false) %}
@@ -174,6 +191,8 @@
 {% endmacro %}
 
 {% macro checkboxGroup(name, inline='', or=false) %}
+{% set error = getError(name) %}
+<div class="form-group{% if error %} error{% endif %}">
 {% call fieldset(name, inline=inline) %}
 	{% for option_name in getElementProp(name, 'options') %}
 		{% if option_name.value %}
@@ -203,12 +222,15 @@
 		{% endif %}
 	{% endfor %}
 {% endcall %}
+</div>
 {% endmacro %}
 
 {% macro control(name, type='', value='', error='', label='', sublabel='', hint='', heading='', inline='') -%}
 {% if checkNoDependency(name) %}
 {% set type = getElementProp(name, 'type', 'text', { value: type }) %}
+{#<div id="form-control_{{name}}">#}
 	{{ elementMacros[type](name, value=value, error=error, label=label, sublabel=sublabel, hint=hint, heading=heading, inline=inline) }}
+{#</div>#}
 {% endif %}
 {%- endmacro %}
 
