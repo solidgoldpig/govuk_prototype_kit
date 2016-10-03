@@ -129,10 +129,10 @@ function initRoutes (router) {
   var routesFlattened = {}
   var elementRouteMapping = {}
   function flattenRoutes (routes, urlPrefix, hierarchy) {
-    hierarchy = hierarchy || []
+    // hierarchy = hierarchy || []
     urlPrefix = urlPrefix.replace(/\/+$/, '')
     routes.forEach((routeName, index) => {
-      var routeHierarchy = hierarchy.slice()
+      var routeHierarchy = hierarchy ? hierarchy.slice() : []
       if (!routesFlattened[routeName]) {
         routesFlattened[routeName] = Object.assign({}, pages[routeName])
         var routeExtends = routesFlattened[routeName].extends
@@ -159,7 +159,7 @@ function initRoutes (router) {
           if (route.steps[i + 1]) {
             // console.log('REDIRECT STEP', step, route.steps[i + 1])
             routesFlattened[step].redirect = route.steps[i + 1]
-          } else if (routes[index + 1]) {
+          } else if (routes[index + 1] && hierarchy) {
             // console.log('MISSED STEP', step, routes[index + 1])
             routesFlattened[step].redirect = routes[index + 1]
           }
@@ -268,20 +268,26 @@ function initRoutes (router) {
             }
             return dependencyMet
           }
+          req.session.visited = req.session.visited || {}
+          var wizard = routeInstanceFinal.wizard
+          var wizardlastRoute
+          if (wizard) {
+            wizardlastRoute = wizardHierarchy[wizard].lastRoute
+          }
+          if (wizardlastRoute === routeName) {
+            routeInstanceFinal.wizardlastRoute = true
+            req.session.visited[wizardlastRoute] = true
+          }
           var redirectUrl = routeUrls[routeInstanceFinal.redirect] || routeInstanceFinal.redirect
           if (!errors && req.method === 'POST' && routeInstanceFinal.redirect && req.originalUrl !== routeInstanceFinal.redirect && req.body.updateForm !== 'yes') {
+            req.session.visited[routeName] = true
             if (req.originalUrl.match(/\/edit$/)) {
-              var wizard = routeInstanceFinal.wizard
-              if (wizard) {
-                var wizardlastRoute = wizardHierarchy[wizard].lastRoute
-                if (wizardlastRoute) {
-                  redirectUrl = getRouteUrl(wizardlastRoute)
-                }
+              if (wizardlastRoute) {
+                redirectUrl = getRouteUrl(wizardlastRoute)
               }
             }
             res.redirect(redirectUrl)
           } else {
-
             var recurseMatch = /##([\s\S]+?)##/
             function reformat (value, args) {
               if (value.match(recurseMatch)) {
@@ -332,7 +338,7 @@ function initRoutes (router) {
             function getError (element, options) {
               options = options || {}
               var error = options.error
-              if (errors) {
+              if (!error && errors) {
                 error = errors[element] ? errors[element] : ''
               }
               return error
@@ -340,12 +346,18 @@ function initRoutes (router) {
             function getFormattedError (element, options) {
               options = options || {}
               var error = getError(element, options)
-              var errorPrefix = options.header ? 'error-header:' : 'error:'
-              var formattedError = getElementProp(errorPrefix + error.name)
+              var formattedError = error
+              if (typeof error === 'object') {
+                var errorPrefix = options.header ? 'error-header:' : 'error:'
+                formattedError = getElementProp(errorPrefix + error.name)
+              }
               return format(formattedError, {
                 control: getElementProp(element, 'label'),
                 argument: error.argument
               })
+            }
+            function routeVisited(route) {
+              return req.session.visited[route]
             }
             var businessElements = routeInstanceFinal.elements
             if (businessElements) {
@@ -378,12 +390,14 @@ function initRoutes (router) {
             nunjucksEnv.addGlobal('getError', getError)
             nunjucksEnv.addGlobal('getFormattedError', getFormattedError)
             nunjucksEnv.addGlobal('checkNoDependency', checkNoDependency)
+            nunjucksEnv.addGlobal('routeVisited', routeVisited)
             nunjucksEnv.addGlobal('mergeObjects', function () {
               var merged = {}
               var args = Array.prototype.slice.call(arguments)
               while (args.length) {
                 merged = Object.assign(merged, args.shift())
               }
+              nunjucksEnv.addGlobal('macros', merged)
               return merged
             })
             setTimeout(() => {
@@ -391,7 +405,8 @@ function initRoutes (router) {
                 route: routeInstanceFinal,
                 savedfields: JSON.stringify(req.session.autofields, null, 2),
                 autofields: req.session.autofields,
-                wizard: wizardHierarchy[routeInstanceFinal.wizard]
+                wizard: wizardHierarchy[routeInstanceFinal.wizard],
+                visited: req.session.visited
               })
             }, 0)
           }

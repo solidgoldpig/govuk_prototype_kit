@@ -1,6 +1,8 @@
 {% macro pap_answer(name) %}
-<div class="answer">
+<div class="ap_action">
 <h2 class="heading-medium">{{ getFormattedProp(name, 'title') }}</h2>
+{{ macros.checkboxGroup(name, label='', options=[name])}}
+<div class="ap_action_body">
 <div class="answer_body">
 {{ getFormattedBody(name) | safe }}
 {#<div class="answer_more">
@@ -22,5 +24,11 @@
 {% endfor %}
 </ul>
 {% endif %}
+</div>
+<div class="ap_action_tools">
+<p class="add-note">Add note</p>
+<p class="schedule-reminder">Get reminder</p>
+</div>
+</div>
 </div>
 {% endmacro %}

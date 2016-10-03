@@ -1,9 +1,14 @@
 {% extends "layout_elements.html" %}
 
 {% block head %}
-{% if false %}
+<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+{% if true %}
+{#
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/govuk-template.css?0.18.1">
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/elements-page.css">
+#}
+<link rel="stylesheet" href="/public/stylesheets/wip-govuk-template.css">
+<link rel="stylesheet" href="/public/stylesheets/wip-elements-page.css">
 {% else %}
 {{ super() }}
 {% endif %}
@@ -25,6 +30,91 @@
 			clear: both;
 		}
 	}
+.ap_action {
+  border: solid 3px #000000;
+  padding: 15px 15px 0;
+  position: relative;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.ap_action h2 {
+  cursor: pointer;
+  margin-top: 0;
+  margin-right: 50px;
+}
+.answer_body p:last-child {
+  margin-bottom: 0;
+}
+
+.ap_action_tools {
+  border-top: solid 3px #000000;
+  margin: 15px -15px 0;
+  padding: 15px;
+}
+.ap_action_tools p {
+  margin: 0 15px 0 0;
+  display: inline-block;
+}
+.ap_action_tools p:before {
+  padding-right: 5px;
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.ap_action legend {
+  display: none;
+}
+.ap_action > .form-group {
+  margin: 0;
+}
+.ap_action fieldset {
+  position: absolute;
+  top: 4px;
+  right: -16px;
+  width: 34px;
+  height: 41px;
+  overflow: hidden;
+}
+@media (min-width: 641px) {
+  .ap_action fieldset {
+    top: 12px;
+    right: -10px;
+  }
+}
+.js-enabled .ap_action .block-label.selection-button-checkbox::before {
+  {#position: relative;
+  display: block;
+  margin-bottom: 10px;#}
+}
+.add-note:before {
+  content: '🗨';
+  content: "\f075";
+}
+.schedule-reminder:before {
+  content: '⏰';
+  content: '🔔';
+  content: "\f0f3";
+}
+.related-container {
+  margin-top: 50px;
+}
+.access_code {
+  border: solid 3px #000000;
+  padding: 15px;
+}
+.access_code * {
+  margin: 0;
+}
+.access_code-value {
+  font-size: 2em;
+  margin: 0;
+}
+.final-actions {
+  margin-top: 40px;
+}
 </style>
 {% endblock %}
 
@@ -38,13 +128,18 @@ Action Plan{% if title %} - {{ title }}{% endif %}
   <p>Make a plan for child arrangements</p>
 	<div class="grid-row">
 		<div class="column-two-thirds">
+
+{#
       {% if route.wizard %}
       <ul>
       {% for step in wizard %}
-        <li><a href="{{ getRouteUrl(step.route) }}">{{ getFormattedProp('route:'+step.route, 'heading') }}</a></li>
+        {% set visited = routeVisited(step.route) %}
+        <li>{% if visited === true %}<a href="{{ getRouteUrl(step.route) }}">{% endif %}{{ getFormattedProp('route:'+step.route, 'heading') }}{% if visited === true %}</a>{% endif %}</li>
       {% endfor %}
       </ul>
       {% endif %}
+#}
+
       {% if errors %}
 <div class="error-summary" role="group" aria-labelledby="error-summary-heading" tabindex="-1">
 
@@ -61,9 +156,7 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 </div>
       {% endif %}
 			{{ element.page_header(route.key, start_page=route.start_page) }}
-      <!-- {{ route.hierarchy | dump }}<br>
-      {{ wizard | dump }} -->
-      <!--{{errors | dump}}-->
+
 			<form action="{{ req.originalUrl }}" method="post" class="form">
 				<input type="hidden" name="updateForm"> {{ element.group(elements=route.elements) }}
 				<div class="action-buttons">
@@ -87,6 +180,23 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 			</ul>
 			{#{% endif %}#}
 		</div>
+
+    <div class="related-container column-one-third">
+    <aside class="related" id="related">
+      <div class="access_code">
+        <h3 class="heading-medium">Access code</h3>
+        <p class="access_code-value">YZ8TI</p>
+        <p class="access_code-instructions">Use to access your plan again</p>
+      </div>
+      {% if route.wizardlastRoute %}
+      <div class="final-actions">
+        <p><a class="button" href="{{ getRouteUrl(wizard[0].route) }}">Edit your responses</a></p>
+        <p><input class="button share-plan" type="submit" value="Share your plan"></p>
+      </div>
+      {% endif %}
+    </aside>
+    </div>
+
 	</div>
 </main>
 {% endblock %}
@@ -100,6 +210,20 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 jQuery('[name=children_number], [name=children_resident], [name=parent_safety], [name=children_age]').on('change', function(e){
   jQuery('[name=updateForm]').val('yes')
   jQuery('form').submit()
+})
+jQuery('.add-note, .schedule-reminder, .share-plan').on('click', function(e){
+  var $el = jQuery(this)
+  var feature = $el.text() || $el.val()
+  alert('The “' + feature + '” feature has not been implemented yet')
+  e.preventDefault()
+})
+
+jQuery('.ap_action input[type=checkbox]').on('change', function(e){
+  var checked = jQuery(this).is(':checked')
+  jQuery(this).closest('.ap_action').find('.ap_action_body')[(checked ? 'add' : 'remove') + 'Class']('js-hidden')
+})
+jQuery('.ap_action h2').on('click', function(e){
+  jQuery(this).closest('.ap_action').find('.ap_action_body').toggleClass('js-hidden')
 })
 </script>
 {% endblock %}

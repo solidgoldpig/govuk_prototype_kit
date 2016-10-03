@@ -133,7 +133,7 @@
 	"route:action_plan": {
 		"title": "Get started",
 		"heading": "Make a plan for child arrangements",
-		"lede": "Your personalised action plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
+		"lede": "Your plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
 	},
 	"route:staying_safe": {
 		"title": "",
@@ -154,8 +154,8 @@
 	},
 	"route:your_plan": {
 		"title": "",
-		"heading": "Your personalised action plan",
-		"heading_size": "large"
+		"heading": "Your plan for child arrangements",
+		"heading_size": "xlarge"
 	},
 	"route:monster": {
 		"title": "",
@@ -533,6 +533,14 @@
 		"options": [
 			"yes",
 			"no"
+		]
+	},
+	"theme:children_support": {
+		"type": "group",
+		"heading": "How to support your children",
+		"elements": [
+			"answer:parental_involvement",
+			"answer:written_agreement"
 		]
 	},
 	"answer:child_safety": {

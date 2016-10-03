@@ -6,8 +6,10 @@
 	'small': 'h4'
 } %}
 {% set heading = getFormattedProp(name, 'heading', { value: heading }) %}
+{% if heading %}
 {% set size = getElementProp(name, 'size', { value: size, defaultValue: 'medium' } ) %}
 	<{{ sizes[size] }} class="heading-{{ size }}">{{ heading }}</{{ sizes[size] }}>
+{% endif %}
 {%- endmacro %}
 
 {% macro blockLede(name, lede='') %}
@@ -40,7 +42,7 @@
 	</div>
 {%- endmacro %}
 
-{% macro controlLabel(name, label='', sublabel='', hint='', optional='') -%}
+{% macro controlLabel(name, label='', sublabel='', hint='', optional='', error='') -%}
 {% set label = getFormattedProp(name, 'label', name, { value: label }) %}
 {% set sublabel = getFormattedProp(name, 'sublabel', { value: sublabel }) %}
 {% set optional = getElementProp(name, 'optional', { value: optional }) %}
@@ -68,7 +70,7 @@
 
 {% macro input(name, type='text') -%}
 	{% call formGroup(name, error=error) -%}
-		{{ controlLabel(name, label=label, sublabel=sublabel, hint=hint) }}
+		{{ controlLabel(name, label=label, sublabel=sublabel, hint=hint, error=error) }}
 		{% set value = getValue(name) %}
 		{% if type === 'text' and getElementProp(name, 'multiline') %}
 			<textarea class="form-control" name="{{ name }}" id="{{ name }}">{{ value | safe }}</textarea>
@@ -190,11 +192,15 @@
 {% endif %}
 {% endmacro %}
 
-{% macro checkboxGroup(name, inline='', or=false) %}
+{% macro checkbox() %}
+
+{% endmacro %}
+
+{% macro checkboxGroup(name, inline='', label='', or=false, options='') %}
 {% set error = getError(name) %}
 <div class="form-group{% if error %} error{% endif %}">
-{% call fieldset(name, inline=inline) %}
-	{% for option_name in getElementProp(name, 'options') %}
+{% call fieldset(name, label=label, inline=inline) %}
+	{% for option_name in getElementProp(name, 'options', {value:options}) %}
 		{% if option_name.value %}
 			{% set option = option_name %}
 		{% else %}
@@ -234,7 +240,8 @@
 {% endif %}
 {%- endmacro %}
 
-{% macro group(name='', elements=[]) %}
+{% macro group(name='', heading='', elements=[]) %}
+{{ blockHeading(name, heading=heading) }}
 {% if name %}
 {% set elements = getElementProp(name, 'elements') %}
 {% endif %}
@@ -262,31 +269,7 @@
 	group: group
 } %}
 
+{% if mergeObjects %}
 {% import "macros/custom_elements.nunjucks" as custom_element %}
 {% set elementMacros = mergeObjects(elementMacros, custom_element) %}
-
-
-
-{#
-
-* errors
-	- error / notification type
-	- errors object
-	- explicit error
-
-* required fields
-
-* "model" values??
-
-
-#}
-
-{#
-{% if inline === '' %}
-{% if getElementProp(name, 'inline') === false %}
-{% set inline = false %}
-{% else %}
-{% set inline = true %}
 {% endif %}
-{% endif %}
-#}
