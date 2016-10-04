@@ -13,12 +13,33 @@
 {{ super() }}
 {% endif %}
 <style type="text/css">
+.grid-row {
+  margin-top: 50px;
+}
+
+.grid-row h1 {
+  margin-top: 0;
+}
+
+legend {
+  margin-bottom: 10px;
+}
+.form-sublabel {
+  display: block;
+  margin-bottom: 10px;
+}
+
+  span.form-label-bold {
+    font-size: 24px;
+  }
+
 	fieldset + .form-group {
 		margin-top: 30px;
 	}
 	
 	.action-buttons {
-		margin-top: 40px;
+    clear: both;
+		padding-top: 20px;
 	}
 	
 	@media (min-width: 641px) {
@@ -107,7 +128,7 @@
   content: "\f0f3";
 }
 .related-container {
-  margin-top: 50px;
+  margin-top: 0;
 }
 .access_code {
   border: solid 3px #000000;
@@ -191,7 +212,7 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 
 			{#{% if route.name === 'your_plan' %}#} {% if false %}
 			<pre style="white-space:pre-wrap">{{ savedfields | dump }}</pre>{% endif %}
-      <h3 class="heading-medium" style="margin-top: 100px">Quick dev links</h3>
+      <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
 			<ul>
         {{ easyLink(route.wizard) }}
         {% for step in wizard %}
@@ -229,16 +250,16 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 </main>
 {% endblock %}
 {% macro easyLink(name) %}
-<li><a href="{{ getRouteUrl(name) }}">{{ getFormattedProp('route:'+name, 'heading') }}</a> | <a href="{{ getRouteUrl(name, null, {edit:true}) }}">(edit)</a></li>
+<li><a href="{{ getRouteUrl(name) }}">{{ getFormattedProp('route:'+name, ['title', 'heading']) }}</a> | <a href="{{ getRouteUrl(name, null, {edit:true}) }}">(edit)</a></li>
 {% endmacro %}
 
 {% block body_end %}
 {% include "includes/scripts.html" %}
 <script type="text/javascript">
-jQuery('[name=children_number], [name=children_resident], [name=parent_safety], [name=children_age]').on('change', function(e){
-  jQuery('[name=updateForm]').val('yes')
-  jQuery('form').submit()
-})
+//jQuery('[name=children_number], [name=children_resident], [name=parent_safety], [name=children_age]').on('change', function(e){
+//  jQuery('[name=updateForm]').val('yes')
+//  jQuery('form').submit()
+//})
 jQuery('.add-note, .schedule-reminder, .share-plan').on('click', function(e){
   var $el = jQuery(this)
   var feature = $el.text() || $el.val()

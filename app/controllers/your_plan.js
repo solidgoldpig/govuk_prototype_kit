@@ -16,23 +16,22 @@ var yourPlanController = function (req, res) {
           'more_than_2_years': 3
         },
         relationship_status: {
-          'comfortable': 1,
-          'awkward': 2,
-          'stressful': 2,
-          'hostile': 3,
+          'friendly': 1,
+          'unfriendly': 2,
+          'agressive': 3,
           'no_contact': 3
         },
-        communicating_about_arrangements_status: {
+        communications_about_arrangements: {
           'very_easy': 1,
           'easy': 1,
-          'so_so': 2,
+          'tolerable': 2,
           'difficult': 3,
           'very_difficult': 3
         },
-        'communicating_methods_in_person': 1,
-        'communicating_methods_phone': 1,
-        'communicating_methods_online': 1,
-        'communicating_methods_none': 3
+        'communication_methods_in_person': 1,
+        'communication_methods_phone': 1,
+        'communication_methods_online': 1,
+        'communication_methods_none': 3
       }
 
       Object.keys(weightings).forEach(function (question) {

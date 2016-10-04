@@ -153,15 +153,15 @@ function initRoutes (router) {
         route.url = urlPrefix + '/' + route.url
       }
       if (route.steps) {
-        // console.log('REDIRECT TOP', routeName, route.steps[0])
+        console.log('REDIRECT TOP', routeName, route.steps[0])
         routesFlattened[routeName].redirect = route.steps[0]
         route.steps.forEach((step, i) => {
           routesFlattened[step] = Object.assign({}, pages[step])
           if (route.steps[i + 1]) {
-            // console.log('REDIRECT STEP', step, route.steps[i + 1])
+            console.log('REDIRECT STEP', step, route.steps[i + 1])
             routesFlattened[step].redirect = route.steps[i + 1]
           } else if (routes[index + 1] && hierarchy) {
-            // console.log('MISSED STEP', step, routes[index + 1])
+            console.log('MISSED STEP', step, routes[index + 1])
             routesFlattened[step].redirect = routes[index + 1]
           }
         })
@@ -191,11 +191,12 @@ function initRoutes (router) {
   // console.log('wizardHierarchy', JSON.stringify(wizardHierarchy, null, 2))
 
   var routeUrls = {}
-  // console.log(Object.keys(routesFlattened).sort(function(a, b){
-  //   return a.url > b.url
-  // }).reverse())
+  var blah = Object.keys(routesFlattened).sort(function(a, b){
+    return getRouteUrl(a).localeCompare(getRouteUrl(b))
+  }).reverse()
+  console.log(blah)
   Object.keys(routesFlattened).sort(function(a, b){
-    return a.url > b.url
+    return getRouteUrl(a).localeCompare(getRouteUrl(b))
   }).reverse().forEach(routeName => {
     var route = routesFlattened[routeName]
     console.log('Serving', routeName, '=>', route.url)

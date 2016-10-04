@@ -1,7 +1,6 @@
 {
   "routes": [
-    "action_plan",
-    "staying_safe2"
+    "action_plan"
   ],
   "route": {
     "action_plan": {
@@ -10,65 +9,158 @@
       "elements": [
         "entrypoint-copy"
       ],
-      "steps": [
-        "staying_safe",
-        "your_children",
-        "you_and_other_parent",
-        "legal_help",
-        "your_plan"
-      ]
-    },
-    "staying_safe": {
-      "url": "staying-safe",
-      "elements": [
-        "child_safety",
-        "parent_safety",
-        "child_flight"
-      ],
-      "steps": [
-        "monster",
-        "crazee"
-      ]
-    },
-    "monster": {
-      "url": "monstah"
-    },
-    "crazee": {
-      "url": "crazee",
-      "elements": [
-        "gosh",
-        "wosh"
-      ]
-    },
-    "staying_safe2": {
-      "url": "another-staying-safe",
-      "extends": "staying_safe",
-      "steps": null
-    },
-    "your_children": {
-      "url": "your-children",
-      "elements": [
+      "sheps": [
+        "legal_rights",
+        "arrangements_duration",
+        "options_tried",
         "children_number",
         "children_age",
         "children_resident",
+        "children_access_disagreements",
         "children_input",
+        "children_additional_support",
+        "child_safety",
+        "child_flight",
+        "relationship_status",
+        "parent_safety",
+        "communication_methods",
+        "communications_about_arrangements",
+        "childcare_disagreements",
+        "official_involvement_required",
+        "your_plan"
+      ],
+      "steps": [
+        "legal_rights",
+        "arrangements_duration",
+        "options_tried",
+        "children_number",
+        "children_age",
+        "children_resident",
+        "children_access_disagreements",
+        "children_input",
+        "children_additional_support",
+        "child_safety",
+        "child_flight",
+        "relationship_status",
+        "parent_safety",
+        "communication_methods",
+        "communications_about_arrangements",
+        "childcare_disagreements",
+        "official_involvement_required",
+        "your_plan"
+      ],
+      "fleps": [
+        "staying_safe",
+        "your_children",
+        "you_and_other_parent",
+        "legal_help"
+      ]
+    },
+    "legal_rights": {
+      "url": "legal-rights",
+      "elements": [
+        "legal_rights"
+      ]
+    },
+    "arrangements_duration": {
+      "url": "arrangements-duration",
+      "elements": [
+        "arrangements_duration"
+      ]
+    },
+    "options_tried": {
+      "url": "options-tried",
+      "elements": [
+        "options_tried"
+      ]
+    },
+    "children_number": {
+      "url": "number-of-children",
+      "elements": [
+        "children_number"
+      ]
+    },
+    "children_age": {
+      "url": "age-of-children",
+      "elements": [
+        "children_age"
+      ]
+    },
+    "children_resident": {
+      "url": "where-children-live",
+      "elements": [
+        "children_resident"
+      ]
+    },
+    "children_access_disagreements": {
+      "url": "disagreements-about-access",
+      "elements": [
+        "children_access_disagreements"
+      ]
+    },
+    "children_input": {
+      "url": "children-input",
+      "elements": [
+        "children_input"
+      ]
+    },
+    "children_additional_support": {
+      "url": "children-additional-support",
+      "elements": [
         "children_additional_support"
       ]
     },
-    "you_and_other_parent": {
-      "url": "you-and-other-parent",
+    "child_safety": {
+      "url": "child-safety",
       "elements": [
-        "arrangements_duration",
-        "relationship_status",
+        "child_safety"
+      ]
+    },
+    "parent_safety": {
+      "url": "parent-safety",
+      "elements": [
+        "parent_safety"
+      ]
+    },
+    "child_flight": {
+      "url": "child-flight",
+      "elements": [
+        "child_flight"
+      ]
+    },
+    "relationship_status": {
+      "url": "relationship-status",
+      "elements": [
+        "relationship_status"
+      ]
+    },
+    "communication_methods": {
+      "url": "communication-methods",
+      "elements": [
+        "communication_methods"
+      ]
+    },
+    "communications_about_arrangements": {
+      "url": "communications-about-arrangements",
+      "elements": [
+        "communications_about_arrangements"
+      ]
+    },
+    "childcare_disagreements": {
+      "url": "childcare-disagreements",
+      "elements": [
+        "childcare_disagreements"
+      ]
+    },
+    "official_involvement_required": {
+      "url": "official-involvement-required",
+      "elements": [
         "official_involvement_required"
       ]
     },
     "legal_help": {
       "url": "legal-help-and-advice",
       "elements": [
-        "childcare_disagreements",
-        "legal_rights",
-        "options_tried",
         "language_support"
       ]
     },
