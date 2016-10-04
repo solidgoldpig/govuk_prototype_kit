@@ -286,7 +286,7 @@
 			"no"
 		]
 	},
-	"children_have_a_say": {
+	"children_input": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Would you like your ##default:children## to have a say in any agreements you make?",
@@ -311,7 +311,7 @@
 			"unsure"
 		]
 	},
-	"arrangements_how_long": {
+	"arrangements_duration": {
 		"type": "radioGroup",
 		"inline": false,
 		"label": "How long have you been trying to make child arrangements?",
@@ -441,7 +441,7 @@
 		"multiline": true,
 		"label": "How else do you communicate?"
 	},
-	"parent_official_org_engagement": {
+	"official_involvement_required": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Would you like information about how an official organisation could help to get the other parent to engage with making child arrangements?",
@@ -459,7 +459,7 @@
 			"no"
 		]
 	},
-	"parental_rights_info": {
+	"legal_rights": {
 		"type": "radioGroup",
 		"inline": true,
 		"label": "Would you like information about your legal rights and responsibilities as a parent?",
@@ -468,60 +468,60 @@
 			"no"
 		]
 	},
-	"tried": {
+	"options_tried": {
 		"type": "checkboxGroup",
 		"inline": false,
 		"label": "Options tried",
 		"sublabel": "Tick anything that you have already tried to help agree your arrangements",
 		"options": [
-			"tried_written_agreement",
-			"tried_counselling_individual",
-			"tried_counselling_couples",
-			"tried_mediation",
-			"tried_spip",
-			"tried_lawyer",
-			"tried_gp",
-			"tried_leader",
-			"tried_court",
-			"tried_child_contact_centre",
-			"tried_other"
+			"options_tried_written_agreement",
+			"options_tried_counselling_individual",
+			"options_tried_counselling_couples",
+			"options_tried_mediation",
+			"options_tried_spip",
+			"options_tried_lawyer",
+			"options_tried_gp",
+			"options_tried_leader",
+			"options_tried_court",
+			"options_tried_child_contact_centre",
+			"options_tried_other"
 		]
 	},
-	"tried_written_agreement": {
+	"options_tried_written_agreement": {
 		"label": "Made a written agreement with your ex-partner"
 	},
-	"tried_counselling_individual": {
+	"options_tried_counselling_individual": {
 		"label": "Individual counselling"
 	},
-	"tried_counselling_couples": {
+	"options_tried_counselling_couples": {
 		"label": "Couples counselling"
 	},
-	"tried_mediation": {
+	"options_tried_mediation": {
 		"label": "Mediation"
 	},
-	"tried_spip": {
+	"options_tried_spip": {
 		"label": "Separating parents information plan workshop (SPIP)"
 	},
-	"tried_lawyer": {
+	"options_tried_lawyer": {
 		"label": "Consulted a lawyer"
 	},
-	"tried_gp": {
+	"options_tried_gp": {
 		"label": "Talked to your GP"
 	},
-	"tried_leader": {
+	"options_tried_leader": {
 		"label": "Talked to religious or community leader"
 	},
-	"tried_court": {
+	"options_tried_court": {
 		"label": "Been to court"
 	},
-	"tried_child_contact_centre": {
+	"options_tried_child_contact_centre": {
 		"label": "Child contact centre"
 	},
-	"tried_other": {
+	"options_tried_other": {
 		"label": "Other, please specify",
-		"reveals": "tried_other_value"
+		"reveals": "options_tried_other_value"
 	},
-	"tried_other_value": {
+	"options_tried_other_value": {
 		"type": "text",
 		"multiline": true,
 		"label": "What other method did you try?"
@@ -539,12 +539,12 @@
 		"type": "group",
 		"heading": "How to support your children",
 		"elements": [
-			"answer:parental_involvement",
-			"answer:written_agreement"
+			"action:parental_involvement",
+			"action:written_agreement"
 		]
 	},
-	"answer:child_safety": {
-		"type": "pap_answer",
+	"action:child_safety": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"child_safety": "yes|unsure"
@@ -556,8 +556,8 @@
 			"link:local_authority_child_safety"
 		]
 	},
-	"answer:parent_safety": {
-		"type": "pap_answer",
+	"action:parent_safety": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"parent_safety": "yes|unsure"
@@ -571,8 +571,8 @@
 			"phone": "0808 2000 247"
 		}
 	},
-	"answer:child_flight": {
-		"type": "pap_answer",
+	"action:child_flight": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"child_flight": "yes|unsure"
@@ -586,11 +586,11 @@
 			"link:representing_oneself"
 		]
 	},
-	"answer:children_access_disagreements": {
-		"type": "pap_answer",
+	"action:children_access_disagreements": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"!tried_child_contact_centre": ".*",
+				"!options_tried_child_contact_centre": ".*",
 				"children_resident": "applicant|respondent"
 			}
 		],
@@ -602,11 +602,11 @@
 			"phone": "0845 4500 2807"
 		}
 	},
-	"answer:children_have_a_say": {
-		"type": "pap_answer",
+	"action:children_input": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"children_have_a_say": "yes|unsure"
+				"children_input": "yes|unsure"
 			}
 		],
 		"title": "Discuss any arrangements with your ##default:children##",
@@ -615,8 +615,8 @@
 			"link:talking_with_children"
 		]
 	},
-	"answer:children_additional_support": {
-		"type": "pap_answer",
+	"action:children_additional_support": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"children_additional_support": "yes|unsure"
@@ -630,11 +630,11 @@
 			"phone": ""
 		}
 	},
-	"answer:spip": {
-		"type": "pap_answer",
+	"action:spip": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"!tried_spip": "yes",
+				"!options_tried_spip": "yes",
 				"status_level": "amber|red"
 			}
 		],
@@ -644,11 +644,11 @@
 			"link:local_spip"
 		]
 	},
-	"answer:mediation": {
-		"type": "pap_answer",
+	"action:mediation": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"!tried_mediation": "yes",
+				"!options_tried_mediation": "yes",
 				"status_level": "green"
 			}
 		],
@@ -660,11 +660,11 @@
 			"link:local_mediator"
 		]
 	},
-	"answer:lawyer_mediation": {
-		"type": "pap_answer",
+	"action:lawyer_mediation": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"tried_mediation": "yes",
+				"options_tried_mediation": "yes",
 				"status_level": "amber"
 			}
 		],
@@ -675,8 +675,8 @@
 			"link:find_lawyer_mediator"
 		]
 	},
-	"answer:odr": {
-		"type": "pap_answer",
+	"action:odr": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"status_level": "green|amber"
@@ -689,12 +689,12 @@
 			"link:amicable_app"
 		]
 	},
-	"answer:counselling": {
-		"type": "pap_answer",
+	"action:counselling": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"!tried_counselling_individual": "yes",
-				"!tried_counselling_couples": "yes",
+				"!options_tried_counselling_individual": "yes",
+				"!options_tried_counselling_couples": "yes",
 				"status_level": "amber|red"
 			}
 		],
@@ -704,14 +704,14 @@
 			"link:local_counsellor"
 		]
 	},
-	"answer:parental_involvement": {
-		"type": "pap_answer",
+	"action:parental_involvement": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"parent_official_org_engagement": "yes"
+				"official_involvement_required": "yes"
 			},
 			{
-				"tried_written_agreement": ".*"
+				"options_tried_written_agreement": ".*"
 			}
 		],
 		"title": "Get help to make sure the other parent gets involved in child arrangements",
@@ -720,8 +720,8 @@
 			"link:parental_involvement_service"
 		]
 	},
-	"answer:legal_disagreements": {
-		"type": "pap_answer",
+	"action:legal_disagreements": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"childcare_disagreements": "yes"
@@ -735,11 +735,11 @@
 			"link:family_lawyer"
 		]
 	},
-	"answer:legal_info": {
-		"type": "pap_answer",
+	"action:legal_info": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"parental_rights_info": "yes"
+				"legal_rights": "yes"
 			}
 		],
 		"title": "Find out what your legal rights and responsibilities are",
@@ -750,11 +750,11 @@
 			"link:family_lawyer"
 		]
 	},
-	"answer:written_agreement": {
-		"type": "pap_answer",
+	"action:written_agreement": {
+		"type": "ap_action",
 		"depends": [
 			{
-				"!tried_written_agreement": ".*"
+				"!options_tried_written_agreement": ".*"
 			}
 		],
 		"title": "Make a written plan of your child arrangements",
@@ -763,8 +763,8 @@
 			"link:parenting_plans"
 		]
 	},
-	"answer:language_support": {
-		"type": "pap_answer",
+	"action:language_support": {
+		"type": "ap_action",
 		"depends": [
 			{
 				"language_support": "yes"

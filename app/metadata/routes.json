@@ -51,24 +51,24 @@
         "children_number",
         "children_age",
         "children_resident",
-        "children_have_a_say",
+        "children_input",
         "children_additional_support"
       ]
     },
     "you_and_other_parent": {
       "url": "you-and-other-parent",
       "elements": [
-        "arrangements_how_long",
+        "arrangements_duration",
         "relationship_status",
-        "parent_official_org_engagement"
+        "official_involvement_required"
       ]
     },
     "legal_help": {
       "url": "legal-help-and-advice",
       "elements": [
         "childcare_disagreements",
-        "parental_rights_info",
-        "tried",
+        "legal_rights",
+        "options_tried",
         "language_support"
       ]
     },
@@ -76,21 +76,21 @@
       "url": "your-plan",
       "controller": "your_plan",
       "elements": [
-        "answer:child_safety",
-        "answer:parent_safety",
-        "answer:child_flight",
-        "answer:children_access_disagreements",
-        "answer:children_have_a_say",
-        "answer:children_additional_support",
-        "answer:spip",
-        "answer:counselling",
-        "answer:mediation",
-        "answer:odr",
-        "answer:lawyer_mediation",
+        "action:child_safety",
+        "action:parent_safety",
+        "action:child_flight",
+        "action:children_access_disagreements",
+        "action:children_input",
+        "action:children_additional_support",
+        "action:spip",
+        "action:counselling",
+        "action:mediation",
+        "action:odr",
+        "action:lawyer_mediation",
         "theme:children_support",
-        "answer:legal_disagreements",
-        "answer:legal_info",
-        "answer:language_support"
+        "action:legal_disagreements",
+        "action:legal_info",
+        "action:language_support"
       ]
     }
   }

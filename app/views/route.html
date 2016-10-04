@@ -34,22 +34,24 @@
   border: solid 3px #000000;
   padding: 15px 15px 0;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   overflow: hidden;
 }
 .ap_action h2 {
   cursor: pointer;
-  margin-top: 0;
-  margin-right: 50px;
+  margin: 0 0 10px 36px;
 }
-.answer_body p:last-child {
+.ap_action_body {
+  margin-top: 15px;
+}
+.answer_body > p:last-child {
   margin-bottom: 0;
 }
 
 .ap_action_tools {
   border-top: solid 3px #000000;
   margin: 15px -15px 0;
-  padding: 15px;
+  padding: 10px 15px;
 }
 .ap_action_tools p {
   margin: 0 15px 0 0;
@@ -73,22 +75,28 @@
 .ap_action fieldset {
   position: absolute;
   top: 4px;
-  right: -16px;
+  left: 4px;
   width: 34px;
   height: 41px;
   overflow: hidden;
 }
 @media (min-width: 641px) {
+  .ap_action {
+    margin-bottom: 20px;
+  }
+  .ap_action h2 {
+    margin: 3px 0 12px 50px;
+  }
   .ap_action fieldset {
     top: 12px;
-    right: -10px;
+    left: 15px;
   }
 }
-.js-enabled .ap_action .block-label.selection-button-checkbox::before {
-  {#position: relative;
+{#.js-enabled .ap_action .block-label.selection-button-checkbox::before {
+  position: relative;
   display: block;
-  margin-bottom: 10px;#}
-}
+  margin-bottom: 10px;
+}#}
 .add-note:before {
   content: '🗨';
   content: "\f075";
@@ -114,6 +122,18 @@
 }
 .final-actions {
   margin-top: 40px;
+}
+
+.already-got-access_code .form-group {
+  padding-top: 10px;
+}
+
+.already-got-access_code input[type=text] {
+  width: 100%;
+}
+.access_code-submit {
+  clear: both;
+  padding-top: 10px;
 }
 </style>
 {% endblock %}
@@ -184,9 +204,17 @@ Action Plan{% if title %} - {{ title }}{% endif %}
     <div class="related-container column-one-third">
     <aside class="related" id="related">
       <div class="access_code">
+        {% if route.start_page %}
+        <div class="already-got-access_code">
+          <p>If you have already made a plan and have an access code, please enter it here</p>
+          {{ macros.text('already-got-one', label='Access code') }}
+          <p class="access_code-submit"><button class="button" type="submit">Submit</button></p>
+        </div>
+        {% else %}
         <h3 class="heading-medium">Access code</h3>
-        <p class="access_code-value">YZ8TI</p>
-        <p class="access_code-instructions">Use to access your plan again</p>
+        <p class="access_code-value">{{ access_code }}</p>
+        <p class="access_code-instructions">Use this code to access your plan again</p>
+        {% endif %}
       </div>
       {% if route.wizardlastRoute %}
       <div class="final-actions">
@@ -224,6 +252,11 @@ jQuery('.ap_action input[type=checkbox]').on('change', function(e){
 })
 jQuery('.ap_action h2').on('click', function(e){
   jQuery(this).closest('.ap_action').find('.ap_action_body').toggleClass('js-hidden')
+})
+jQuery('.access_code-submit button').on('click', function(e) {
+  e.preventDefault()
+  var code_value = jQuery('[name=already-got-one]').val()
+  document.location.href = "{{ getRouteUrl(wizard[wizard.length - 1].route) }}" + (code_value ? ('/' + code_value) : '')
 })
 </script>
 {% endblock %}

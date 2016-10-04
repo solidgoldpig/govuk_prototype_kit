@@ -1,4 +1,4 @@
-{% macro pap_answer(name) %}
+{% macro ap_action(name) %}
 <div class="ap_action">
 <h2 class="heading-medium">{{ getFormattedProp(name, 'title') }}</h2>
 {{ macros.checkboxGroup(name, label='', options=[name])}}

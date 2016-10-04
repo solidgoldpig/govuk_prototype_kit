@@ -10,7 +10,7 @@ var yourPlanController = function (req, res) {
         return !value || (newValue > value) ? newValue : value
       }
       var weightings = {
-        arrangements_how_long: {
+        arrangements_duration: {
           'less_than_6_months': 1,
           '6_months_to_2_years': 2,
           'more_than_2_years': 3

@@ -5,6 +5,7 @@ var set = require('lodash/get')
 var flattenDeep = require('lodash/flattenDeep')
 var MessageFormat = require('messageformat')
 var Markdown = require('markdown').markdown.toHTML
+var shortid = require('shortid')
 
 var jsonschema = require('jsonschema');
 var validator = new jsonschema.Validator();
@@ -208,6 +209,13 @@ function initRoutes (router) {
       var routeHandler = routeController(req, res)
       // Call controller if exists
       console.log('use routeName', routeName)
+      if (!req.session.access_code) {
+        req.session.access_code = shortid.generate()
+      }
+      if (req.url !== '/') {
+        req.session.access_code = req.url.replace(/^\//, '')
+      }
+      var access_code = req.session.access_code
       req.session.autofields = req.session.autofields || {}
       var elements = (route.elements || []).slice()
       var elements_to_validate = elements.slice()
@@ -406,7 +414,8 @@ function initRoutes (router) {
                 savedfields: JSON.stringify(req.session.autofields, null, 2),
                 autofields: req.session.autofields,
                 wizard: wizardHierarchy[routeInstanceFinal.wizard],
-                visited: req.session.visited
+                visited: req.session.visited,
+                access_code: access_code
               })
             }, 0)
           }

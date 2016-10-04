@@ -41,6 +41,7 @@
     "prompt": "^0.2.14",
     "readdir": "0.0.6",
     "serve-favicon": "2.3.0",
+    "shortid": "^2.2.6",
     "standard": "^7.1.2"
   }
 }
