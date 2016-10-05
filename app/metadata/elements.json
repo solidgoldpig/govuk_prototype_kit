@@ -14,12 +14,12 @@
 	},
 	"entrypoint-copy": {
 		"type": "body",
-		"body": "You don’t have to answer every question but the more information you provide, the more helpful your plan will be. We won’t save any of your details unless you say we can."
+		"body": ""
 	},
 	"route:action_plan": {
 		"title": "Get started",
-		"heading": "Make a plan for child arrangements",
-		"lede": "Your plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
+		"heading": "Make a plan for agreeing child arrangements",
+		"xlede": "Your plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
 	},
 	"route:legal_rights": {
 		"title": "Legal rights",
@@ -149,7 +149,7 @@
 		]
 	},
 	"children_number": {
-		"type": "radioGroup",
+		"type": "number",
 		"label": "How many children are you trying to make arrangements for?",
 		"options": [
 			"children_number_1",
@@ -177,7 +177,112 @@
 	"children_age": {
 		"type": "number",
 		"label": "How old {children_number, plural, =1 {is} other {are}} your ##default:children##?",
-		"minimum": 0
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ".+"
+			}
+		]
+	},
+	"child_age_1": {
+		"type": "number",
+		"label": "How old is {children_number, plural, =1 {your child} other {child 1}}?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ".*"
+			}
+		]
+	},
+	"child_age_2": {
+		"type": "number",
+		"label": "How old is child 2?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=2"
+			}
+		]
+	},
+	"child_age_3": {
+		"type": "number",
+		"label": "How old is child 3?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=3"
+			}
+		]
+	},
+	"child_age_4": {
+		"type": "number",
+		"label": "How old is child 4?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=4"
+			}
+		]
+	},
+	"child_age_5": {
+		"type": "number",
+		"label": "How old is child 5?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=5"
+			}
+		]
+	},
+	"child_age_6": {
+		"type": "number",
+		"label": "How old is child 6?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=6"
+			}
+		]
+	},
+	"child_age_7": {
+		"type": "number",
+		"label": "How old is child 7?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=7"
+			}
+		]
+	},
+	"child_age_8": {
+		"type": "number",
+		"label": "How old is child 8?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=8"
+			}
+		]
+	},
+	"child_age_9": {
+		"type": "number",
+		"label": "How old is child 9?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=9"
+			}
+		]
+	},
+	"child_age_10": {
+		"type": "number",
+		"label": "How old is child 10?",
+		"minimum": 0,
+		"depends": [
+			{
+				"children_number": ">=10"
+			}
+		]
 	},
 	"children_resident": {
 		"type": "radioGroup",
@@ -221,6 +326,11 @@
 			"yes",
 			"no",
 			"unsure"
+		],
+		"depends": [
+			{
+				"child_age_.*": ">=5"
+			}
 		]
 	},
 	"children_additional_support": {
@@ -230,7 +340,7 @@
 			"children_age": ">=8"
 			}
 		],
-		"label": "children_number, plural, =1 {Does} other {Do}} your ##default:children## need support from someone impartial to cope with your separation",
+		"label": "{children_number, plural, =1 {Does} other {Do}} your ##default:children## need support from someone impartial to cope with your separation?",
 		"Xlabel": "Would you like information about additional help and support to help your ##default:children## to cope with your separation?",
 		"options": [
 			"yes",
@@ -317,7 +427,7 @@
 		"value": "easy",
 		"label": "Easy"
 	},
-	"so_so": {
+	"tolerable": {
 		"value": "tolerable",
 		"label": "Tolerable"
 	},
@@ -336,6 +446,7 @@
 			"communication_methods_in_person",
 			"communication_methods_phone",
 			"communication_methods_online",
+			"communication_methods_relatives",
 			"communication_methods_other",
 			"communication_methods_none"
 		],
@@ -349,10 +460,13 @@
 		"label": "Face to face"
 	},
 	"communication_methods_phone": {
-		"label": "Talking over the phone"
+		"label": "Over the phone"
 	},
 	"communication_methods_online": {
-		"label": "By text, email, online chat"
+		"label": "Text, email or online"
+	},
+	"communication_methods_relatives": {
+		"label": "Through relatives"
 	},
 	"communication_methods_other": {
 		"label": "Other (please specify)",
@@ -401,8 +515,6 @@
 			"options_tried_mediation",
 			"options_tried_spip",
 			"options_tried_lawyer",
-			"options_tried_gp",
-			"options_tried_leader",
 			"options_tried_court",
 			"options_tried_child_contact_centre",
 			"options_tried_other"
@@ -418,7 +530,7 @@
 		"label": "Counselling with my ex-partner"
 	},
 	"options_tried_mediation": {
-		"label": "Mediation"
+		"label": "Professional mediation"
 	},
 	"options_tried_spip": {
 		"label": "Separating parents information plan (SPIP) workshop"

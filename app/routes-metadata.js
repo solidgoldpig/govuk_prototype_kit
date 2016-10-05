@@ -214,7 +214,10 @@ function initRoutes (router) {
         req.session.access_code = shortid.generate()
       }
       if (req.url !== '/') {
-        req.session.access_code = req.url.replace(/^\//, '')
+        var possible_code = req.url.replace(/^\//, '')
+        if (possible_code !== 'edit') {
+          req.session.access_code = possible_code
+        }
       }
       var access_code = req.session.access_code
       req.session.autofields = req.session.autofields || {}
@@ -228,7 +231,7 @@ function initRoutes (router) {
           var schema = Object.assign({}, getElement(el))
           schema.type = schema.type || 'string'
           if (schema.type.match(/number|integer/)) {
-            inboundValue = Number(inboundValue)
+            inboundValue = inboundValue ? Number(inboundValue) : undefined
           } else if (schema.type === 'radioGroup') {
             schema.type = 'string'
             var optionsEnum = schema.options.map(function(option) {
@@ -239,6 +242,7 @@ function initRoutes (router) {
           var validationError = validator.validate(inboundValue, schema).errors
           if (validationError.length) {
             errors[el] = validationError[0]
+            console.log('el', el, errors[el])
           }
         })
         if (!Object.keys(errors).length) {
@@ -320,7 +324,12 @@ function initRoutes (router) {
                 return value
               }
               args = args || Object.assign({}, req.session.autofields, values)
-              var formatted = msgFormats[defaultLocale].compile(value)(args)
+              var formatted
+              try {
+                formatted = msgFormats[defaultLocale].compile(value)(args)
+              } catch (e) {
+                formatted = value + ': ' + e.message
+              }
               return reformat(formatted, args)
             }
             function getFormatted (element, defaultValue, options) {

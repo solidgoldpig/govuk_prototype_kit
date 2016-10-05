@@ -9,30 +9,10 @@
       "elements": [
         "entrypoint-copy"
       ],
-      "sheps": [
-        "legal_rights",
-        "arrangements_duration",
-        "options_tried",
-        "children_number",
-        "children_age",
-        "children_resident",
-        "children_access_disagreements",
-        "children_input",
-        "children_additional_support",
-        "child_safety",
-        "child_flight",
-        "relationship_status",
-        "parent_safety",
-        "communication_methods",
-        "communications_about_arrangements",
-        "childcare_disagreements",
-        "official_involvement_required",
-        "your_plan"
-      ],
       "steps": [
-        "legal_rights",
         "arrangements_duration",
         "options_tried",
+        "legal_rights",
         "children_number",
         "children_age",
         "children_resident",
@@ -42,18 +22,12 @@
         "child_safety",
         "child_flight",
         "relationship_status",
-        "parent_safety",
         "communication_methods",
         "communications_about_arrangements",
+        "parent_safety",
         "childcare_disagreements",
         "official_involvement_required",
         "your_plan"
-      ],
-      "fleps": [
-        "staying_safe",
-        "your_children",
-        "you_and_other_parent",
-        "legal_help"
       ]
     },
     "legal_rights": {
@@ -83,7 +57,16 @@
     "children_age": {
       "url": "age-of-children",
       "elements": [
-        "children_age"
+        "child_age_1",
+        "child_age_2",
+        "child_age_3",
+        "child_age_4",
+        "child_age_5",
+        "child_age_6",
+        "child_age_7",
+        "child_age_8",
+        "child_age_9",
+        "child_age_10"
       ]
     },
     "children_resident": {
