@@ -203,22 +203,6 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 </div>
       {% endif %}
 			{{ element.page_header(route.key, start_page=route.start_page) }}
-      {% if route.start_page %}
-
-<p>Find out what actions you should take before making child arrangements with the other parent.</p>
-
-<p>Your plan will give you:</p>
-
-<ul class="list list-bullet">
-  <li>clear advice that’s personal to you and your situation</li>
-  <li>somewhere to record how you’re feeling</li>
-  <li>a way of keeping track of what you’ve done</li>
-</ul>
-
-<p>You’ll be asked a maximum of {{ wizardStepsLength }} questions. The more questions you answer, the more detailed your plan will be.</p>
-
-<p>All the information you enter will remain confidential.</p>
-      {% endif %}
 
 			<form action="{{ req.originalUrl }}" method="post" class="form">
 				<input type="hidden" name="updateForm"> {{ element.group(elements=route.elements) }}
@@ -232,7 +216,7 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 				</div>
 			</form>
 
-			{#{% if route.name === 'your_plan' %}#} {% if false %}
+			{% if false %}
 			<pre style="white-space:pre-wrap">{{ savedfields | dump }}</pre>{% endif %}
       <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
 			<ul>

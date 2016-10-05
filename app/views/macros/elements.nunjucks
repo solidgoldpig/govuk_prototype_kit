@@ -27,7 +27,7 @@
 {% endmacro %}
 
 {% macro body(name) %}
-	<p>{{ getFormattedProp(name, 'body') | trim | replace("\n", "</p><p>") | safe }}</p>
+	<p>{{ getFormattedBody(name, 'body') | safe }}</p>
 {% endmacro %}
 
 {% macro raw(name) %}

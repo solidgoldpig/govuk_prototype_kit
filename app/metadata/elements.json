@@ -14,12 +14,12 @@
 	},
 	"entrypoint-copy": {
 		"type": "body",
-		"body": ""
+		"body": "Find out what actions you should take before making child arrangements with the other parent.\n\nYour plan will give you:\n\n* clear advice that’s personal to you and your situation\n* somewhere to record how you’re feeling\n* a way of keeping track of what you’ve done\n\nYou’ll be asked a maximum of {wizardStepsLength} questions. The more questions you answer, the more detailed your plan will be.\n\nAll the information you enter will remain confidential."
 	},
 	"route:action_plan": {
 		"title": "Get started",
 		"heading": "Make a plan for agreeing child arrangements",
-		"xlede": "Your plan will outline ways that may help you reach an agreement with your child’s other parent about child arrangements."
+		"lede": ""
 	},
 	"route:legal_rights": {
 		"title": "Legal rights",

@@ -301,6 +301,21 @@ function initRoutes (router) {
             }
             res.redirect(redirectUrl)
           } else {
+            var wizardStepCount;
+            var wizardStepsLength;
+            if (wizardHierarchy[routeInstanceFinal.wizard]) {
+              var theWiz = wizardHierarchy[routeInstanceFinal.wizard].stepsFlat.slice()
+              // theWiz.shift()
+              theWiz.pop()
+              wizardStepsLength = theWiz.length
+              wizardStepCount = theWiz.indexOf(routeName)
+              if (wizardStepCount > -1) {
+                wizardStepCount++
+              } else {
+                wizardStepCount = 0
+              }
+            }
+
             var recurseMatch = /##([\s\S]+?)##/
             function reformat (value, args) {
               if (value.match(recurseMatch)) {
@@ -323,7 +338,9 @@ function initRoutes (router) {
               if ((value.indexOf('{') === -1) && !value.match(recurseMatch)) {
                 return value
               }
-              args = args || Object.assign({}, req.session.autofields, values)
+              args = args || Object.assign({
+                wizardStepsLength: wizardStepsLength
+              }, req.session.autofields, values)
               var formatted
               try {
                 formatted = msgFormats[defaultLocale].compile(value)(args)
@@ -344,13 +361,14 @@ function initRoutes (router) {
             }
             function getFormattedBody (element, prop, defaultValue, options) {
               options = marshallDefaultValue(defaultValue, options)
-              var value = getElementProp(element, 'body', options)
-              var formattedBody = format(value, options.args).trim()
+              var value = getElementProp(element, 'body', options).trim()
+              var formattedBody = format(value, options.args)
               if (options.markdown !== false) {
                 formattedBody = Markdown(formattedBody)
                 formattedBody = formattedBody.replace(/<ol>/g, '<ol class="list list-number">')
-                formattedBody = formattedBody.replace(/<ul>/g, '<ol class="list list-bullet">')
+                formattedBody = formattedBody.replace(/<ul>/g, '<ul class="list list-bullet">')
               }
+              //  | trim | replace("\n", "</p><p>"
               return formattedBody
             }
             function getError (element, options) {
@@ -418,20 +436,6 @@ function initRoutes (router) {
               nunjucksEnv.addGlobal('macros', merged)
               return merged
             })
-            var wizardStepCount;
-            var wizardStepsLength;
-            if (wizardHierarchy[routeInstanceFinal.wizard]) {
-              var theWiz = wizardHierarchy[routeInstanceFinal.wizard].stepsFlat.slice()
-              // theWiz.shift()
-              theWiz.pop()
-              wizardStepsLength = theWiz.length
-              wizardStepCount = theWiz.indexOf(routeName)
-              if (wizardStepCount > -1) {
-                wizardStepCount++
-              } else {
-                wizardStepCount = 0
-              }
-            }
             setTimeout(() => {
               res.render('route', {
                 route: routeInstanceFinal,
