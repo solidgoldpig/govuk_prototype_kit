@@ -418,12 +418,28 @@ function initRoutes (router) {
               nunjucksEnv.addGlobal('macros', merged)
               return merged
             })
+            var wizardStepCount;
+            var wizardStepsLength;
+            if (wizardHierarchy[routeInstanceFinal.wizard]) {
+              var theWiz = wizardHierarchy[routeInstanceFinal.wizard].stepsFlat.slice()
+              // theWiz.shift()
+              theWiz.pop()
+              wizardStepsLength = theWiz.length
+              wizardStepCount = theWiz.indexOf(routeName)
+              if (wizardStepCount > -1) {
+                wizardStepCount++
+              } else {
+                wizardStepCount = 0
+              }
+            }
             setTimeout(() => {
               res.render('route', {
                 route: routeInstanceFinal,
                 savedfields: JSON.stringify(req.session.autofields, null, 2),
                 autofields: req.session.autofields,
                 wizard: wizardHierarchy[routeInstanceFinal.wizard],
+                wizardStepsLength: wizardStepsLength,
+                wizardStepCount: wizardStepCount,
                 visited: req.session.visited,
                 access_code: access_code
               })

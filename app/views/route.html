@@ -172,6 +172,10 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 	<div class="grid-row">
 		<div class="column-two-thirds">
 
+{% if false and wizardStepCount %}
+Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
+{% endif %}
+
 {#
       {% if route.wizard %}
       <ul>
@@ -211,7 +215,7 @@ Action Plan{% if title %} - {{ title }}{% endif %}
   <li>a way of keeping track of what you’ve done</li>
 </ul>
 
-<p>You’ll be asked a maximum of 17 questions. The more questions you answer, the more detailed your plan will be.</p>
+<p>You’ll be asked a maximum of {{ wizardStepsLength }} questions. The more questions you answer, the more detailed your plan will be.</p>
 
 <p>All the information you enter will remain confidential.</p>
       {% endif %}
