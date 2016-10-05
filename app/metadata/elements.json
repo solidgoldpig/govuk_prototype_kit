@@ -190,7 +190,7 @@
 		"minimum": 0,
 		"depends": [
 			{
-				"children_number": ".*"
+				"children_number": ">=1"
 			}
 		]
 	},
@@ -291,6 +291,11 @@
 			"children_resident_applicant",
 			"children_resident_respondent",
 			"children_resident_both"
+		],
+		"depends": [
+			{
+				"!options_tried_child_contact_centre": "yes"
+			}
 		]
 	},
 	"children_resident_applicant": {
@@ -314,7 +319,8 @@
 		],
 		"depends": [
 			{
-				"children_resident": "applicant|respondent"
+				"!options_tried_child_contact_centre": "yes",
+				"!children_resident": "both"
 			}
 		]
 	},
@@ -330,6 +336,9 @@
 		"depends": [
 			{
 				"child_age_.*": ">=5"
+			},
+			{
+				"!child_age_1": ".+"
 			}
 		]
 	},
