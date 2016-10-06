@@ -31,6 +31,7 @@ var yourPlanController = function (req, res) {
         'communication_methods_in_person': 1,
         'communication_methods_phone': 1,
         'communication_methods_online': 1,
+        'communication_methods_relatives': 3,
         'communication_methods_none': 3
       }
 

@@ -302,10 +302,14 @@ function initRoutes (router) {
             res.redirect(redirectUrl)
           } else {
             // Work out number of wizard steps, the number of the step and the wizard flow data (for flowchart generation)
+            var routeWizard = wizardHierarchy[routeInstanceFinal.wizard]
             var wizardStepCount;
             var wizardStepsLength;
-            if (wizardHierarchy[routeInstanceFinal.wizard]) {
-              var theWiz = wizardHierarchy[routeInstanceFinal.wizard].stepsFlat.slice()
+            var wizardSectionCount;
+            var wizardSectionCurrent;
+            var wizardSectionLength;
+            if (routeWizard) {
+              var theWiz = routeWizard.stepsFlat.slice()
               var wizExpose = theWiz.map(step => {
                 return Object.assign({ name: step }, getElement(step))
               })
@@ -313,6 +317,20 @@ function initRoutes (router) {
               theWiz.pop()
               wizardStepsLength = theWiz.length
               wizardStepCount = theWiz.indexOf(routeName)
+              if (routeInstanceFinal.hierarchy) {
+                var wizHier = routeWizard.slice().map(function(step){
+                  return step.route
+                })
+                wizHier.pop()
+                wizardSectionLength = wizHier.length
+                wizardSectionCurrent = routeInstanceFinal.hierarchy[1]
+                wizardSectionCount = wizHier.indexOf(wizardSectionCurrent)
+                if (wizardSectionCount > -1) {
+                  wizardSectionCount++
+                } else {
+                  wizardSectionCount = 0
+                }
+              }
               if (wizardStepCount > -1) {
                 wizardStepCount++
               } else {
@@ -445,9 +463,12 @@ function initRoutes (router) {
                 route: routeInstanceFinal,
                 savedfields: JSON.stringify(req.session.autofields, null, 2),
                 autofields: req.session.autofields,
-                wizard: wizardHierarchy[routeInstanceFinal.wizard],
+                wizard: routeWizard,
                 wizardStepsLength: wizardStepsLength,
                 wizardStepCount: wizardStepCount,
+                wizardSectionLength: wizardSectionLength,
+                wizardSectionCount: wizardSectionCount,
+                wizardSectionCurrent: wizardSectionCurrent,
                 visited: req.session.visited,
                 access_code: access_code
               })

@@ -10,24 +10,42 @@
         "entrypoint-copy"
       ],
       "steps": [
+        "getting_started",
+        "your_children",
+        "you_and_other_parent",
+        "your_plan"
+      ]
+    },
+    "getting_started": {
+      "url": "getting-started",
+      "steps": [
         "arrangements_duration",
         "options_tried",
-        "legal_rights",
+        "legal_rights"
+      ]
+    },
+    "your_children": {
+      "url": "children",
+      "steps": [
         "children_number",
         "children_age",
         "children_resident",
         "children_access_disagreements",
         "children_input",
         "children_additional_support",
-        "child_safety",
-        "child_flight",
+        "children_safety",
+        "children_flight"
+      ]
+    },
+    "you_and_other_parent": {
+      "url": "parents",
+      "steps": [
         "relationship_status",
         "communication_methods",
         "communications_about_arrangements",
         "parent_safety",
         "childcare_disagreements",
-        "official_involvement_required",
-        "your_plan"
+        "official_involvement_required"
       ]
     },
     "legal_rights": {
@@ -49,13 +67,13 @@
       ]
     },
     "children_number": {
-      "url": "number-of-children",
+      "url": "number",
       "elements": [
         "children_number"
       ]
     },
     "children_age": {
-      "url": "age-of-children",
+      "url": "age",
       "elements": [
         "child_age_1",
         "child_age_2",
@@ -70,7 +88,7 @@
       ]
     },
     "children_resident": {
-      "url": "where-children-live",
+      "url": "resident",
       "elements": [
         "children_resident"
       ]
@@ -82,21 +100,21 @@
       ]
     },
     "children_input": {
-      "url": "children-input",
+      "url": "input",
       "elements": [
         "children_input"
       ]
     },
     "children_additional_support": {
-      "url": "children-additional-support",
+      "url": "additional-support",
       "elements": [
         "children_additional_support"
       ]
     },
-    "child_safety": {
-      "url": "child-safety",
+    "children_safety": {
+      "url": "safety",
       "elements": [
-        "child_safety"
+        "children_safety"
       ]
     },
     "parent_safety": {
@@ -105,10 +123,10 @@
         "parent_safety"
       ]
     },
-    "child_flight": {
+    "children_flight": {
       "url": "child-flight",
       "elements": [
-        "child_flight"
+        "children_flight"
       ]
     },
     "relationship_status": {
@@ -151,9 +169,9 @@
       "url": "your-plan",
       "controller": "your_plan",
       "elements": [
-        "action:child_safety",
+        "action:children_safety",
         "action:parent_safety",
-        "action:child_flight",
+        "action:children_flight",
         "action:children_access_disagreements",
         "action:children_input",
         "action:children_additional_support",

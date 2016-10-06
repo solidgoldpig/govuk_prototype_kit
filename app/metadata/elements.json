@@ -57,7 +57,7 @@
 		"title": "Additional support for children",
 		"heading": ""
 	},
-	"route:child_safety": {
+	"route:children_safety": {
 		"title": "Child safety",
 		"heading": ""
 	},
@@ -65,7 +65,7 @@
 		"title": "Parent safety",
 		"heading": ""
 	},
-	"route:child_flight": {
+	"route:children_flight": {
 		"title": "Child flight risk",
 		"heading": ""
 	},
@@ -96,6 +96,10 @@
 		"heading": "Staying safe",
 		"lede": "Thinking about your situation with your ##default:children##’s other parent:"
 	},
+	"route:getting_started": {
+		"title": "",
+		"heading": "Getting started"
+	},
 	"route:your_children": {
 		"title": "",
 		"heading": "Your ##default:children##"
@@ -120,7 +124,7 @@
 	"error:required": "Please answer this question",
 
 
-	"child_safety": {
+	"children_safety": {
 		"type": "radioGroup",
 		"label": "Are you worried about the safety of your ##default:children##?",
 		"options": [
@@ -138,7 +142,7 @@
 			"unsure"
 		]
 	},
-	"child_flight": {
+	"children_flight": {
 		"type": "radioGroup",
 		"label": "Do you think your ##default:children## could be taken out of the country without your permission?",
 		"Xlabel": "{children_number, plural, =1 {Is} other {Are}} your ##default:children## at risk of being taken out of the country?",
@@ -579,17 +583,17 @@
 			"action:written_agreement"
 		]
 	},
-	"action:child_safety": {
+	"action:children_safety": {
 		"type": "ap_action",
 		"depends": [
 			{
-				"child_safety": "yes|unsure"
+				"children_safety": "yes|unsure"
 			}
 		],
 		"title": "Contact social services",
 		"body": "As you’re concerned about your ##default:children##’s safety, you should contact social services run by your local authority.",
 		"links": [
-			"link:local_authority_child_safety"
+			"link:local_authority_children_safety"
 		]
 	},
 	"action:parent_safety": {
@@ -607,11 +611,11 @@
 			"phone": "0808 2000 247"
 		}
 	},
-	"action:child_flight": {
+	"action:children_flight": {
 		"type": "ap_action",
 		"depends": [
 			{
-				"child_flight": "yes|unsure"
+				"children_flight": "yes|unsure"
 			}
 		],
 		"title": "Keep your ##default:children##’s passport safe and ask a court for help",
@@ -812,7 +816,7 @@
 			"link:find_translator"
 		]
 	},
-	"link:local_authority_child_safety": {
+	"link:local_authority_children_safety": {
 		"title": "Contact your local authority",
 		"url": "#localauthority"
 	},

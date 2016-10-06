@@ -14,12 +14,20 @@
 {{ super() }}
 {% endif %}
 <style type="text/css">
+.wizard-start .service-name {
+  visibility: hidden;
+}
 .grid-row {
   margin-top: 50px;
 }
 
-.grid-row h1 {
+.column-two-thirds h1:first-child {
   margin-top: 0;
+}
+.wizard-section {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px;
 }
 
 legend {
@@ -66,6 +74,11 @@ legend {
 .ap_action_body {
   margin-top: 15px;
 }
+
+.answer_body {
+    margin-left: 52px;
+}
+
 .answer_body > p:last-child {
   margin-bottom: 0;
 }
@@ -167,15 +180,19 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 {% endblock %}
 {% block content %}
 
-<main id="content" role="main">
-  <p>Make a plan for child arrangements</p>
+<main id="content" role="main" class="route-{{ route.name }}{% if route.start_page %} wizard-start{% endif %}">
+  <p class="service-name">Make a plan for agreeing child arrangements</p>
 	<div class="grid-row">
 		<div class="column-two-thirds">
 
 {% if false and wizardStepCount %}
 Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 {% endif %}
-
+{% if wizardSectionCount %}
+<p class="wizard-section">{{ getFormattedProp('route:'+route.hierarchy[1], 'heading') | safe }}
+  {% if false %} - Section {{ wizardSectionCount }} of {{ wizardSectionLength }}{% endif %}
+  </h2>
+{% endif %}
 {#
       {% if route.wizard %}
       <ul>
@@ -216,7 +233,7 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 				</div>
 			</form>
 
-			{% if true %}
+			{% if false %}
       <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
 			<ul>
         {{ easyLink(route.wizard) }}
