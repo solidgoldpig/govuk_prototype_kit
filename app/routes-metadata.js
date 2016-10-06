@@ -305,7 +305,10 @@ function initRoutes (router) {
             var wizardStepsLength;
             if (wizardHierarchy[routeInstanceFinal.wizard]) {
               var theWiz = wizardHierarchy[routeInstanceFinal.wizard].stepsFlat.slice()
-              // theWiz.shift()
+              var wizExpose = theWiz.map(step => {
+                return Object.assign({ name: step }, getElement(step))
+              })
+              console.log('wizExpose', JSON.stringify(wizExpose, null, 2))
               theWiz.pop()
               wizardStepsLength = theWiz.length
               wizardStepCount = theWiz.indexOf(routeName)

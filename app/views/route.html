@@ -216,8 +216,7 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 				</div>
 			</form>
 
-			{% if false %}
-			<pre style="white-space:pre-wrap">{{ savedfields | dump }}</pre>{% endif %}
+			{% if true %}
       <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
 			<ul>
         {{ easyLink(route.wizard) }}
@@ -225,7 +224,7 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
           {{ easyLink(step.route) }}
         {% endfor %}
 			</ul>
-			{#{% endif %}#}
+			{% endif %}
 		</div>
 
     <div class="related-container column-one-third">

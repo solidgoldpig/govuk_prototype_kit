@@ -424,7 +424,7 @@
 		"depends": [
 			{
 				"!relationship_status": "no_contact",
-				"!communication_methods": "communication_methods_none"
+				"!communication_methods_none": "yes"
 			}
 		]
 	},
