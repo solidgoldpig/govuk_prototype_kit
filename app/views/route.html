@@ -18,6 +18,11 @@
 .wizard-start .service-name {
   visibility: hidden;
 }
+.wizard-last h3.heading-medium {
+    display: none;
+}
+
+
 .grid-row {
   margin-top: 50px;
 }
@@ -181,7 +186,7 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 {% endblock %}
 {% block content %}
 
-<main id="content" role="main" class="route-{{ route.name }}{% if route.start_page %} wizard-start{% endif %}">
+<main id="content" role="main" class="route-{{ route.name }}{% if route.start_page %} wizard-start{% endif %}{% if route.wizardlastRoute %} wizard-last{% endif %}">
   <p class="service-name">Make a plan for agreeing child arrangements</p>
 	<div class="grid-row">
 		<div class="column-two-thirds">
