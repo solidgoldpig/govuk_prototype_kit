@@ -4,15 +4,16 @@
 {{ macros.checkboxGroup(name, label='', options=[name])}}
 <div class="ap_action_body">
 <div class="answer_body">
+<p class="playback">{{ getFormattedProp(name, 'playback') | safe }}</p>
 {{ getFormattedBody(name) | safe }}
 {#<div class="answer_more">
 <p>Answer more</p>
 </div>#}
 {% if getFormattedProp(name, 'organisation') %}
 <p class="contact-organisation">
-  <a href="{{ getFormattedProp(name, 'organisation.url') }}">Contact {{ getFormattedProp(name, 'organisation.name') }}</a>
+  <a href="{{ getFormattedProp(name, 'organisation.url') }}">Contact {{ getFormattedProp(name, 'organisation.name') | safe }}</a>
   {% if getFormattedProp(name, 'organisation.phone') %}
-    or call {{ getFormattedProp(name, 'organisation.phone') }}
+    or call {{ getFormattedProp(name, 'organisation.phone') | safe }}
   {% endif %}
 </p>
 {% endif %}

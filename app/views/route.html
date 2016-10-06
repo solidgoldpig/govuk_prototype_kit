@@ -243,8 +243,8 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
       <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
 			<ul>
         {{ easyLink(route.wizard) }}
-        {% for step in wizard %}
-          {{ easyLink(step.route) }}
+        {% for step in wizard.stepsFlat %}
+          {{ easyLink(step) }}
         {% endfor %}
 			</ul>
 			{% endif %}

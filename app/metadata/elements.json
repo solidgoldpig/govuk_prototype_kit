@@ -509,7 +509,8 @@
 		"label": "Do you already know your legal rights and responsibilities as a parent?",
 		"options": [
 			"yes",
-			"no"
+			"no",
+			"unsure"
 		]
 	},
 	"options_tried": {
@@ -635,9 +636,10 @@
 			}
 		],
 		"title": "Arrange a visit to a contact centre",
-		"body": "Visiting a child contact centre means {children_resident, select, applicant {the other parent can still see your ##default:children## while you continue trying to agree longer-lasting arrangements} other {you can see your ##default:children## while you continue trying to agree longer-lasting arrangements with the other parent}}. You may have to pay a small fee to do this.",
+		"playback": "You've said that {children_resident, select, applicant {your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing you at all} other {the other parent isn’t seeing their {children_number, plural, =1 {is} other {are}}}}.",
+		"body": "{children_resident, select, respondent {You should arrange a visit to a child contact centre, where you can see your ##default:children## while you continue trying to agree arrangements with the other parent.} other {You should speak to someone at your nearest child contact centre, where the ##default:children##’s other parent can see them while you continue trying to agree arrangements.}}",
 		"organisation": {
-			"name": "NACCC",
+			"name": "National Association of Child Contact Centre (NACCC)",
 			"url": "#NACCC",
 			"phone": "0845 4500 2807"
 		}
@@ -649,7 +651,7 @@
 				"children_input": "yes|unsure"
 			}
 		],
-		"title": "Discuss any arrangements with your ##default:children##",
+		"title": "Find out how to involve your ##default:children## when making arrangements",
 		"body": "Contributing to any arrangements or plans you make with their other parent can help older children settle into and deal with the situation. Sit down with them, listen to concerns around eg friendships, homework, and take their suggestions on board.",
 		"links": [
 			"link:talking_with_children"
@@ -779,10 +781,11 @@
 		"type": "ap_action",
 		"depends": [
 			{
-				"legal_rights": "yes"
+				"!legal_rights": "yes"
 			}
 		],
-		"title": "Find out what your legal rights and responsibilities are",
+		"title": "Find out your legal responsibilities",
+		"playback": "You've said that {legal_rights, select, no {you don't know} other {you're not sure that you know}} your legal responsibilities as a parent.",
 		"body": "All parents have legal rights and responsibilities that include providing a home, protecting and looking after the child. These rights mean you should also be able to see your ##default:children## in most circumstances.",
 		"links": [
 			"link:find_legal_aid_centre",
