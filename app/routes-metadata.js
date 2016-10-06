@@ -360,7 +360,7 @@ function initRoutes (router) {
             function getFormattedProp (element, prop, defaultValue, options) {
               options = marshallDefaultValue(defaultValue, options)
               var value = getElementProp(element, prop, options)
-              return format(value, options.args)
+              return format(value, options.args).replace(/ ([^ ]+)$/, '&nbsp;$1')
             }
             function getFormattedBody (element, prop, defaultValue, options) {
               options = marshallDefaultValue(defaultValue, options)

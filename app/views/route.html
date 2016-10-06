@@ -255,7 +255,7 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 </main>
 {% endblock %}
 {% macro easyLink(name) %}
-<li><a href="{{ getRouteUrl(name) }}">{{ getFormattedProp('route:'+name, ['title', 'heading']) }}</a> | <a href="{{ getRouteUrl(name, null, {edit:true}) }}">(edit)</a></li>
+<li><a href="{{ getRouteUrl(name) }}">{{ getFormattedProp('route:'+name, ['title', 'heading']) | safe }}</a> | <a href="{{ getRouteUrl(name, null, {edit:true}) }}">(edit)</a></li>
 {% endmacro %}
 
 {% block body_end %}
