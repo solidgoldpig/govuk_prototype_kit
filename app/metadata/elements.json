@@ -344,11 +344,6 @@
 	},
 	"children_additional_support": {
 		"type": "radioGroup",
-		"depends": [
-			{
-			"children_age": ">=8"
-			}
-		],
 		"label": "{children_number, plural, =1 {Does} other {Do}} your ##default:children## need support from someone impartial to cope with your separation?",
 		"Xlabel": "Would you like information about additional help and support to help your ##default:children## to cope with your separation?",
 		"options": [

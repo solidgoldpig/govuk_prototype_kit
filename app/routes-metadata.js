@@ -153,15 +153,15 @@ function initRoutes (router) {
         route.url = urlPrefix + '/' + route.url
       }
       if (route.steps) {
-        console.log('REDIRECT TOP', routeName, route.steps[0])
+        // console.log('REDIRECT TOP', routeName, route.steps[0])
         routesFlattened[routeName].redirect = route.steps[0]
         route.steps.forEach((step, i) => {
           routesFlattened[step] = Object.assign({}, pages[step])
           if (route.steps[i + 1]) {
-            console.log('REDIRECT STEP', step, route.steps[i + 1])
+            // console.log('REDIRECT STEP', step, route.steps[i + 1])
             routesFlattened[step].redirect = route.steps[i + 1]
           } else if (routes[index + 1] && hierarchy) {
-            console.log('MISSED STEP', step, routes[index + 1])
+            // console.log('MISSED STEP', step, routes[index + 1])
             routesFlattened[step].redirect = routes[index + 1]
           }
         })
@@ -191,10 +191,10 @@ function initRoutes (router) {
   // console.log('wizardHierarchy', JSON.stringify(wizardHierarchy, null, 2))
 
   var routeUrls = {}
-  var blah = Object.keys(routesFlattened).sort(function(a, b){
-    return getRouteUrl(a).localeCompare(getRouteUrl(b))
-  }).reverse()
-  console.log(blah)
+  // var blah = Object.keys(routesFlattened).sort(function(a, b){
+  //   return getRouteUrl(a).localeCompare(getRouteUrl(b))
+  // }).reverse()
+  // console.log(blah)
   Object.keys(routesFlattened).sort(function(a, b){
     return getRouteUrl(a).localeCompare(getRouteUrl(b))
   }).reverse().forEach(routeName => {
@@ -242,7 +242,7 @@ function initRoutes (router) {
           var validationError = validator.validate(inboundValue, schema).errors
           if (validationError.length) {
             errors[el] = validationError[0]
-            console.log('el', el, errors[el])
+            // console.log('el', el, errors[el])
           }
         })
         if (!Object.keys(errors).length) {
@@ -301,6 +301,7 @@ function initRoutes (router) {
             }
             res.redirect(redirectUrl)
           } else {
+            // Work out number of wizard steps, the number of the step and the wizard flow data (for flowchart generation)
             var wizardStepCount;
             var wizardStepsLength;
             if (wizardHierarchy[routeInstanceFinal.wizard]) {
@@ -308,7 +309,7 @@ function initRoutes (router) {
               var wizExpose = theWiz.map(step => {
                 return Object.assign({ name: step }, getElement(step))
               })
-              console.log('wizExpose', JSON.stringify(wizExpose, null, 2))
+              // console.log('wizExpose', JSON.stringify(wizExpose, null, 2))
               theWiz.pop()
               wizardStepsLength = theWiz.length
               wizardStepCount = theWiz.indexOf(routeName)
