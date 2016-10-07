@@ -9,13 +9,15 @@
 {#<div class="answer_more">
 <p>Answer more</p>
 </div>#}
-{% if getFormattedProp(name, 'organisation') %}
+{% if getElementProp(name, 'organisation') %}
+{% for org in getElementProp(name, 'organisation') %}
 <p class="contact-organisation">
-  <a href="{{ getFormattedProp(name, 'organisation.url') }}">Contact {{ getFormattedProp(name, 'organisation.name') | safe }}</a>
-  {% if getFormattedProp(name, 'organisation.phone') %}
-    or call {{ getFormattedProp(name, 'organisation.phone') | safe }}
+  <a href="{{ org.url }}">Contact {{ org.name }}{% if org.abbreviation %} ({{ org.abbreviation }}){% endif %}</a>
+  {% if org.phone %}
+    or call {{ org.phone }}
   {% endif %}
 </p>
+{% endfor %}
 {% endif %}
 {% if getElementProp(name, 'links') %}
 <ul class="answer-links">

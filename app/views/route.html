@@ -4,7 +4,7 @@
 <!--<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">-->
 <script src="https://use.fontawesome.com/c07ad73480.js"></script>
 {% if true %}
-{% if true %}
+{% if false %}
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/govuk-template.css?0.18.1">
 <link rel="stylesheet" href="//govuk-elements-wip.herokuapp.com/public/stylesheets/elements-page.css">
 {% else %}
@@ -67,11 +67,10 @@ legend {
 		}
 	}
 .ap_action {
-  border: solid 3px #000000;
+  border-top: solid 3px #000000;
   padding: 15px 15px 0;
   position: relative;
   margin-bottom: 12px;
-  overflow: hidden;
 }
 .ap_action h2 {
   cursor: pointer;
@@ -80,7 +79,9 @@ legend {
 .ap_action_body {
   margin-top: 15px;
 }
-
+.playback {
+  font-style: italic;
+}
 .answer_body {
     margin-left: 52px;
 }
@@ -90,11 +91,12 @@ legend {
 }
 
 .ap_action_tools {
-  border-top: solid 3px #000000;
-  margin: 15px -15px 0;
-  padding: 10px 15px;
+  border-top: solid 1px #000000;
+  margin: 15px -15px 0 52px;
+  padding: 10px 15px 10px 0;
 }
 .ap_action_tools p {
+  cursor: pointer;
   margin: 0 15px 0 0;
   display: inline-block;
 }
@@ -116,7 +118,7 @@ legend {
 .ap_action fieldset {
   position: absolute;
   top: 4px;
-  left: 4px;
+  left: 0;
   width: 34px;
   height: 41px;
   overflow: hidden;
@@ -129,8 +131,8 @@ legend {
     margin: 3px 0 12px 50px;
   }
   .ap_action fieldset {
-    top: 12px;
-    left: 15px;
+    top: 15px;
+    left: 0;
   }
 }
 {#.js-enabled .ap_action .block-label.selection-button-checkbox::before {
@@ -191,12 +193,12 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 	<div class="grid-row">
 		<div class="column-two-thirds">
 
-{% if false and wizardStepCount %}
+{% if true and wizardStepCount %}
 Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 {% endif %}
-{% if wizardSectionCount %}
+{% if false and wizardSectionCount %}
 <p class="wizard-section">{{ getFormattedProp('route:'+route.hierarchy[1], 'heading') | safe }}
-  {% if false %} - Section {{ wizardSectionCount }} of {{ wizardSectionLength }}{% endif %}
+  {% if true %} - Section {{ wizardSectionCount }} of {{ wizardSectionLength }}{% endif %}
   </h2>
 {% endif %}
 {#
@@ -239,8 +241,8 @@ Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 				</div>
 			</form>
 
-			{% if false %}
-      <h3 class="heading-medium" style="margin-top: 150px">Quick dev links</h3>
+			{% if true %}
+      <h4 class="heading-medium" style="margin-top: 150px">Quick dev links</h4>
 			<ul>
         {{ easyLink(route.wizard) }}
         {% for step in wizard.stepsFlat %}

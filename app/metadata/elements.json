@@ -606,11 +606,11 @@
 		],
 		"title": "Contact Refuge",
 		"body": "As you’re concerned about your child’s safety, you should contact social services run by your local authority.",
-		"organisation": {
+		"organisation": [{
 			"name": "Refuge",
 			"url": "#Refuge",
 			"phone": "0808 2000 247"
-		}
+		}]
 	},
 	"action:children_flight": {
 		"type": "ap_action",
@@ -632,17 +632,18 @@
 		"depends": [
 			{
 				"!options_tried_child_contact_centre": ".*",
-				"children_resident": "applicant|respondent"
+				"children_access_disagreements": "yes"
 			}
 		],
 		"title": "Arrange a visit to a contact centre",
-		"playback": "You've said that {children_resident, select, applicant {your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing you at all} other {the other parent isn’t seeing their {children_number, plural, =1 {is} other {are}}}}.",
+		"playback": "You’ve said that {children_resident, select, applicant {your ##default:children## {children_number, plural, =1 {isn’t} other {aren’t}} seeing you at all} other {the other parent isn’t seeing their ##default:children##}}.",
 		"body": "{children_resident, select, respondent {You should arrange a visit to a child contact centre, where you can see your ##default:children## while you continue trying to agree arrangements with the other parent.} other {You should speak to someone at your nearest child contact centre, where the ##default:children##’s other parent can see them while you continue trying to agree arrangements.}}",
-		"organisation": {
-			"name": "National Association of Child Contact Centre (NACCC)",
+		"organisation": [{
+			"name": "National Association of Child Contact Centre",
+			"abbreviation": "NACCC",
 			"url": "#NACCC",
-			"phone": "0845 4500 2807"
-		}
+			"phone": "0845 4500 280"
+		}]
 	},
 	"action:children_input": {
 		"type": "ap_action",
@@ -652,6 +653,7 @@
 			}
 		],
 		"title": "Find out how to involve your ##default:children## when making arrangements",
+		"playback": "You have a child over 5-years-old, so they should be involved in the decision-making if possible.",
 		"body": "Contributing to any arrangements or plans you make with their other parent can help older children settle into and deal with the situation. Sit down with them, listen to concerns around eg friendships, homework, and take their suggestions on board.",
 		"links": [
 			"link:talking_with_children"
@@ -666,11 +668,11 @@
 		],
 		"title": "Additional support for your ##default:children##",
 		"body": "Listening to other children in a similar position can be a great starting point if your ##default:children## {children_number, plural, =1 {is} other {are}} struggling with your separation and disagreements over their arrangements.",
-		"organisation": {
+		"organisation": [{
 			"name": "Voices in the Middle",
 			"url": "http://voicesinthemiddle.org.uk/",
 			"phone": ""
-		}
+		}]
 	},
 	"action:spip": {
 		"type": "ap_action",
@@ -786,11 +788,17 @@
 		],
 		"title": "Find out your legal responsibilities",
 		"playback": "You've said that {legal_rights, select, no {you don't know} other {you're not sure that you know}} your legal responsibilities as a parent.",
-		"body": "All parents have legal rights and responsibilities that include providing a home, protecting and looking after the child. These rights mean you should also be able to see your ##default:children## in most circumstances.",
-		"links": [
-			"link:find_legal_aid_centre",
-			"link:legal_aid",
-			"link:family_lawyer"
+		"body": "The Resource website has a lot of general information about the law. The Child Law Advice Service can give you personal advice based on your situation.",
+		"organisation": [
+			{
+			"name": "Resource",
+			"url": "#Resource",
+			"phone": "01689 820 272"
+		},{
+			"name": "Child Law Advice Service",
+			"url": "#CLAS",
+			"phone": "0300 330 5480"
+		}
 		]
 	},
 	"action:written_agreement": {

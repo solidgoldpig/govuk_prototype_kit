@@ -315,6 +315,10 @@ function initRoutes (router) {
               })
               // console.log('wizExpose', JSON.stringify(wizExpose, null, 2))
               theWiz.pop()
+              // console.log(theWiz)
+              theWiz = theWiz.filter(function(step){
+                return routesFlattened[step] && routesFlattened[step].elements
+              })
               wizardStepsLength = theWiz.length
               wizardStepCount = theWiz.indexOf(routeName)
               if (routeInstanceFinal.hierarchy) {
