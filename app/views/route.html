@@ -15,7 +15,7 @@
 {{ super() }}
 {% endif %}
 <style type="text/css">
-.wizard-start .service-name {
+.service-name {
   visibility: hidden;
 }
 .wizard-last h3.heading-medium {
@@ -193,12 +193,12 @@ Action Plan{% if title %} - {{ title }}{% endif %}
 	<div class="grid-row">
 		<div class="column-two-thirds">
 
-{% if true and wizardStepCount %}
+{% if false and wizardStepCount %}
 Question {{ wizardStepCount }} out of {{ wizardStepsLength }}
 {% endif %}
-{% if false and wizardSectionCount %}
+{% if true and wizardSectionCount %}
 <p class="wizard-section">{{ getFormattedProp('route:'+route.hierarchy[1], 'heading') | safe }}
-  {% if true %} - Section {{ wizardSectionCount }} of {{ wizardSectionLength }}{% endif %}
+  {% if false %} - Section {{ wizardSectionCount }} of {{ wizardSectionLength }}{% endif %}
   </h2>
 {% endif %}
 {#
